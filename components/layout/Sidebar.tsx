@@ -8,8 +8,10 @@ import {
   Users,
   TrendingUp,
   UserSearch,
+  LogOut,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { signOut } from "@/app/actions/auth"
 
 const nav = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -52,8 +54,17 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="px-2.5 py-4 border-t border-[#2e2e2e]">
-        <p className="text-[#555] text-[9px] tracking-widest uppercase px-3">DMG Internal</p>
+      <div className="px-2.5 py-4 border-t border-[#2e2e2e] space-y-1">
+        <p className="text-[#555] text-[9px] tracking-widest uppercase px-3 mb-2">DMG Internal</p>
+        <form action={signOut}>
+          <button
+            type="submit"
+            className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-xs font-medium text-[#a8a8a8] hover:bg-white/5 hover:text-red-400 transition-colors"
+          >
+            <LogOut size={15} strokeWidth={1.5} />
+            Sign Out
+          </button>
+        </form>
       </div>
     </aside>
   )
