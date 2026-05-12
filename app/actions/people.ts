@@ -1,6 +1,6 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { redirect } from "next/navigation"
 
 export async function addPerson(data: {
@@ -9,7 +9,7 @@ export async function addPerson(data: {
   email: string
   phone: string
 }) {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const { error } = await supabase.from("people").insert({
     name:  data.name.trim(),

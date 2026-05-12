@@ -1,3 +1,5 @@
+"use client"
+
 interface TopBarProps {
   title: string
   action?: React.ReactNode
