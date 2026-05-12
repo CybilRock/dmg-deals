@@ -123,20 +123,20 @@ export default function DealForm({ consultants }: { consultants: Consultant[] })
   const calc = form.product === "HolidayCorp" ? calcHCorp : calcDVC
 
   const row = (label: string, value: string, highlight = false) => (
-    <div key={label} className={`flex justify-between py-2 text-sm border-b border-[#f1f5f9] last:border-0 ${highlight ? "font-semibold" : ""}`}>
-      <span className="text-[#64748b]">{label}</span>
-      <span className="text-[#0f172a]">{value}</span>
+    <div key={label} className={`flex justify-between py-2 text-sm border-b border-[#2e2e2e] last:border-0 ${highlight ? "font-semibold" : ""}`}>
+      <span className="text-[#555]">{label}</span>
+      <span className={highlight ? "text-[#c9a84c]" : "text-[#f5f5f5]"}>{value}</span>
     </div>
   )
 
-  const inputClass = "mt-1 w-full border border-[#e2e8f0] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-  const labelClass = "text-xs text-[#64748b] font-medium"
+  const inputClass = "mt-1.5 w-full bg-[#111] border border-[#2e2e2e] rounded-lg px-3 py-2.5 text-sm text-[#f5f5f5] placeholder-[#555] focus:outline-none focus:border-[#c9a84c] transition-colors"
+  const labelClass = "text-[10px] font-bold text-[#555] uppercase tracking-widest"
 
   return (
     <div className="space-y-6">
       {/* Client */}
-      <section className="bg-white rounded-xl border border-[#e2e8f0] p-5 space-y-4">
-        <h2 className="text-sm font-semibold text-[#0f172a]">Client</h2>
+      <section className="bg-[#1a1a1a] rounded-xl border border-[#2e2e2e] p-5 space-y-4">
+        <h2 className="text-sm font-semibold text-[#f5f5f5]">Client</h2>
         <div className="grid grid-cols-2 gap-4">
           <div className="col-span-2">
             <label className={labelClass}>Full Name</label>
@@ -169,8 +169,8 @@ export default function DealForm({ consultants }: { consultants: Consultant[] })
       </section>
 
       {/* Deal */}
-      <section className="bg-white rounded-xl border border-[#e2e8f0] p-5 space-y-4">
-        <h2 className="text-sm font-semibold text-[#0f172a]">Deal</h2>
+      <section className="bg-[#1a1a1a] rounded-xl border border-[#2e2e2e] p-5 space-y-4">
+        <h2 className="text-sm font-semibold text-[#f5f5f5]">Deal</h2>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Consultant</label>
@@ -242,12 +242,12 @@ export default function DealForm({ consultants }: { consultants: Consultant[] })
                 </select>
               </div>
               <div className="col-span-2 flex items-center">
-                <label className="flex items-center gap-2 text-sm text-[#0f172a] cursor-pointer">
+                <label className="flex items-center gap-2 text-sm text-[#a8a8a8] cursor-pointer">
                   <input
                     type="checkbox"
                     checked={form.selfGenerated}
                     onChange={(e) => set("selfGenerated", e.target.checked)}
-                    className="rounded border-[#e2e8f0] accent-amber-500"
+                    className="rounded border-[#2e2e2e] accent-[#c9a84c]"
                   />
                   Self-Generated (+3% bonus)
                 </label>
@@ -276,11 +276,11 @@ export default function DealForm({ consultants }: { consultants: Consultant[] })
 
       {/* Live Calculation — DVC */}
       {calc?.type === "dvc" && (
-        <section className="bg-white rounded-xl border border-[#e2e8f0] p-5">
-          <h2 className="text-sm font-semibold text-[#0f172a] mb-3">Live Calculation</h2>
+        <section className="bg-[#1a1a1a] rounded-xl border border-[#2e2e2e] p-5">
+          <h2 className="text-sm font-semibold text-[#f5f5f5] mb-3">Live Calculation</h2>
           <div className="grid grid-cols-2 gap-x-8">
             <div>
-              <p className="text-xs font-semibold text-[#94a3b8] uppercase tracking-wide mb-2">DMG Income from DHR</p>
+              <p className="text-[10px] font-bold text-[#555] uppercase tracking-widest mb-2">DMG Income from DHR</p>
               {row("Deal Value", formatRand(calc.dealValue))}
               {row(`Commission (${(calc.dmgRate * 100).toFixed(0)}%)`, formatRand(calc.commission))}
               {row(`Retention (${(calc.retentionRate * 100).toFixed(0)}%)`, `− ${formatRand(calc.retention)}`)}
@@ -289,11 +289,11 @@ export default function DealForm({ consultants }: { consultants: Consultant[] })
               {row("Net excl. VAT", formatRand(calc.netExclVat), true)}
             </div>
             <div>
-              <p className="text-xs font-semibold text-[#94a3b8] uppercase tracking-wide mb-2">Contractor Payouts</p>
+              <p className="text-[10px] font-bold text-[#555] uppercase tracking-widest mb-2">Contractor Payouts</p>
               {row("Contractor Base", formatRand(calc.contractorBase))}
               {row(`Consultant (${(calc.consultantRate * 100).toFixed(0)}%)`, `− ${formatRand(calc.consultantPayout)}`)}
               {row(`Debbie (${(calc.bookerRate * 100).toFixed(1)}%)`, `− ${formatRand(calc.bookerPayout)}`)}
-              <div className="mt-4 pt-4 border-t border-[#e2e8f0]">
+              <div className="mt-4 pt-4 border-t border-[#2e2e2e]">
                 {row("DMG Net", formatRand(calc.dmgNet), true)}
               </div>
             </div>
@@ -303,13 +303,13 @@ export default function DealForm({ consultants }: { consultants: Consultant[] })
 
       {/* Live Calculation — HolidayCorp */}
       {calc?.type === "hcorp" && (
-        <section className="bg-white rounded-xl border border-[#e2e8f0] p-5">
-          <h2 className="text-sm font-semibold text-[#0f172a] mb-3">HolidayCorp Summary</h2>
+        <section className="bg-[#1a1a1a] rounded-xl border border-[#2e2e2e] p-5">
+          <h2 className="text-sm font-semibold text-[#f5f5f5] mb-3">HolidayCorp Summary</h2>
           <div className="max-w-xs">
             {row("Deal Value", formatRand(calc.dealValue))}
             {row("Agent Commission", `− ${formatRand(calc.agentComm)}`)}
             {row("Debbie (pre-sales)", `− ${formatRand(calc.debbiePreSales)}`)}
-            <div className="mt-2 pt-2 border-t border-[#e2e8f0]">
+            <div className="mt-2 pt-2 border-t border-[#2e2e2e]">
               {row("DMG Net", formatRand(calc.dmgNet), true)}
             </div>
           </div>
@@ -317,7 +317,7 @@ export default function DealForm({ consultants }: { consultants: Consultant[] })
       )}
 
       {/* Notes */}
-      <section className="bg-white rounded-xl border border-[#e2e8f0] p-5">
+      <section className="bg-[#1a1a1a] rounded-xl border border-[#2e2e2e] p-5">
         <label className={labelClass}>Notes</label>
         <textarea
           value={form.notes}
@@ -391,7 +391,7 @@ export default function DealForm({ consultants }: { consultants: Consultant[] })
             }
           })
         }}
-        className="w-full bg-amber-500 hover:bg-amber-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl text-sm transition-colors"
+        className="w-full bg-[#c9a84c] hover:bg-[#b8943e] disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-3 rounded-xl text-sm transition-colors"
       >
         {pending ? "Saving…" : "Save Deal"}
       </button>

@@ -66,28 +66,28 @@ export default async function PortalPage() {
 
       {/* Welcome */}
       <div>
-        <h1 className="text-2xl font-bold text-[#0f172a]">Welcome back, {person.name.split(" ")[0]}</h1>
-        <p className="text-sm text-[#64748b] mt-0.5">{roleLabel} · Dream Merchant Group</p>
+        <h1 className="text-2xl font-bold text-[#f5f5f5]">Welcome back, {person.name.split(" ")[0]}</h1>
+        <p className="text-sm text-[#a8a8a8] mt-0.5">{roleLabel} · Dream Merchant Group</p>
       </div>
 
       {/* Total earned banner */}
-      <div className="bg-[#0f172a] rounded-2xl p-6 text-white">
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#94a3b8]">Total Earned to Date</p>
-        <p className="text-5xl font-bold mt-2 tracking-tight">{formatRand(totalEarned)}</p>
-        <p className="text-sm text-[#94a3b8] mt-1">
+      <div className="bg-[#1a1a1a] border border-[#c9a84c]/20 rounded-2xl p-6">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-[#555]">Total Earned to Date</p>
+        <p className="text-5xl font-bold mt-2 tracking-tight text-[#c9a84c]">{formatRand(totalEarned)}</p>
+        <p className="text-sm text-[#555] mt-1">
           {activeDeals.length} deal{activeDeals.length !== 1 ? "s" : ""} closed
         </p>
         {totalEarned > 0 && (
-          <div className="mt-4 pt-4 border-t border-[#1e293b] flex gap-8 text-sm">
+          <div className="mt-4 pt-4 border-t border-[#2e2e2e] flex gap-8 text-sm">
             <div>
-              <p className="text-[#64748b] text-xs uppercase tracking-wide">Dream Vacation Club</p>
-              <p className="font-semibold mt-0.5 text-lg">{formatRand(dvcEarned)}</p>
-              <p className="text-[#64748b] text-xs">{dvcDeals.length} deal{dvcDeals.length !== 1 ? "s" : ""}</p>
+              <p className="text-[#555] text-xs uppercase tracking-wide">Dream Vacation Club</p>
+              <p className="font-semibold mt-0.5 text-lg text-[#f5f5f5]">{formatRand(dvcEarned)}</p>
+              <p className="text-[#555] text-xs">{dvcDeals.length} deal{dvcDeals.length !== 1 ? "s" : ""}</p>
             </div>
             <div>
-              <p className="text-[#64748b] text-xs uppercase tracking-wide">HolidayCorp</p>
-              <p className="font-semibold mt-0.5 text-lg">{formatRand(hcorpEarned)}</p>
-              <p className="text-[#64748b] text-xs">{hcorpDeals.length} deal{hcorpDeals.length !== 1 ? "s" : ""}</p>
+              <p className="text-[#555] text-xs uppercase tracking-wide">HolidayCorp</p>
+              <p className="font-semibold mt-0.5 text-lg text-[#f5f5f5]">{formatRand(hcorpEarned)}</p>
+              <p className="text-[#555] text-xs">{hcorpDeals.length} deal{hcorpDeals.length !== 1 ? "s" : ""}</p>
             </div>
           </div>
         )}
@@ -95,47 +95,47 @@ export default async function PortalPage() {
 
       {/* Deal history */}
       <section>
-        <h2 className="text-xs font-semibold text-[#94a3b8] uppercase tracking-wide mb-3">Deal History</h2>
-        <div className="bg-white rounded-xl border border-[#e2e8f0] overflow-hidden">
+        <h2 className="text-[10px] font-bold text-[#555] uppercase tracking-widest mb-3">Deal History</h2>
+        <div className="bg-[#1a1a1a] rounded-xl border border-[#2e2e2e] overflow-hidden">
           {!deals?.length ? (
             <div className="p-6 text-center">
-              <p className="text-sm text-[#94a3b8]">No deals on record yet.</p>
-              <p className="text-xs text-[#94a3b8] mt-1">Your deals will appear here once they're entered by the office.</p>
+              <p className="text-sm text-[#555]">No deals on record yet.</p>
+              <p className="text-xs text-[#555] mt-1">Your deals will appear here once they're entered by the office.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-[#e2e8f0] bg-[#f8fafc]">
-                    <th className="text-left text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Date</th>
-                    <th className="text-left text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Client</th>
-                    <th className="text-left text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Product</th>
-                    <th className="text-left text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Structure</th>
-                    <th className="text-right text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Deal Value</th>
-                    <th className="text-right text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Your Commission</th>
-                    <th className="text-left text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Status</th>
+                  <tr className="border-b border-[#2e2e2e] bg-[#111]">
+                    <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Date</th>
+                    <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Client</th>
+                    <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Product</th>
+                    <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Structure</th>
+                    <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Deal Value</th>
+                    <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Your Commission</th>
+                    <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#f1f5f9]">
+                <tbody className="divide-y divide-[#2e2e2e]">
                   {deals.map((d) => (
-                    <tr key={d.id} className={`hover:bg-[#fafafa] ${d.status === "cancelled" ? "opacity-50" : ""}`}>
-                      <td className="px-4 py-3 text-[#94a3b8]">{formatDate(d.deal_date)}</td>
-                      <td className="px-4 py-3 font-medium text-[#0f172a]">
+                    <tr key={d.id} className={`hover:bg-[#111] ${d.status === "cancelled" ? "opacity-40" : ""}`}>
+                      <td className="px-4 py-3 text-[#555]">{formatDate(d.deal_date)}</td>
+                      <td className="px-4 py-3 font-medium text-[#f5f5f5]">
                         {d.client_name}
                         {d.self_generated && (
-                          <span className="ml-2 text-[10px] bg-amber-100 text-amber-700 font-semibold px-1.5 py-0.5 rounded">SG</span>
+                          <span className="ml-2 text-[10px] bg-[#c9a84c]/10 text-[#c9a84c] font-bold px-1.5 py-0.5 rounded">SG</span>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-[#64748b]">{d.product === "DVC" ? "DVC" : "HCorp"}</td>
-                      <td className="px-4 py-3 text-[#64748b]">{DEPOSIT_LABEL[d.deposit_type] ?? d.deposit_type}</td>
-                      <td className="px-4 py-3 text-right text-[#0f172a]">{formatRand(d.deal_value)}</td>
-                      <td className="px-4 py-3 text-right font-semibold text-green-600">{formatRand(getPayout(d))}</td>
+                      <td className="px-4 py-3 text-[#a8a8a8]">{d.product === "DVC" ? "DVC" : "HCorp"}</td>
+                      <td className="px-4 py-3 text-[#a8a8a8]">{DEPOSIT_LABEL[d.deposit_type] ?? d.deposit_type}</td>
+                      <td className="px-4 py-3 text-right text-[#f5f5f5]">{formatRand(d.deal_value)}</td>
+                      <td className="px-4 py-3 text-right font-semibold text-emerald-400">{formatRand(getPayout(d))}</td>
                       <td className="px-4 py-3">
                         <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                          d.status === "paid"      ? "bg-blue-100 text-blue-700"     :
-                          d.status === "cancelled" ? "bg-red-100 text-red-700"       :
-                          d.status === "clawback"  ? "bg-orange-100 text-orange-700" :
-                          "bg-green-100 text-green-700"
+                          d.status === "paid"      ? "bg-blue-500/10 text-blue-400"     :
+                          d.status === "cancelled" ? "bg-red-500/10 text-red-400"       :
+                          d.status === "clawback"  ? "bg-orange-500/10 text-orange-400" :
+                          "bg-emerald-500/10 text-emerald-400"
                         }`}>
                           {d.status}
                         </span>
@@ -144,9 +144,9 @@ export default async function PortalPage() {
                   ))}
                 </tbody>
                 <tfoot>
-                  <tr className="border-t border-[#e2e8f0] bg-[#f8fafc]">
-                    <td colSpan={5} className="px-4 py-3 text-xs font-semibold text-[#64748b] uppercase tracking-wide">Total Earned</td>
-                    <td className="px-4 py-3 text-right font-bold text-[#0f172a]">{formatRand(totalEarned)}</td>
+                  <tr className="border-t border-[#2e2e2e] bg-[#111]">
+                    <td colSpan={5} className="px-4 py-3 text-[10px] font-bold text-[#555] uppercase tracking-widest">Total Earned</td>
+                    <td className="px-4 py-3 text-right font-bold text-[#c9a84c]">{formatRand(totalEarned)}</td>
                     <td />
                   </tr>
                 </tfoot>

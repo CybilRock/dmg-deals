@@ -53,7 +53,7 @@ export default async function ConsultantPage({
       <TopBar
         title={person.name}
         action={
-          <Link href="/people" className="text-xs text-[#64748b] hover:text-[#0f172a]">
+          <Link href="/people" className="text-xs text-[#a8a8a8] hover:text-[#f5f5f5]">
             ← Back to People
           </Link>
         }
@@ -61,39 +61,39 @@ export default async function ConsultantPage({
       <div className="flex-1 overflow-auto p-6 space-y-6">
 
         {/* Total earned banner */}
-        <div className="bg-[#0f172a] rounded-2xl p-6 text-white">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#94a3b8]">Total Earned to Date</p>
-          <p className="text-4xl font-bold mt-2 tracking-tight">{formatRand(totalEarned)}</p>
-          <p className="text-sm text-[#94a3b8] mt-1">
+        <div className="bg-[#1a1a1a] border border-[#c9a84c]/20 rounded-2xl p-6">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-[#555]">Total Earned to Date</p>
+          <p className="text-4xl font-bold mt-2 tracking-tight text-[#c9a84c]">{formatRand(totalEarned)}</p>
+          <p className="text-sm text-[#555] mt-1">
             {activDeals.length} deal{activDeals.length !== 1 ? "s" : ""} closed
           </p>
-          <div className="mt-4 pt-4 border-t border-[#1e293b] flex gap-8 text-sm">
+          <div className="mt-4 pt-4 border-t border-[#2e2e2e] flex gap-8 text-sm">
             <div>
-              <p className="text-[#64748b] text-xs uppercase tracking-wide">DVC</p>
-              <p className="font-semibold mt-0.5">{formatRand(dvcEarned)}</p>
-              <p className="text-[#64748b] text-xs">{dvcDeals.length} deal{dvcDeals.length !== 1 ? "s" : ""}</p>
+              <p className="text-[#555] text-xs uppercase tracking-wide">DVC</p>
+              <p className="font-semibold mt-0.5 text-[#f5f5f5]">{formatRand(dvcEarned)}</p>
+              <p className="text-[#555] text-xs">{dvcDeals.length} deal{dvcDeals.length !== 1 ? "s" : ""}</p>
             </div>
             <div>
-              <p className="text-[#64748b] text-xs uppercase tracking-wide">HolidayCorp</p>
-              <p className="font-semibold mt-0.5">{formatRand(hcorpEarned)}</p>
-              <p className="text-[#64748b] text-xs">{hcorpDeals.length} deal{hcorpDeals.length !== 1 ? "s" : ""}</p>
+              <p className="text-[#555] text-xs uppercase tracking-wide">HolidayCorp</p>
+              <p className="font-semibold mt-0.5 text-[#f5f5f5]">{formatRand(hcorpEarned)}</p>
+              <p className="text-[#555] text-xs">{hcorpDeals.length} deal{hcorpDeals.length !== 1 ? "s" : ""}</p>
             </div>
           </div>
         </div>
 
         {/* Portal invite */}
-        <section className="bg-white rounded-xl border border-[#e2e8f0] p-5">
+        <section className="bg-[#1a1a1a] rounded-xl border border-[#2e2e2e] p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold text-[#0f172a]">Portal Access</p>
-              <p className="text-xs text-[#64748b] mt-0.5">
+              <p className="text-sm font-semibold text-[#f5f5f5]">Portal Access</p>
+              <p className="text-xs text-[#a8a8a8] mt-0.5">
                 {person.email
                   ? `Invite ${person.name.split(" ")[0]} to view their personal commission portal.`
                   : "Add an email address to enable portal access."}
               </p>
             </div>
             {searchParams.invited === "true" ? (
-              <span className="text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-3 py-1.5 rounded-lg">
+              <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg">
                 Invite sent ✓
               </span>
             ) : (
@@ -101,7 +101,7 @@ export default async function ConsultantPage({
                 <button
                   type="submit"
                   disabled={!person.email}
-                  className="text-xs font-semibold bg-[#0f172a] hover:bg-[#1e293b] disabled:opacity-40 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors"
+                  className="text-xs font-semibold bg-[#c9a84c] hover:bg-[#b8943e] disabled:opacity-40 disabled:cursor-not-allowed text-black px-4 py-2 rounded-lg transition-colors"
                 >
                   Send Portal Invite
                 </button>
@@ -109,51 +109,51 @@ export default async function ConsultantPage({
             )}
           </div>
           {person.email && (
-            <p className="text-xs text-[#94a3b8] mt-2">{person.email}</p>
+            <p className="text-xs text-[#555] mt-2">{person.email}</p>
           )}
         </section>
 
         {/* Deal history */}
         <section>
-          <h2 className="text-xs font-semibold text-[#94a3b8] uppercase tracking-wide mb-3">Deal History</h2>
-          <div className="bg-white rounded-xl border border-[#e2e8f0] overflow-hidden">
+          <h2 className="text-[10px] font-bold text-[#555] uppercase tracking-widest mb-3">Deal History</h2>
+          <div className="bg-[#1a1a1a] rounded-xl border border-[#2e2e2e] overflow-hidden">
             {!deals?.length ? (
               <div className="p-5">
-                <p className="text-sm text-[#94a3b8]">No deals linked to {person.name} yet.</p>
+                <p className="text-sm text-[#555]">No deals linked to {person.name} yet.</p>
               </div>
             ) : (
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-[#e2e8f0] bg-[#f8fafc]">
-                    <th className="text-left text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Date</th>
-                    <th className="text-left text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Client</th>
-                    <th className="text-left text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Product</th>
-                    <th className="text-left text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Structure</th>
-                    <th className="text-right text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Deal Value</th>
-                    <th className="text-right text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Commission</th>
-                    <th className="text-left text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Status</th>
+                  <tr className="border-b border-[#2e2e2e] bg-[#111]">
+                    <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Date</th>
+                    <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Client</th>
+                    <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Product</th>
+                    <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Structure</th>
+                    <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Deal Value</th>
+                    <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Commission</th>
+                    <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#f1f5f9]">
+                <tbody className="divide-y divide-[#2e2e2e]">
                   {deals.map((d) => (
-                    <tr key={d.id} className={`hover:bg-[#fafafa] ${d.status === "cancelled" ? "opacity-50" : ""}`}>
-                      <td className="px-4 py-3 text-[#94a3b8]">{formatDate(d.deal_date)}</td>
-                      <td className="px-4 py-3 font-medium text-[#0f172a]">
+                    <tr key={d.id} className={`hover:bg-[#111] ${d.status === "cancelled" ? "opacity-40" : ""}`}>
+                      <td className="px-4 py-3 text-[#555]">{formatDate(d.deal_date)}</td>
+                      <td className="px-4 py-3 font-medium text-[#f5f5f5]">
                         {d.client_name}
                         {d.self_generated && (
-                          <span className="ml-2 text-[10px] bg-amber-100 text-amber-700 font-semibold px-1.5 py-0.5 rounded">SG</span>
+                          <span className="ml-2 text-[10px] bg-[#c9a84c]/10 text-[#c9a84c] font-bold px-1.5 py-0.5 rounded">SG</span>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-[#64748b]">{d.product === "DVC" ? "DVC" : "HCorp"}</td>
-                      <td className="px-4 py-3 text-[#64748b]">{DEPOSIT_LABEL[d.deposit_type] ?? d.deposit_type}</td>
-                      <td className="px-4 py-3 text-right text-[#0f172a]">{formatRand(d.deal_value)}</td>
-                      <td className="px-4 py-3 text-right font-semibold text-green-600">{formatRand(d.consultant_payout ?? 0)}</td>
+                      <td className="px-4 py-3 text-[#a8a8a8]">{d.product === "DVC" ? "DVC" : "HCorp"}</td>
+                      <td className="px-4 py-3 text-[#a8a8a8]">{DEPOSIT_LABEL[d.deposit_type] ?? d.deposit_type}</td>
+                      <td className="px-4 py-3 text-right text-[#f5f5f5]">{formatRand(d.deal_value)}</td>
+                      <td className="px-4 py-3 text-right font-semibold text-emerald-400">{formatRand(d.consultant_payout ?? 0)}</td>
                       <td className="px-4 py-3">
                         <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                          d.status === "paid"      ? "bg-blue-100 text-blue-700"   :
-                          d.status === "cancelled" ? "bg-red-100 text-red-700"     :
-                          d.status === "clawback"  ? "bg-orange-100 text-orange-700" :
-                          "bg-green-100 text-green-700"
+                          d.status === "paid"      ? "bg-blue-500/10 text-blue-400"     :
+                          d.status === "cancelled" ? "bg-red-500/10 text-red-400"       :
+                          d.status === "clawback"  ? "bg-orange-500/10 text-orange-400" :
+                          "bg-emerald-500/10 text-emerald-400"
                         }`}>
                           {d.status}
                         </span>
@@ -162,9 +162,9 @@ export default async function ConsultantPage({
                   ))}
                 </tbody>
                 <tfoot>
-                  <tr className="border-t border-[#e2e8f0] bg-[#f8fafc]">
-                    <td colSpan={5} className="px-4 py-3 text-xs font-semibold text-[#64748b] uppercase tracking-wide">Total</td>
-                    <td className="px-4 py-3 text-right font-bold text-[#0f172a]">{formatRand(totalEarned)}</td>
+                  <tr className="border-t border-[#2e2e2e] bg-[#111]">
+                    <td colSpan={5} className="px-4 py-3 text-[10px] font-bold text-[#555] uppercase tracking-widest">Total</td>
+                    <td className="px-4 py-3 text-right font-bold text-[#c9a84c]">{formatRand(totalEarned)}</td>
                     <td />
                   </tr>
                 </tfoot>

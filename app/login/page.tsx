@@ -30,43 +30,41 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#0d0d0d] flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
-        {/* Logo / brand */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-[#0f172a] rounded-2xl mb-4">
-            <span className="text-amber-400 font-bold text-lg">D</span>
-          </div>
-          <h1 className="text-xl font-bold text-[#0f172a]">DMG Deal Desk</h1>
-          <p className="text-sm text-[#64748b] mt-1">Sign in to your account</p>
+        {/* DMG wordmark */}
+        <div className="text-center mb-10">
+          <p className="text-[#c9a84c] font-light text-xl tracking-[0.2em]">dream</p>
+          <p className="text-white text-sm font-bold tracking-[0.35em] uppercase">Merchant Group</p>
+          <p className="text-[#555] text-[10px] tracking-[0.4em] uppercase mt-3">Deal Desk</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-[#e2e8f0] p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-2xl p-6 space-y-4">
           <div>
-            <label className="text-xs font-medium text-[#64748b]">Email</label>
+            <label className="text-[10px] font-bold text-[#555] uppercase tracking-widest">Email</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="mt-1 w-full border border-[#e2e8f0] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="mt-1.5 w-full bg-[#111] border border-[#2e2e2e] rounded-lg px-3 py-2.5 text-sm text-[#f5f5f5] placeholder-[#555] focus:outline-none focus:border-[#c9a84c] transition-colors"
             />
           </div>
           <div>
-            <label className="text-xs font-medium text-[#64748b]">Password</label>
+            <label className="text-[10px] font-bold text-[#555] uppercase tracking-widest">Password</label>
             <input
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="mt-1 w-full border border-[#e2e8f0] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="mt-1.5 w-full bg-[#111] border border-[#2e2e2e] rounded-lg px-3 py-2.5 text-sm text-[#f5f5f5] placeholder-[#555] focus:outline-none focus:border-[#c9a84c] transition-colors"
             />
           </div>
 
           {error && (
-            <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+            <p className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
               {error}
             </p>
           )}
@@ -74,14 +72,14 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors"
+            className="w-full bg-[#c9a84c] hover:bg-[#b8943e] disabled:opacity-50 text-black font-bold py-2.5 rounded-xl text-sm transition-colors"
           >
             {loading ? "Signing in…" : "Sign In"}
           </button>
         </form>
 
-        <p className="text-center text-xs text-[#94a3b8] mt-6">
-          Dream Merchant Group · Internal Portal
+        <p className="text-center text-[10px] text-[#555] tracking-widest uppercase mt-8">
+          Internal Portal
         </p>
       </div>
     </div>

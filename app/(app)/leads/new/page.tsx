@@ -13,8 +13,8 @@ const CHANNEL_LABELS: Record<string, string> = {
   walk_in: "Walk-in", cold_call: "Cold Call", other: "Other",
 }
 
-const inputClass = "mt-1 w-full border border-[#e2e8f0] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-const labelClass = "text-xs text-[#64748b] font-medium"
+const inputClass = "mt-1.5 w-full bg-[#111] border border-[#2e2e2e] rounded-lg px-3 py-2.5 text-sm text-[#f5f5f5] placeholder-[#555] focus:outline-none focus:border-[#c9a84c] transition-colors"
+const labelClass = "text-[10px] font-bold text-[#555] uppercase tracking-widest"
 
 type Person = { id: string; name: string }
 
@@ -42,10 +42,10 @@ export default function NewLeadPage() {
     <>
       <TopBar
         title="Add Lead"
-        action={<Link href="/leads" className="text-xs text-[#64748b] hover:text-[#0f172a]">← Cancel</Link>}
+        action={<Link href="/leads" className="text-xs text-[#a8a8a8] hover:text-[#f5f5f5]">← Cancel</Link>}
       />
       <div className="flex-1 overflow-auto p-6">
-        <div className="max-w-md bg-white rounded-xl border border-[#e2e8f0] p-6 space-y-4">
+        <div className="max-w-md bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-6 space-y-4">
           <div>
             <label className={labelClass}>Full Name</label>
             <input value={form.name} onChange={(e) => set("name", e.target.value)} className={inputClass} placeholder="e.g. John Smith" />
@@ -97,7 +97,7 @@ export default function NewLeadPage() {
             type="button"
             disabled={!form.name || pending}
             onClick={() => startTransition(() => addLead(form))}
-            className="w-full bg-amber-500 hover:bg-amber-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-2.5 rounded-xl text-sm transition-colors"
+            className="w-full bg-[#c9a84c] hover:bg-[#b8943e] disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-2.5 rounded-xl text-sm transition-colors"
           >
             {pending ? "Saving…" : "Add Lead"}
           </button>

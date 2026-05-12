@@ -15,25 +15,24 @@ export default async function PortalLayout({ children }: { children: React.React
     .maybeSingle()
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex flex-col">
-      {/* Portal top bar */}
-      <header className="bg-white border-b border-[#e2e8f0] px-6 py-3 flex items-center justify-between flex-shrink-0">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-8 h-8 bg-[#0f172a] rounded-lg">
-            <span className="text-amber-400 font-bold text-sm">D</span>
+    <div className="min-h-screen bg-[#0d0d0d] flex flex-col">
+      <header className="bg-[#111] border-b border-[#2e2e2e] px-6 py-3 flex items-center justify-between flex-shrink-0">
+        <div className="flex items-center gap-4">
+          <div>
+            <p className="text-[#c9a84c] font-light text-sm tracking-[0.15em] leading-none">dream</p>
+            <p className="text-white text-[10px] font-bold tracking-[0.25em] uppercase leading-none mt-0.5">Merchant Group</p>
           </div>
-          <span className="text-sm font-semibold text-[#0f172a]">DMG Deal Desk</span>
-          <span className="text-[#e2e8f0]">·</span>
-          <span className="text-sm text-[#64748b]">My Portal</span>
+          <span className="text-[#2e2e2e]">·</span>
+          <span className="text-xs text-[#555] tracking-widest uppercase">My Portal</span>
         </div>
         <div className="flex items-center gap-4">
           {person?.name && (
-            <span className="text-sm text-[#64748b]">{person.name}</span>
+            <span className="text-sm text-[#a8a8a8]">{person.name}</span>
           )}
           <form action={signOut}>
             <button
               type="submit"
-              className="text-xs text-[#64748b] hover:text-[#0f172a] border border-[#e2e8f0] rounded-lg px-3 py-1.5 transition-colors"
+              className="text-xs text-[#a8a8a8] hover:text-[#f5f5f5] border border-[#2e2e2e] rounded-lg px-3 py-1.5 transition-colors"
             >
               Sign Out
             </button>

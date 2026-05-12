@@ -6,10 +6,10 @@ import Link from "next/link"
 export const dynamic = "force-dynamic"
 
 const STATUS_BADGE: Record<string, string> = {
-  active:    "bg-green-100 text-green-700",
-  paid:      "bg-blue-100 text-blue-700",
-  cancelled: "bg-red-100 text-red-700",
-  clawback:  "bg-orange-100 text-orange-700",
+  active:    "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
+  paid:      "bg-blue-500/10 text-blue-400 border border-blue-500/20",
+  cancelled: "bg-red-500/10 text-red-400 border border-red-500/20",
+  clawback:  "bg-orange-500/10 text-orange-400 border border-orange-500/20",
 }
 
 const DEPOSIT_LABEL: Record<string, string> = {
@@ -39,55 +39,55 @@ export default async function DealsPage() {
         action={
           <Link
             href="/deals/new"
-            className="bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors"
+            className="bg-[#c9a84c] hover:bg-[#b8943e] text-black text-xs font-bold px-4 py-2 rounded-lg transition-colors"
           >
             + New Deal
           </Link>
         }
       />
       <div className="flex-1 overflow-auto p-6">
-        <div className="bg-white rounded-xl border border-[#e2e8f0] overflow-hidden">
+        <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl overflow-hidden">
           {!deals?.length ? (
-            <div className="p-5">
-              <p className="text-sm text-[#94a3b8]">
+            <div className="p-6">
+              <p className="text-sm text-[#555]">
                 No deals captured yet.{" "}
-                <Link href="/deals/new" className="text-amber-500 hover:underline">Add the first deal →</Link>
+                <Link href="/deals/new" className="text-[#c9a84c] hover:underline">Add the first deal →</Link>
               </p>
             </div>
           ) : (
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#e2e8f0] bg-[#f8fafc]">
-                  <th className="text-left text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Client</th>
-                  <th className="text-left text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Source</th>
-                  <th className="text-left text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Product</th>
-                  <th className="text-left text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Structure</th>
-                  <th className="text-right text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Deal Value</th>
-                  <th className="text-right text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">DMG Net</th>
-                  <th className="text-left text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Date</th>
-                  <th className="text-left text-xs font-semibold text-[#94a3b8] px-4 py-3 uppercase tracking-wide">Status</th>
+                <tr className="border-b border-[#2e2e2e] bg-[#111]">
+                  <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Client</th>
+                  <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Source</th>
+                  <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Product</th>
+                  <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Structure</th>
+                  <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Deal Value</th>
+                  <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">DMG Net</th>
+                  <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Date</th>
+                  <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#f1f5f9]">
+              <tbody className="divide-y divide-[#2e2e2e]">
                 {deals.map((d) => (
-                  <tr key={d.id} className="hover:bg-[#fafafa] transition-colors">
-                    <td className="px-4 py-3 font-medium text-[#0f172a]">
+                  <tr key={d.id} className="hover:bg-[#222] transition-colors">
+                    <td className="px-4 py-3 font-medium text-[#f5f5f5]">
                       {d.client_name}
                       {d.self_generated && (
-                        <span className="ml-2 text-[10px] bg-amber-100 text-amber-700 font-semibold px-1.5 py-0.5 rounded">SG</span>
+                        <span className="ml-2 text-[9px] bg-[#c9a84c]/10 text-[#c9a84c] border border-[#c9a84c]/20 font-bold px-1.5 py-0.5 rounded">SG</span>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-[#64748b]">{d.source_brand}</td>
-                    <td className="px-4 py-3 text-[#64748b]">
+                    <td className="px-4 py-3 text-[#a8a8a8]">{d.source_brand}</td>
+                    <td className="px-4 py-3 text-[#a8a8a8]">
                       {d.product === "DVC" ? "DVC" : "HCorp"}
-                      {d.product === "DVC" && d.points ? <span className="ml-1 text-[#94a3b8]">({d.points.toLocaleString()} pts)</span> : null}
+                      {d.product === "DVC" && d.points ? <span className="ml-1 text-[#555]">({d.points.toLocaleString()} pts)</span> : null}
                     </td>
-                    <td className="px-4 py-3 text-[#64748b]">{DEPOSIT_LABEL[d.deposit_type] ?? d.deposit_type}</td>
-                    <td className="px-4 py-3 text-right font-medium text-[#0f172a]">{formatRand(d.deal_value)}</td>
-                    <td className="px-4 py-3 text-right font-semibold text-green-600">{formatRand(d.dmg_net)}</td>
-                    <td className="px-4 py-3 text-[#94a3b8]">{formatDate(d.deal_date)}</td>
+                    <td className="px-4 py-3 text-[#a8a8a8]">{DEPOSIT_LABEL[d.deposit_type] ?? d.deposit_type}</td>
+                    <td className="px-4 py-3 text-right font-medium text-[#f5f5f5]">{formatRand(d.deal_value)}</td>
+                    <td className="px-4 py-3 text-right font-semibold text-emerald-400">{formatRand(d.dmg_net)}</td>
+                    <td className="px-4 py-3 text-[#555]">{formatDate(d.deal_date)}</td>
                     <td className="px-4 py-3">
-                      <span className={`text-xs font-semibold px-2 py-1 rounded-full ${STATUS_BADGE[d.status] ?? "bg-gray-100 text-gray-600"}`}>
+                      <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${STATUS_BADGE[d.status] ?? "bg-[#222] text-[#a8a8a8]"}`}>
                         {d.status}
                       </span>
                     </td>
