@@ -1,6 +1,7 @@
 import TopBar from "@/components/layout/TopBar"
 import { createClient } from "@/lib/supabase/server"
 import { formatRand, formatDate } from "@/lib/utils"
+import { approvePerson, rejectPerson } from "@/app/actions/partners"
 import Link from "next/link"
 
 export const dynamic = "force-dynamic"
@@ -15,13 +16,14 @@ export default async function DashboardPage() {
     { data: ledger },
     { data: dealsThisMonth },
     { data: recentDeals },
+    { data: pendingPartners },
   ] = await Promise.all([
     supabase.from("dhr_debt_ledger").select("entry_type, amount"),
     supabase.from("deals").select("id", { count: "exact" }).gte("deal_date", monthStart).eq("product", "DVC"),
     supabase.from("deals").select("id, client_name, product, deal_value, dmg_net, deal_date, source_brand").order("created_at", { ascending: false }).limit(5),
+    supabase.from("people").select("id, name, email, phone, role, created_at").eq("status", "pending").order("created_at"),
   ])
 
-  // Running DHR debt: opening_balance + retention_added − debt_repaid
   const dhrDebt = (ledger ?? []).reduce((sum, e) => {
     if (e.entry_type === "debt_repaid") return sum - e.amount
     return sum + e.amount
@@ -32,7 +34,56 @@ export default async function DashboardPage() {
   return (
     <>
       <TopBar title="Dashboard" />
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-6 space-y-6">
+
+        {/* Pending Partner Applications */}
+        {(pendingPartners?.length ?? 0) > 0 && (
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="text-sm font-semibold text-amber-900">Partner Applications</h2>
+                <p className="text-xs text-amber-700 mt-0.5">{pendingPartners!.length} pending review</p>
+              </div>
+            </div>
+            <div className="space-y-3">
+              {pendingPartners!.map((p) => (
+                <div
+                  key={p.id}
+                  className="bg-white rounded-lg border border-amber-100 px-4 py-3 flex items-center justify-between gap-4"
+                >
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-[#0f172a] truncate">{p.name}</p>
+                    <p className="text-xs text-[#64748b] truncate">
+                      {p.email} {p.phone ? `· ${p.phone}` : ""} · {p.role}
+                    </p>
+                    <p className="text-xs text-[#94a3b8]">Applied {formatDate(p.created_at)}</p>
+                  </div>
+                  <div className="flex gap-2 shrink-0">
+                    <form action={approvePerson}>
+                      <input type="hidden" name="id" value={p.id} />
+                      <button
+                        type="submit"
+                        className="text-xs bg-[#0f172a] hover:bg-[#1e293b] text-white font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                      >
+                        Accept
+                      </button>
+                    </form>
+                    <form action={rejectPerson}>
+                      <input type="hidden" name="id" value={p.id} />
+                      <button
+                        type="submit"
+                        className="text-xs border border-[#e2e8f0] text-[#64748b] hover:text-red-500 hover:border-red-200 font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                      >
+                        Decline
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* KPI Cards */}
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           <div className="bg-white rounded-xl border border-[#e2e8f0] p-5">
@@ -58,7 +109,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Recent Deals */}
-        <div className="mt-6 bg-white rounded-xl border border-[#e2e8f0] p-5">
+        <div className="bg-white rounded-xl border border-[#e2e8f0] p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold text-[#0f172a]">Recent Deals</h2>
             <Link href="/deals" className="text-xs text-amber-500 hover:underline">View all →</Link>
@@ -85,6 +136,7 @@ export default async function DashboardPage() {
             </div>
           )}
         </div>
+
       </div>
     </>
   )

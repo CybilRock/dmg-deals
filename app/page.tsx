@@ -11,10 +11,10 @@ export default async function Root() {
   // Check if this user has a people record (= consultant or booker)
   const { data: person } = await supabase
     .from("people")
-    .select("id")
+    .select("id, status")
     .eq("email", user.email)
     .maybeSingle()
 
-  if (person) redirect("/portal")
+  if (person?.status === "approved") redirect("/portal")
   redirect("/dashboard")
 }

@@ -11,11 +11,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   const { data: person } = await supabase
     .from("people")
-    .select("id")
+    .select("id, status")
     .eq("email", user.email)
     .maybeSingle()
 
-  if (person) redirect("/portal")
+  if (person?.status === "approved") redirect("/portal")
 
   return (
     <div className="flex h-full">
