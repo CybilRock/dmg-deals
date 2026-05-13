@@ -23,7 +23,8 @@ function SetPasswordForm() {
 
   useEffect(() => {
     if (searchParams.get("error") === "expired") {
-      setError("This invite link has expired. Ask your admin to re-send the invite.")
+      const reason = searchParams.get("reason")
+      setError(reason ? `Link rejected by Supabase: ${decodeURIComponent(reason)}` : "This invite link has expired. Ask your admin to re-send the invite.")
       return
     }
 
@@ -32,7 +33,7 @@ function SetPasswordForm() {
     if (code) {
       supabase.auth.exchangeCodeForSession(code).then(({ data: { session }, error }) => {
         if (error || !session) {
-          setError("This invite link has expired. Ask your admin to re-send the invite.")
+          setError(`Exchange failed: ${error?.message ?? "no session returned"}`)
         } else {
           setReady(true)
         }
@@ -42,7 +43,7 @@ function SetPasswordForm() {
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) setReady(true)
-      else setError("This invite link has expired. Ask your admin to re-send the invite.")
+      else setError("No code in URL and no active session — link may be missing parameters.")
     })
   }, [])
 
