@@ -9,7 +9,7 @@ export default async function NewDealPage() {
 
   const { data: consultants } = await supabase
     .from("people")
-    .select("id, name")
+    .select("id, name, is_owner")
     .in("role", ["consultant", "both"])
     .eq("active", true)
     .order("name")

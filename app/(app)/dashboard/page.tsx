@@ -17,11 +17,15 @@ export default async function DashboardPage() {
     { data: dealsThisMonth },
     { data: recentDeals },
     { data: pendingPartners },
+    { data: lastFridayRun },
+    { data: last7thRun },
   ] = await Promise.all([
     supabase.from("dhr_debt_ledger").select("entry_type, amount"),
     supabase.from("deals").select("id").gte("deal_date", monthStart).eq("product", "DVC"),
     supabase.from("deals").select("id, client_name, product, deal_value, dmg_net, deal_date, source_brand").order("created_at", { ascending: false }).limit(5),
     supabase.from("people").select("id, name, email, phone, role, created_at").eq("status", "pending").order("created_at"),
+    supabase.from("payout_runs").select("total_amount, run_date").eq("run_type", "friday_dhr").order("run_date", { ascending: false }).limit(1).maybeSingle(),
+    supabase.from("payout_runs").select("total_amount, run_date").eq("run_type", "seventh_contractor").order("run_date", { ascending: false }).limit(1).maybeSingle(),
   ])
 
   const dhrDebt = (ledger ?? []).reduce((sum, e) => {
@@ -81,25 +85,44 @@ export default async function DashboardPage() {
 
         {/* KPI Cards */}
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
+          {/* DHR Debt — clickable to full ledger */}
+          <Link href="/reports/dhr" className="block bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5 hover:border-[#555] transition-colors">
             <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">DHR Debt</p>
             <p className="text-2xl font-bold mt-1.5 text-red-400">{formatRand(dhrDebt)}</p>
-            <p className="text-xs text-[#555] mt-1">Retention owed by DHR</p>
-          </div>
+            <p className="text-xs text-[#555] mt-1">Retention owed by DHR · View history →</p>
+          </Link>
           <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
             <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">DVC Deals</p>
             <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{dealsCount}</p>
             <p className="text-xs text-[#555] mt-1">{monthStart.slice(0, 7)}</p>
           </div>
           <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
-            <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">Friday Payout</p>
-            <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{formatRand(0)}</p>
-            <p className="text-xs text-[#555] mt-1">Runs coming soon</p>
+            <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">Last Friday Run</p>
+            {lastFridayRun ? (
+              <>
+                <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{formatRand(lastFridayRun.total_amount)}</p>
+                <p className="text-xs text-[#555] mt-1">{formatDate(lastFridayRun.run_date)}</p>
+              </>
+            ) : (
+              <>
+                <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{formatRand(0)}</p>
+                <p className="text-xs text-[#555] mt-1">No runs yet</p>
+              </>
+            )}
           </div>
           <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
-            <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">7th Run</p>
-            <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{formatRand(0)}</p>
-            <p className="text-xs text-[#555] mt-1">Runs coming soon</p>
+            <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">Last 7th Run</p>
+            {last7thRun ? (
+              <>
+                <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{formatRand(last7thRun.total_amount)}</p>
+                <p className="text-xs text-[#555] mt-1">{formatDate(last7thRun.run_date)}</p>
+              </>
+            ) : (
+              <>
+                <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{formatRand(0)}</p>
+                <p className="text-xs text-[#555] mt-1">No runs yet</p>
+              </>
+            )}
           </div>
         </div>
 

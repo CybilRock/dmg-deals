@@ -32,19 +32,20 @@ export default async function ConsultantPage({
     supabase.from("people").select("*").eq("id", params.id).single(),
     supabase
       .from("deals")
-      .select("id, client_name, product, deposit_type, deal_value, consultant_payout, source_brand, deal_date, status, self_generated")
+      .select("id, client_name, product, deposit_type, deal_value, consultant_payout, drip_remaining_payout, source_brand, deal_date, status, self_generated")
       .eq("consultant_id", params.id)
       .order("deal_date", { ascending: false }),
   ])
 
   if (!person) notFound()
 
-  const activDeals   = (deals ?? []).filter((d) => d.status !== "cancelled")
-  const dvcDeals     = activDeals.filter((d) => d.product === "DVC")
-  const hcorpDeals   = activDeals.filter((d) => d.product === "HolidayCorp")
-  const dvcEarned    = dvcDeals.reduce((s, d) => s + (d.consultant_payout ?? 0), 0)
-  const hcorpEarned  = hcorpDeals.reduce((s, d) => s + (d.consultant_payout ?? 0), 0)
-  const totalEarned  = dvcEarned + hcorpEarned
+  const activDeals      = (deals ?? []).filter((d) => d.status !== "cancelled")
+  const dvcDeals        = activDeals.filter((d) => d.product === "DVC")
+  const hcorpDeals      = activDeals.filter((d) => d.product === "HolidayCorp")
+  const dvcEarned       = dvcDeals.reduce((s, d) => s + (d.consultant_payout ?? 0), 0)
+  const hcorpEarned     = hcorpDeals.reduce((s, d) => s + (d.consultant_payout ?? 0), 0)
+  const totalEarned     = dvcEarned + hcorpEarned
+  const totalDripPending = activDeals.reduce((s, d) => s + (d.drip_remaining_payout ?? 0), 0)
 
   const sendInviteAction = sendPortalInvite.bind(null, person.id)
 
@@ -67,6 +68,14 @@ export default async function ConsultantPage({
           <p className="text-sm text-[#555] mt-1">
             {activDeals.length} deal{activDeals.length !== 1 ? "s" : ""} closed
           </p>
+          {totalDripPending > 0 && (
+            <div className="mt-3 bg-amber-400/10 border border-amber-400/20 rounded-lg px-3 py-2">
+              <p className="text-xs text-amber-400 font-semibold">
+                + {formatRand(totalDripPending)} drip commission pending
+              </p>
+              <p className="text-[10px] text-amber-400/60 mt-0.5">Paid as No Deposit instalments arrive from DHR</p>
+            </div>
+          )}
           <div className="mt-4 pt-4 border-t border-[#2e2e2e] flex gap-8 text-sm">
             <div>
               <p className="text-[#555] text-xs uppercase tracking-wide">DVC</p>
@@ -131,6 +140,7 @@ export default async function ConsultantPage({
                     <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Structure</th>
                     <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Deal Value</th>
                     <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Commission</th>
+                    <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Drip Pending</th>
                     <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Status</th>
                   </tr>
                 </thead>
@@ -148,6 +158,11 @@ export default async function ConsultantPage({
                       <td className="px-4 py-3 text-[#a8a8a8]">{DEPOSIT_LABEL[d.deposit_type] ?? d.deposit_type}</td>
                       <td className="px-4 py-3 text-right text-[#f5f5f5]">{formatRand(d.deal_value)}</td>
                       <td className="px-4 py-3 text-right font-semibold text-emerald-400">{formatRand(d.consultant_payout ?? 0)}</td>
+                      <td className="px-4 py-3 text-right text-xs">
+                        {(d.drip_remaining_payout ?? 0) > 0
+                          ? <span className="text-amber-400 font-semibold">{formatRand(d.drip_remaining_payout)}</span>
+                          : <span className="text-[#333]">—</span>}
+                      </td>
                       <td className="px-4 py-3">
                         <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
                           d.status === "paid"      ? "bg-blue-500/10 text-blue-400"     :
@@ -165,6 +180,9 @@ export default async function ConsultantPage({
                   <tr className="border-t border-[#2e2e2e] bg-[#111]">
                     <td colSpan={5} className="px-4 py-3 text-[10px] font-bold text-[#555] uppercase tracking-widest">Total</td>
                     <td className="px-4 py-3 text-right font-bold text-[#c9a84c]">{formatRand(totalEarned)}</td>
+                    <td className="px-4 py-3 text-right font-bold text-amber-400">
+                      {totalDripPending > 0 ? formatRand(totalDripPending) : "—"}
+                    </td>
                     <td />
                   </tr>
                 </tfoot>

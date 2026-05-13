@@ -66,6 +66,7 @@ export default async function DealsPage() {
                   <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">DMG Net</th>
                   <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Date</th>
                   <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Status</th>
+                  <th className="px-4 py-3" />
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#2e2e2e]">
@@ -90,6 +91,14 @@ export default async function DealsPage() {
                       <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${STATUS_BADGE[d.status] ?? "bg-[#222] text-[#a8a8a8]"}`}>
                         {d.status}
                       </span>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <Link
+                        href={`/deals/${d.id}/edit`}
+                        className="text-xs text-[#555] hover:text-[#c9a84c] transition-colors"
+                      >
+                        Edit
+                      </Link>
                     </td>
                   </tr>
                 ))}
