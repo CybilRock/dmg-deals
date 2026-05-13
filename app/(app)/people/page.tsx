@@ -61,37 +61,37 @@ export default async function PeoplePage() {
               <p className="text-sm text-[#aaa]">No consultants yet. <Link href="/people/new" className="text-[#c9a84c] hover:underline">Add one →</Link></p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-              {consultants.map((p) => (
-                <Link
-                  key={p.id}
-                  href={`/people/${p.id}`}
-                  className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5 hover:border-[#c9a84c]/40 transition-all block"
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <p className="font-semibold text-[#f5f5f5]">{p.name}</p>
-                        <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${ROLE_BADGE[p.role]}`}>
-                          {p.role}
-                        </span>
-                        {!p.active && <span className="text-[9px] text-[#aaa]">inactive</span>}
-                      </div>
-                      <p className="text-xs text-[#aaa] mt-0.5">{p.dealCount} deal{p.dealCount !== 1 ? "s" : ""} closed</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-lg font-bold text-[#c9a84c]">{formatRand(p.totalEarned)}</p>
-                      <p className="text-xs text-[#aaa]">total earned</p>
-                    </div>
-                  </div>
-                  {p.totalEarned > 0 && (
-                    <div className="mt-3 pt-3 border-t border-[#2e2e2e] flex gap-4 text-xs text-[#aaa]">
-                      <span>DVC <strong className="text-[#a8a8a8]">{formatRand(p.dvcEarned)}</strong></span>
-                      <span>HCorp <strong className="text-[#a8a8a8]">{formatRand(p.hcorpEarned)}</strong></span>
-                    </div>
-                  )}
-                </Link>
-              ))}
+            <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl overflow-hidden">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-[#2e2e2e] bg-[#111]">
+                    <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Name</th>
+                    <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">DVC</th>
+                    <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">HCorp</th>
+                    <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Total</th>
+                    <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Deals</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#2e2e2e]">
+                  {consultants.map((p) => (
+                    <tr key={p.id} className="hover:bg-[#222] transition-colors cursor-pointer">
+                      <td className="px-4 py-3">
+                        <Link href={`/people/${p.id}`} className="flex items-center gap-2">
+                          <span className="font-semibold text-[#f5f5f5]">{p.name}</span>
+                          <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${ROLE_BADGE[p.role]}`}>
+                            {p.role}
+                          </span>
+                          {!p.active && <span className="text-[9px] text-[#aaa]">inactive</span>}
+                        </Link>
+                      </td>
+                      <td className="px-4 py-3 text-right text-[#a8a8a8]">{formatRand(p.dvcEarned)}</td>
+                      <td className="px-4 py-3 text-right text-[#a8a8a8]">{formatRand(p.hcorpEarned)}</td>
+                      <td className="px-4 py-3 text-right font-semibold text-[#c9a84c]">{formatRand(p.totalEarned)}</td>
+                      <td className="px-4 py-3 text-right text-[#888] text-xs">{p.dealCount}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </section>
