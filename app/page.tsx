@@ -15,6 +15,6 @@ export default async function Root() {
     .eq("email", user.email)
     .maybeSingle()
 
-  if (person?.status === "approved") redirect("/portal")
+  if (person) redirect("/portal")
   redirect("/dashboard")
 }
