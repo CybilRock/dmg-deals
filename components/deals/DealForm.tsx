@@ -163,8 +163,8 @@ export default function DealForm({
 
     const pctPaid = term.dealValue > 0 ? amountPaid / term.dealValue : 0
 
-    // Full finance: nobody gets paid until first instalments arrive
-    const consultantUpfront = paymentType === "full_finance" ? 0 : term.agentComm  * pctPaid
+    // Full finance: nobody gets paid until first instalments arrive. Owner: no payout.
+    const consultantUpfront = (isOwnerConsultant || paymentType === "full_finance") ? 0 : term.agentComm * pctPaid
     const debbieUpfront     = paymentType === "full_finance" ? 0 : term.debbiePreSales
 
     const dmgNet = amountPaid - consultantUpfront - debbieUpfront
@@ -180,8 +180,9 @@ export default function DealForm({
       debbieUpfront,
       dmgNet,
       paymentType,
+      isOwner:           isOwnerConsultant,
     }
-  }, [form.product, form.hcorpTerm, form.hcorpPaymentType, form.hcorpAmountPaid])
+  }, [form.product, form.hcorpTerm, form.hcorpPaymentType, form.hcorpAmountPaid, isOwnerConsultant])
 
   const calc = form.product === "HolidayCorp" ? calcHCorp : calcDVC
 
@@ -456,14 +457,16 @@ export default function DealForm({
               `Amount Received${calc.paymentType === "full_finance" ? " (none yet)" : ` (${(calc.pctPaid * 100).toFixed(0)}%)`}`,
               formatRand(calc.amountPaid),
             )}
-            {row(
-              calc.paymentType === "full_finance"
-                ? "Agent Comm (payable on 1st instalment)"
-                : `Agent Comm${calc.paymentType === "deposit" ? ` (${(calc.pctPaid * 100).toFixed(0)}% upfront)` : ""}`,
-              `− ${formatRand(calc.consultantUpfront)}`,
-              false,
-              calc.paymentType === "full_finance",
-            )}
+            {calc.isOwner
+              ? row("Owner (DMG — no payout)", "R 0,00")
+              : row(
+                  calc.paymentType === "full_finance"
+                    ? "Agent Comm (payable on 1st instalment)"
+                    : `Agent Comm${calc.paymentType === "deposit" ? ` (${(calc.pctPaid * 100).toFixed(0)}% upfront)` : ""}`,
+                  `− ${formatRand(calc.consultantUpfront)}`,
+                  false,
+                  calc.paymentType === "full_finance",
+                )}
             {row(
               calc.paymentType === "full_finance" ? "Debbie (payable on 1st instalment)" : "Debbie (pre-sales)",
               `− ${formatRand(calc.debbieUpfront)}`,
