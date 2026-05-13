@@ -56,9 +56,17 @@ export default async function ConsultantPage({
       <TopBar
         title={person.name}
         action={
-          <Link href="/people" className="text-xs text-[#a8a8a8] hover:text-[#f5f5f5]">
-            ← Back to People
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href={`/people/${id}/edit`}
+              className="bg-[#c9a84c] hover:bg-[#b8943e] text-black text-xs font-bold px-4 py-2 rounded-lg transition-colors"
+            >
+              Edit Details
+            </Link>
+            <Link href="/people" className="text-xs text-[#a8a8a8] hover:text-[#f5f5f5]">
+              ← Back to People
+            </Link>
+          </div>
         }
       />
       <div className="flex-1 overflow-auto p-6 space-y-6">

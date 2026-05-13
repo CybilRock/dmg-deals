@@ -70,6 +70,7 @@ export default async function PeoplePage() {
                     <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">HCorp</th>
                     <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Total</th>
                     <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Deals</th>
+                    <th className="px-4 py-3" />
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#2e2e2e]">
@@ -88,6 +89,11 @@ export default async function PeoplePage() {
                       <td className="px-4 py-3 text-right text-[#a8a8a8]">{formatRand(p.hcorpEarned)}</td>
                       <td className="px-4 py-3 text-right font-semibold text-[#c9a84c]">{formatRand(p.totalEarned)}</td>
                       <td className="px-4 py-3 text-right text-[#888] text-xs">{p.dealCount}</td>
+                      <td className="px-4 py-3 text-right">
+                        <Link href={`/people/${p.id}/edit`} className="text-xs text-[#888] hover:text-[#c9a84c] transition-colors">
+                          Edit
+                        </Link>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -108,6 +114,7 @@ export default async function PeoplePage() {
                     <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">DVC</th>
                     <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">HCorp</th>
                     <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Total</th>
+                    <th className="px-4 py-3" />
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#2e2e2e]">
@@ -117,6 +124,11 @@ export default async function PeoplePage() {
                       <td className="px-4 py-3 text-right text-[#a8a8a8]">{formatRand(b.dvcEarned)}</td>
                       <td className="px-4 py-3 text-right text-[#a8a8a8]">{formatRand(b.hcorpEarned)}</td>
                       <td className="px-4 py-3 text-right font-semibold text-[#c9a84c]">{formatRand(b.totalEarned)}</td>
+                      <td className="px-4 py-3 text-right">
+                        <Link href={`/people/${b.id}/edit`} className="text-xs text-[#888] hover:text-[#c9a84c] transition-colors">
+                          Edit
+                        </Link>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
