@@ -89,24 +89,24 @@ export default async function DashboardPage() {
           <Link href="/reports/dhr" className="block bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5 hover:border-[#555] transition-colors">
             <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">DHR Debt</p>
             <p className="text-2xl font-bold mt-1.5 text-red-400">{formatRand(dhrDebt)}</p>
-            <p className="text-xs text-[#555] mt-1">Retention owed by DHR · View history →</p>
+            <p className="text-xs text-[#888] mt-1">Retention owed by DHR · View history →</p>
           </Link>
           <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
             <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">DVC Deals</p>
             <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{dealsCount}</p>
-            <p className="text-xs text-[#555] mt-1">{monthStart.slice(0, 7)}</p>
+            <p className="text-xs text-[#888] mt-1">{monthStart.slice(0, 7)}</p>
           </div>
           <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
             <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">Last Friday Run</p>
             {lastFridayRun ? (
               <>
                 <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{formatRand(lastFridayRun.total_amount)}</p>
-                <p className="text-xs text-[#555] mt-1">{formatDate(lastFridayRun.run_date)}</p>
+                <p className="text-xs text-[#888] mt-1">{formatDate(lastFridayRun.run_date)}</p>
               </>
             ) : (
               <>
                 <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{formatRand(0)}</p>
-                <p className="text-xs text-[#555] mt-1">No runs yet</p>
+                <p className="text-xs text-[#888] mt-1">No runs yet</p>
               </>
             )}
           </div>
@@ -115,12 +115,12 @@ export default async function DashboardPage() {
             {last7thRun ? (
               <>
                 <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{formatRand(last7thRun.total_amount)}</p>
-                <p className="text-xs text-[#555] mt-1">{formatDate(last7thRun.run_date)}</p>
+                <p className="text-xs text-[#888] mt-1">{formatDate(last7thRun.run_date)}</p>
               </>
             ) : (
               <>
                 <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{formatRand(0)}</p>
-                <p className="text-xs text-[#555] mt-1">No runs yet</p>
+                <p className="text-xs text-[#888] mt-1">No runs yet</p>
               </>
             )}
           </div>
@@ -143,11 +143,11 @@ export default async function DashboardPage() {
                 <div key={d.id} className="flex items-center justify-between py-3 text-sm">
                   <div>
                     <p className="font-medium text-[#f5f5f5]">{d.client_name}</p>
-                    <p className="text-xs text-[#555] mt-0.5">{d.source_brand} · {d.product} · {formatDate(d.deal_date)}</p>
+                    <p className="text-xs text-[#888] mt-0.5">{d.source_brand} · {d.product} · {formatDate(d.deal_date)}</p>
                   </div>
                   <div className="text-right">
                     <p className="font-semibold text-[#f5f5f5]">{formatRand(d.deal_value)}</p>
-                    <p className="text-xs text-[#555] mt-0.5">Net {formatRand(d.dmg_net)}</p>
+                    <p className="text-xs text-[#888] mt-0.5">Net {formatRand(d.dmg_net)}</p>
                   </div>
                 </div>
               ))}

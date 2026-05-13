@@ -53,7 +53,7 @@ export default async function PeoplePage() {
           <h2 className="text-[10px] font-bold text-[#555] uppercase tracking-widest mb-3">Consultants</h2>
           {consultants.length === 0 ? (
             <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
-              <p className="text-sm text-[#555]">No consultants yet. <Link href="/people/new" className="text-[#c9a84c] hover:underline">Add one →</Link></p>
+              <p className="text-sm text-[#888]">No consultants yet. <Link href="/people/new" className="text-[#c9a84c] hover:underline">Add one →</Link></p>
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
@@ -72,15 +72,15 @@ export default async function PeoplePage() {
                         </span>
                         {!p.active && <span className="text-[9px] text-[#555]">inactive</span>}
                       </div>
-                      <p className="text-xs text-[#555] mt-0.5">{p.dealCount} deal{p.dealCount !== 1 ? "s" : ""} closed</p>
+                      <p className="text-xs text-[#888] mt-0.5">{p.dealCount} deal{p.dealCount !== 1 ? "s" : ""} closed</p>
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-bold text-[#c9a84c]">{formatRand(p.totalEarned)}</p>
-                      <p className="text-xs text-[#555]">total earned</p>
+                      <p className="text-xs text-[#888]">total earned</p>
                     </div>
                   </div>
                   {p.totalEarned > 0 && (
-                    <div className="mt-3 pt-3 border-t border-[#2e2e2e] flex gap-4 text-xs text-[#555]">
+                    <div className="mt-3 pt-3 border-t border-[#2e2e2e] flex gap-4 text-xs text-[#888]">
                       <span>DVC <strong className="text-[#a8a8a8]">{formatRand(p.dvcEarned)}</strong></span>
                       <span>HCorp <strong className="text-[#a8a8a8]">{formatRand(p.hcorpEarned)}</strong></span>
                     </div>
@@ -130,7 +130,7 @@ export default async function PeoplePage() {
                   {pending.map((p) => (
                     <tr key={p.id} className="hover:bg-[#222]">
                       <td className="px-4 py-3 font-medium text-[#a8a8a8]">{p.name}</td>
-                      <td className="px-4 py-3 text-[#555] text-xs">{p.email}</td>
+                      <td className="px-4 py-3 text-[#888] text-xs">{p.email}</td>
                       <td className="px-4 py-3">
                         <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#c9a84c]/10 text-[#c9a84c] border border-[#c9a84c]/20">pending</span>
                       </td>

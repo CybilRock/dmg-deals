@@ -65,7 +65,7 @@ export default async function ConsultantPage({
         <div className="bg-[#1a1a1a] border border-[#c9a84c]/20 rounded-2xl p-6">
           <p className="text-[10px] font-bold uppercase tracking-widest text-[#555]">Total Earned to Date</p>
           <p className="text-4xl font-bold mt-2 tracking-tight text-[#c9a84c]">{formatRand(totalEarned)}</p>
-          <p className="text-sm text-[#555] mt-1">
+          <p className="text-sm text-[#888] mt-1">
             {activDeals.length} deal{activDeals.length !== 1 ? "s" : ""} closed
           </p>
           {totalDripPending > 0 && (
@@ -78,14 +78,14 @@ export default async function ConsultantPage({
           )}
           <div className="mt-4 pt-4 border-t border-[#2e2e2e] flex gap-8 text-sm">
             <div>
-              <p className="text-[#555] text-xs uppercase tracking-wide">DVC</p>
+              <p className="text-[#888] text-xs uppercase tracking-wide">DVC</p>
               <p className="font-semibold mt-0.5 text-[#f5f5f5]">{formatRand(dvcEarned)}</p>
-              <p className="text-[#555] text-xs">{dvcDeals.length} deal{dvcDeals.length !== 1 ? "s" : ""}</p>
+              <p className="text-[#888] text-xs">{dvcDeals.length} deal{dvcDeals.length !== 1 ? "s" : ""}</p>
             </div>
             <div>
-              <p className="text-[#555] text-xs uppercase tracking-wide">HolidayCorp</p>
+              <p className="text-[#888] text-xs uppercase tracking-wide">HolidayCorp</p>
               <p className="font-semibold mt-0.5 text-[#f5f5f5]">{formatRand(hcorpEarned)}</p>
-              <p className="text-[#555] text-xs">{hcorpDeals.length} deal{hcorpDeals.length !== 1 ? "s" : ""}</p>
+              <p className="text-[#888] text-xs">{hcorpDeals.length} deal{hcorpDeals.length !== 1 ? "s" : ""}</p>
             </div>
           </div>
         </div>
@@ -118,7 +118,7 @@ export default async function ConsultantPage({
             )}
           </div>
           {person.email && (
-            <p className="text-xs text-[#555] mt-2">{person.email}</p>
+            <p className="text-xs text-[#888] mt-2">{person.email}</p>
           )}
         </section>
 
@@ -128,7 +128,7 @@ export default async function ConsultantPage({
           <div className="bg-[#1a1a1a] rounded-xl border border-[#2e2e2e] overflow-hidden">
             {!deals?.length ? (
               <div className="p-5">
-                <p className="text-sm text-[#555]">No deals linked to {person.name} yet.</p>
+                <p className="text-sm text-[#888]">No deals linked to {person.name} yet.</p>
               </div>
             ) : (
               <table className="w-full text-sm">
@@ -147,7 +147,7 @@ export default async function ConsultantPage({
                 <tbody className="divide-y divide-[#2e2e2e]">
                   {deals.map((d) => (
                     <tr key={d.id} className={`hover:bg-[#111] ${d.status === "cancelled" ? "opacity-40" : ""}`}>
-                      <td className="px-4 py-3 text-[#555]">{formatDate(d.deal_date)}</td>
+                      <td className="px-4 py-3 text-[#888]">{formatDate(d.deal_date)}</td>
                       <td className="px-4 py-3 font-medium text-[#f5f5f5]">
                         {d.client_name}
                         {d.self_generated && (

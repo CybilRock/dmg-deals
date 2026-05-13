@@ -80,17 +80,17 @@ export default async function DhrLedgerPage({
           <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
             <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">Total Owed by DHR</p>
             <p className="text-2xl font-bold mt-1.5 text-red-400">{formatRand(totalDebt)}</p>
-            <p className="text-xs text-[#555] mt-1">Running balance</p>
+            <p className="text-xs text-[#888] mt-1">Running balance</p>
           </div>
           <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
             <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">Total Retention Added</p>
             <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{formatRand(totalAdded)}</p>
-            <p className="text-xs text-[#555] mt-1">Inc. opening balance</p>
+            <p className="text-xs text-[#888] mt-1">Inc. opening balance</p>
           </div>
           <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
             <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">Total Received from DHR</p>
             <p className="text-2xl font-bold mt-1.5 text-emerald-400">{formatRand(totalPaid)}</p>
-            <p className="text-xs text-[#555] mt-1">All time payments</p>
+            <p className="text-xs text-[#888] mt-1">All time payments</p>
           </div>
         </div>
 
@@ -115,7 +115,7 @@ export default async function DhrLedgerPage({
         <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl overflow-hidden">
           {!displayRowsDesc.length ? (
             <div className="p-6">
-              <p className="text-sm text-[#555]">No entries for this period.</p>
+              <p className="text-sm text-[#888]">No entries for this period.</p>
             </div>
           ) : (
             <table className="w-full text-sm">
@@ -130,7 +130,7 @@ export default async function DhrLedgerPage({
               <tbody className="divide-y divide-[#2e2e2e]">
                 {displayRowsDesc.map((e) => (
                   <tr key={e.id} className="hover:bg-[#222] transition-colors">
-                    <td className="px-4 py-3 text-[#555] text-xs">
+                    <td className="px-4 py-3 text-[#888] text-xs">
                       {new Date(e.created_at).toLocaleDateString("en-ZA", { day: "numeric", month: "short", year: "numeric" })}
                     </td>
                     <td className="px-4 py-3">
@@ -138,7 +138,7 @@ export default async function DhrLedgerPage({
                         {ENTRY_LABELS[e.entry_type] ?? e.entry_type}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-[#555] text-xs">{e.notes ?? "—"}</td>
+                    <td className="px-4 py-3 text-[#888] text-xs">{e.notes ?? "—"}</td>
                     <td className={`px-4 py-3 text-right font-semibold ${ENTRY_COLORS[e.entry_type] ?? "text-[#a8a8a8]"}`}>
                       {e.entry_type === "debt_repaid" ? `− ${formatRand(e.amount)}` : formatRand(e.amount)}
                     </td>
@@ -157,7 +157,7 @@ export default async function DhrLedgerPage({
           )}
         </div>
 
-        <p className="text-xs text-[#555]">
+        <p className="text-xs text-[#888]">
           To record a DHR payment, go to <Link href="/reports" className="text-[#c9a84c] hover:underline">Reports → Friday Payout Runs</Link>.
         </p>
 

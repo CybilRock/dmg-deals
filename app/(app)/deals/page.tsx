@@ -81,12 +81,12 @@ export default async function DealsPage() {
                     <td className="px-4 py-3 text-[#a8a8a8]">{d.source_brand}</td>
                     <td className="px-4 py-3 text-[#a8a8a8]">
                       {d.product === "DVC" ? "DVC" : "HCorp"}
-                      {d.product === "DVC" && d.points ? <span className="ml-1 text-[#555]">({d.points.toLocaleString()} pts)</span> : null}
+                      {d.product === "DVC" && d.points ? <span className="ml-1 text-[#888]">({d.points.toLocaleString()} pts)</span> : null}
                     </td>
                     <td className="px-4 py-3 text-[#a8a8a8]">{DEPOSIT_LABEL[d.deposit_type] ?? d.deposit_type}</td>
                     <td className="px-4 py-3 text-right font-medium text-[#f5f5f5]">{formatRand(d.deal_value)}</td>
                     <td className="px-4 py-3 text-right font-semibold text-emerald-400">{formatRand(d.dmg_net)}</td>
-                    <td className="px-4 py-3 text-[#555]">{formatDate(d.deal_date)}</td>
+                    <td className="px-4 py-3 text-[#888]">{formatDate(d.deal_date)}</td>
                     <td className="px-4 py-3">
                       <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${STATUS_BADGE[d.status] ?? "bg-[#222] text-[#a8a8a8]"}`}>
                         {d.status}
@@ -95,7 +95,7 @@ export default async function DealsPage() {
                     <td className="px-4 py-3 text-right">
                       <Link
                         href={`/deals/${d.id}/edit`}
-                        className="text-xs text-[#555] hover:text-[#c9a84c] transition-colors"
+                        className="text-xs text-[#888] hover:text-[#c9a84c] transition-colors"
                       >
                         Edit
                       </Link>
