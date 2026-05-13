@@ -76,7 +76,7 @@ export async function saveDeal(data: DealPayload): Promise<{ error?: string }> {
       notes:                 data.notes,
       drip_deal:             data.depositType === "no_deposit",
       hcorp_payment_type:    data.hcorpPaymentType ?? null,
-      hcorp_amount_paid:     data.hcorpAmountPaid  ?? null,
+      hcorp_amount_paid:     data.hcorpAmountPaid  ?? 0,
     })
     .select()
     .single()
@@ -128,7 +128,7 @@ export async function updateDeal(id: string, data: DealPayload): Promise<{ error
       notes:                 data.notes,
       drip_deal:             data.depositType === "no_deposit",
       hcorp_payment_type:    data.hcorpPaymentType ?? null,
-      hcorp_amount_paid:     data.hcorpAmountPaid  ?? null,
+      hcorp_amount_paid:     data.hcorpAmountPaid  ?? 0,
     })
     .eq("id", id)
 
