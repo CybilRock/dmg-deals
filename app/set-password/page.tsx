@@ -1,14 +1,13 @@
 "use client"
 
-export const dynamic = "force-dynamic"
-
+import { Suspense } from "react"
 import { createBrowserClient } from "@supabase/ssr"
 import { useState, useEffect, useTransition } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 
 const inputClass = "w-full bg-[#111] border border-[#2e2e2e] rounded-lg px-4 py-3 text-sm text-[#f5f5f5] placeholder-[#555] focus:outline-none focus:border-[#c9a84c] transition-colors"
 
-export default function SetPasswordPage() {
+function SetPasswordForm() {
   const [password, setPassword]     = useState("")
   const [confirm, setConfirm]       = useState("")
   const [error, setError]           = useState<string | null>(null)
@@ -47,6 +46,58 @@ export default function SetPasswordPage() {
   }
 
   return (
+    <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-2xl p-6 space-y-4">
+      <div>
+        <p className="text-sm font-semibold text-[#f5f5f5]">Set your password</p>
+        <p className="text-xs text-[#aaa] mt-1">Choose a password to secure your portal access.</p>
+      </div>
+
+      {error ? (
+        <p className="text-xs text-red-400 bg-red-950/30 border border-red-800 rounded-lg px-3 py-2">{error}</p>
+      ) : !ready ? (
+        <p className="text-xs text-[#aaa]">Verifying your invite…</p>
+      ) : (
+        <>
+          <div>
+            <label className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest">New Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={`${inputClass} mt-1.5`}
+              placeholder="Minimum 8 characters"
+              autoFocus
+            />
+          </div>
+
+          <div>
+            <label className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest">Confirm Password</label>
+            <input
+              type="password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              className={`${inputClass} mt-1.5`}
+              placeholder="Repeat password"
+              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+            />
+          </div>
+
+          <button
+            type="button"
+            disabled={!password || !confirm || pending}
+            onClick={handleSubmit}
+            className="w-full bg-[#c9a84c] hover:bg-[#b8943e] disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-3 rounded-xl text-sm transition-colors"
+          >
+            {pending ? "Saving…" : "Set Password & Enter Portal"}
+          </button>
+        </>
+      )}
+    </div>
+  )
+}
+
+export default function SetPasswordPage() {
+  return (
     <div className="min-h-screen bg-[#0d0d0d] flex items-center justify-center p-6">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
@@ -54,54 +105,9 @@ export default function SetPasswordPage() {
           <p className="text-white text-xs font-bold tracking-[0.25em] uppercase leading-none mt-1">Merchant Group</p>
           <p className="text-xs text-[#555] tracking-widest uppercase mt-2">My Portal</p>
         </div>
-
-        <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-2xl p-6 space-y-4">
-          <div>
-            <p className="text-sm font-semibold text-[#f5f5f5]">Set your password</p>
-            <p className="text-xs text-[#aaa] mt-1">Choose a password to secure your portal access.</p>
-          </div>
-
-          {error ? (
-            <p className="text-xs text-red-400 bg-red-950/30 border border-red-800 rounded-lg px-3 py-2">{error}</p>
-          ) : !ready ? (
-            <p className="text-xs text-[#aaa]">Verifying your invite…</p>
-          ) : (
-            <>
-              <div>
-                <label className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest">New Password</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className={`${inputClass} mt-1.5`}
-                  placeholder="Minimum 8 characters"
-                  autoFocus
-                />
-              </div>
-
-              <div>
-                <label className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest">Confirm Password</label>
-                <input
-                  type="password"
-                  value={confirm}
-                  onChange={(e) => setConfirm(e.target.value)}
-                  className={`${inputClass} mt-1.5`}
-                  placeholder="Repeat password"
-                  onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-                />
-              </div>
-
-              <button
-                type="button"
-                disabled={!password || !confirm || pending}
-                onClick={handleSubmit}
-                className="w-full bg-[#c9a84c] hover:bg-[#b8943e] disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-3 rounded-xl text-sm transition-colors"
-              >
-                {pending ? "Saving…" : "Set Password & Enter Portal"}
-              </button>
-            </>
-          )}
-        </div>
+        <Suspense fallback={<div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-2xl p-6"><p className="text-xs text-[#aaa]">Loading…</p></div>}>
+          <SetPasswordForm />
+        </Suspense>
       </div>
     </div>
   )
