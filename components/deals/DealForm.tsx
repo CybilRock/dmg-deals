@@ -228,7 +228,7 @@ export default function DealForm({
         if (dealId) {
           await updateDeal(dealId, payload)
         } else {
-          saveDeal(payload)
+          await saveDeal(payload)
         }
       } else {
         const payload = {
@@ -263,7 +263,7 @@ export default function DealForm({
         if (dealId) {
           await updateDeal(dealId, payload)
         } else {
-          saveDeal(payload)
+          await saveDeal(payload)
         }
       }
     })
