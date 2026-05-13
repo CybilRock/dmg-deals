@@ -34,7 +34,7 @@ export async function sendPortalInvite(personId: string): Promise<{ error: strin
   }
 
   const { error: inviteError } = await admin.auth.admin.inviteUserByEmail(person.email, {
-    redirectTo: `${appUrl}/auth/callback?next=/set-password`,
+    redirectTo: `${appUrl}/set-password`,
     data: { name: person.name },
   })
   if (inviteError) return { error: inviteError.message }
