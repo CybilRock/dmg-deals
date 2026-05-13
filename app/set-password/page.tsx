@@ -33,7 +33,7 @@ function SetPasswordForm() {
         supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken })
           .then(({ data, error }) => {
             if (error || !data.session) {
-              setError(error?.message ?? "This invite link has expired. Ask your admin to re-send the invite.")
+              setError(error?.message ?? "This link has expired or is invalid. Please request a new one.")
             } else {
               setReady(true)
             }
@@ -44,10 +44,11 @@ function SetPasswordForm() {
 
     // Token hash flow (custom email template, scanner-safe)
     const tokenHash = searchParams.get("token_hash")
+    const tokenType = (searchParams.get("type") ?? "invite") as "invite" | "recovery"
     if (tokenHash) {
-      supabase.auth.verifyOtp({ token_hash: tokenHash, type: "invite" }).then(({ data, error }) => {
+      supabase.auth.verifyOtp({ token_hash: tokenHash, type: tokenType }).then(({ data, error }) => {
         if (error || !data.session) {
-          setError(error?.message ?? "This invite link has expired. Ask your admin to re-send the invite.")
+          setError(error?.message ?? "This link has expired or is invalid. Please request a new one.")
         } else {
           setReady(true)
         }
@@ -60,7 +61,7 @@ function SetPasswordForm() {
     if (code) {
       supabase.auth.exchangeCodeForSession(code).then(({ data: { session }, error }) => {
         if (error || !session) {
-          setError(error?.message ?? "This invite link has expired. Ask your admin to re-send the invite.")
+          setError(error?.message ?? "This link has expired or is invalid. Please request a new one.")
         } else {
           setReady(true)
         }
@@ -70,7 +71,7 @@ function SetPasswordForm() {
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) setReady(true)
-      else setError("This invite link has expired. Ask your admin to re-send the invite.")
+      else setError("This link has expired or is invalid. Please request a new one.")
     })
   }, [])
 
@@ -82,7 +83,7 @@ function SetPasswordForm() {
     startTransition(async () => {
       const { error } = await supabase.auth.updateUser({ password })
       if (error) return setError(error.message)
-      router.replace("/portal")
+      router.replace("/")
     })
   }
 
@@ -129,7 +130,7 @@ function SetPasswordForm() {
             onClick={handleSubmit}
             className="w-full bg-[#c9a84c] hover:bg-[#b8943e] disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-3 rounded-xl text-sm transition-colors"
           >
-            {pending ? "Saving…" : "Set Password & Enter Portal"}
+            {pending ? "Saving…" : "Set Password"}
           </button>
         </>
       )}
