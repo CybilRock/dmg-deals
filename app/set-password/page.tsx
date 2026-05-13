@@ -22,10 +22,29 @@ function SetPasswordForm() {
   )
 
   useEffect(() => {
-    const tokenHash = searchParams.get("token_hash")
+    // Implicit flow: Supabase puts tokens in the URL hash (#access_token=...&refresh_token=...)
+    // Hash fragments are browser-only — never sent to the server — so we read them here
+    const hash = typeof window !== "undefined" ? window.location.hash : ""
+    if (hash) {
+      const params = new URLSearchParams(hash.substring(1))
+      const accessToken = params.get("access_token")
+      const refreshToken = params.get("refresh_token")
+      if (accessToken && refreshToken) {
+        supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken })
+          .then(({ data, error }) => {
+            if (error || !data.session) {
+              setError(error?.message ?? "This invite link has expired. Ask your admin to re-send the invite.")
+            } else {
+              setReady(true)
+            }
+          })
+        return
+      }
+    }
 
+    // Token hash flow (custom email template, scanner-safe)
+    const tokenHash = searchParams.get("token_hash")
     if (tokenHash) {
-      // Direct token_hash flow — immune to email pre-scanning (JS not executed by scanners)
       supabase.auth.verifyOtp({ token_hash: tokenHash, type: "invite" }).then(({ data, error }) => {
         if (error || !data.session) {
           setError(error?.message ?? "This invite link has expired. Ask your admin to re-send the invite.")
@@ -36,7 +55,7 @@ function SetPasswordForm() {
       return
     }
 
-    // Fallback: code-based flow (PKCE callback redirect)
+    // PKCE code flow (server callback forwarded code)
     const code = searchParams.get("code")
     if (code) {
       supabase.auth.exchangeCodeForSession(code).then(({ data: { session }, error }) => {
