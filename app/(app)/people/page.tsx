@@ -53,7 +53,7 @@ export default async function PeoplePage() {
           <h2 className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest mb-3">Consultants</h2>
           {consultants.length === 0 ? (
             <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
-              <p className="text-sm text-[#888]">No consultants yet. <Link href="/people/new" className="text-[#c9a84c] hover:underline">Add one →</Link></p>
+              <p className="text-sm text-[#aaa]">No consultants yet. <Link href="/people/new" className="text-[#c9a84c] hover:underline">Add one →</Link></p>
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
@@ -72,15 +72,15 @@ export default async function PeoplePage() {
                         </span>
                         {!p.active && <span className="text-[9px] text-[#aaa]">inactive</span>}
                       </div>
-                      <p className="text-xs text-[#888] mt-0.5">{p.dealCount} deal{p.dealCount !== 1 ? "s" : ""} closed</p>
+                      <p className="text-xs text-[#aaa] mt-0.5">{p.dealCount} deal{p.dealCount !== 1 ? "s" : ""} closed</p>
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-bold text-[#c9a84c]">{formatRand(p.totalEarned)}</p>
-                      <p className="text-xs text-[#888]">total earned</p>
+                      <p className="text-xs text-[#aaa]">total earned</p>
                     </div>
                   </div>
                   {p.totalEarned > 0 && (
-                    <div className="mt-3 pt-3 border-t border-[#2e2e2e] flex gap-4 text-xs text-[#888]">
+                    <div className="mt-3 pt-3 border-t border-[#2e2e2e] flex gap-4 text-xs text-[#aaa]">
                       <span>DVC <strong className="text-[#a8a8a8]">{formatRand(p.dvcEarned)}</strong></span>
                       <span>HCorp <strong className="text-[#a8a8a8]">{formatRand(p.hcorpEarned)}</strong></span>
                     </div>

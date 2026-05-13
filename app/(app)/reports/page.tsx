@@ -40,7 +40,7 @@ export default async function ReportsPage() {
   const totalDripDue       = (unpaidDeals ?? []).reduce((s, d) => s + (d.drip_remaining_payout ?? 0), 0)
   const total7thDue        = totalConsultantDue + totalBookerDue
 
-  const inputClass = "w-full bg-[#111] border border-[#2e2e2e] rounded-lg px-3 py-2 text-sm text-[#f5f5f5] placeholder-[#555] focus:outline-none focus:border-[#c9a84c] transition-colors"
+  const inputClass = "w-full bg-[#111] border border-[#2e2e2e] rounded-lg px-3 py-2 text-sm text-[#f5f5f5] placeholder-[#888] focus:outline-none focus:border-[#c9a84c] transition-colors"
   const labelClass = "block text-[10px] font-bold text-[#aaa] uppercase tracking-widest mb-1"
 
   return (
@@ -52,12 +52,12 @@ export default async function ReportsPage() {
         <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5 space-y-5">
           <div>
             <h2 className="text-sm font-semibold text-[#f5f5f5]">Friday Payout Runs</h2>
-            <p className="text-xs text-[#888] mt-0.5">Weekly DHR commission settlements — each payment reduces the DHR debt balance</p>
+            <p className="text-xs text-[#aaa] mt-0.5">Weekly DHR commission settlements — each payment reduces the DHR debt balance</p>
           </div>
 
           {/* History */}
           {!fridayRuns?.length ? (
-            <p className="text-sm text-[#888]">No payout runs yet.</p>
+            <p className="text-sm text-[#aaa]">No payout runs yet.</p>
           ) : (
             <table className="w-full text-sm">
               <thead>
@@ -118,12 +118,12 @@ export default async function ReportsPage() {
           <div className="flex items-start justify-between">
             <div>
               <h2 className="text-sm font-semibold text-[#f5f5f5]">7th Contractor Runs</h2>
-              <p className="text-xs text-[#888] mt-0.5">Monthly consultant & booker payouts — run on the 7th of each month</p>
+              <p className="text-xs text-[#aaa] mt-0.5">Monthly consultant & booker payouts — run on the 7th of each month</p>
             </div>
             <div className="text-right shrink-0 ml-6">
               <p className="text-[10px] text-[#aaa] uppercase tracking-widest">Total Due</p>
               <p className="text-lg font-bold text-[#c9a84c]">{formatRand(total7thDue)}</p>
-              <p className="text-[10px] text-[#888] mt-0.5">
+              <p className="text-[10px] text-[#aaa] mt-0.5">
                 Cons {formatRand(totalConsultantDue)} · Booker {formatRand(totalBookerDue)}
                 {totalDripDue > 0 && <span className="ml-1 text-amber-400">· Drip pending {formatRand(totalDripDue)}</span>}
               </p>
@@ -132,7 +132,7 @@ export default async function ReportsPage() {
 
           {/* History */}
           {!contractorRuns?.length ? (
-            <p className="text-sm text-[#888]">No contractor runs yet.</p>
+            <p className="text-sm text-[#aaa]">No contractor runs yet.</p>
           ) : (
             <table className="w-full text-sm">
               <thead>
