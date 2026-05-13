@@ -76,7 +76,6 @@ export default function SetPasswordPage() {
             {pending ? "Saving…" : "Set Password & Enter Portal"}
           </button>
         </div>
-        </div>
       </div>
     </div>
   )
