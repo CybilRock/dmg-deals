@@ -27,6 +27,19 @@ function SetPasswordForm() {
       return
     }
 
+    const code = searchParams.get("code")
+
+    if (code) {
+      supabase.auth.exchangeCodeForSession(code).then(({ data: { session }, error }) => {
+        if (error || !session) {
+          setError("This invite link has expired. Ask your admin to re-send the invite.")
+        } else {
+          setReady(true)
+        }
+      })
+      return
+    }
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) setReady(true)
       else setError("This invite link has expired. Ask your admin to re-send the invite.")
