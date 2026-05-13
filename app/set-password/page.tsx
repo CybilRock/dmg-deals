@@ -4,6 +4,7 @@ import { Suspense } from "react"
 import { createBrowserClient } from "@supabase/ssr"
 import { useState, useEffect, useTransition } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
+import Link from "next/link"
 
 const inputClass = "w-full bg-[#111] border border-[#2e2e2e] rounded-lg px-4 py-3 text-sm text-[#f5f5f5] placeholder-[#555] focus:outline-none focus:border-[#c9a84c] transition-colors"
 
@@ -56,12 +57,13 @@ function SetPasswordForm() {
       return
     }
 
-    // PKCE code flow (server callback forwarded code)
+    // PKCE code flow — only works in the same browser session that initiated it
+    // If we land here from a different device/browser, exchange will always fail; show friendly error
     const code = searchParams.get("code")
     if (code) {
       supabase.auth.exchangeCodeForSession(code).then(({ data: { session }, error }) => {
         if (error || !session) {
-          setError(error?.message ?? "This link has expired or is invalid. Please request a new one.")
+          setError("EXPIRED_LINK")
         } else {
           setReady(true)
         }
@@ -94,8 +96,27 @@ function SetPasswordForm() {
         <p className="text-xs text-[#aaa] mt-1">Choose a password to secure your portal access.</p>
       </div>
 
-      {error ? (
-        <p className="text-xs text-red-400 bg-red-950/30 border border-red-800 rounded-lg px-3 py-2">{error}</p>
+      {error === "EXPIRED_LINK" ? (
+        <div className="space-y-3 text-center">
+          <p className="text-sm font-semibold text-[#f5f5f5]">This link has expired</p>
+          <p className="text-xs text-[#888]">Password reset links can only be used once and expire after a short time.</p>
+          <Link
+            href="/forgot-password"
+            className="block mt-3 w-full bg-[#c9a84c] hover:bg-[#b8943e] text-black font-bold py-2.5 rounded-xl text-sm transition-colors text-center"
+          >
+            Request a new link
+          </Link>
+          <Link href="/login" className="block text-xs text-[#a8a8a8] hover:text-[#f5f5f5] transition-colors pt-1">
+            Back to sign in
+          </Link>
+        </div>
+      ) : error ? (
+        <div className="space-y-3">
+          <p className="text-xs text-red-400 bg-red-950/30 border border-red-800 rounded-lg px-3 py-2">{error}</p>
+          <Link href="/forgot-password" className="block text-center text-xs text-[#c9a84c] hover:text-[#b8943e] transition-colors">
+            Request a new link
+          </Link>
+        </div>
       ) : !ready ? (
         <p className="text-xs text-[#aaa]">Verifying your invite…</p>
       ) : (
