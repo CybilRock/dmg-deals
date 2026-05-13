@@ -11,6 +11,7 @@ const labelClass = "text-[10px] font-bold text-[#555] uppercase tracking-widest"
 export default function NewPersonPage() {
   const [pending, startTransition] = useTransition()
   const [form, setForm] = useState({ name: "", role: "consultant", email: "", phone: "" })
+  const [error, setError] = useState<string | null>(null)
   const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }))
 
   return (
@@ -41,10 +42,19 @@ export default function NewPersonPage() {
             <label className={labelClass}>Phone (optional)</label>
             <input value={form.phone} onChange={(e) => set("phone", e.target.value)} className={inputClass} placeholder="e.g. 082 000 0000" />
           </div>
+          {error && (
+            <p className="text-xs text-red-400 bg-red-950/30 border border-red-800 rounded-lg px-3 py-2">{error}</p>
+          )}
           <button
             type="button"
             disabled={!form.name || pending}
-            onClick={() => startTransition(() => addPerson({ name: form.name, role: form.role, email: form.email, phone: form.phone }))}
+            onClick={() => {
+              setError(null)
+              startTransition(async () => {
+                const result = await addPerson({ name: form.name, role: form.role, email: form.email, phone: form.phone })
+                if (result?.error) setError(result.error)
+              })
+            }}
             className="w-full bg-[#c9a84c] hover:bg-[#b8943e] disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-2.5 rounded-xl text-sm transition-colors"
           >
             {pending ? "Saving…" : "Add Person"}

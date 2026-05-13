@@ -8,7 +8,7 @@ export async function addPerson(data: {
   role: string
   email: string
   phone: string
-}) {
+}): Promise<{ error: string } | void> {
   const supabase = createAdminClient()
 
   const { error } = await supabase.from("people").insert({
@@ -18,7 +18,10 @@ export async function addPerson(data: {
     phone: data.phone.trim() || null,
   })
 
-  if (error) throw new Error(error.message)
+  if (error) {
+    console.error("[addPerson] Supabase insert error:", error)
+    return { error: error.message }
+  }
 
   redirect("/people")
 }
