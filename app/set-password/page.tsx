@@ -22,18 +22,26 @@ function SetPasswordForm() {
   )
 
   useEffect(() => {
-    if (searchParams.get("error") === "expired") {
-      const reason = searchParams.get("reason")
-      setError(reason ? `Link rejected by Supabase: ${decodeURIComponent(reason)}` : "This invite link has expired. Ask your admin to re-send the invite.")
+    const tokenHash = searchParams.get("token_hash")
+
+    if (tokenHash) {
+      // Direct token_hash flow — immune to email pre-scanning (JS not executed by scanners)
+      supabase.auth.verifyOtp({ token_hash: tokenHash, type: "invite" }).then(({ data, error }) => {
+        if (error || !data.session) {
+          setError(error?.message ?? "This invite link has expired. Ask your admin to re-send the invite.")
+        } else {
+          setReady(true)
+        }
+      })
       return
     }
 
+    // Fallback: code-based flow (PKCE callback redirect)
     const code = searchParams.get("code")
-
     if (code) {
       supabase.auth.exchangeCodeForSession(code).then(({ data: { session }, error }) => {
         if (error || !session) {
-          setError(`Exchange failed: ${error?.message ?? "no session returned"}`)
+          setError(error?.message ?? "This invite link has expired. Ask your admin to re-send the invite.")
         } else {
           setReady(true)
         }
@@ -43,7 +51,7 @@ function SetPasswordForm() {
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) setReady(true)
-      else setError("No code in URL and no active session — link may be missing parameters.")
+      else setError("This invite link has expired. Ask your admin to re-send the invite.")
     })
   }, [])
 
