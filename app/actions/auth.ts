@@ -29,12 +29,12 @@ export async function sendPortalInvite(personId: string): Promise<{ error: strin
   const alreadyExists = existingUsers?.users.some((u) => u.email === person.email)
 
   if (alreadyExists) {
-    const { error: magicError } = await admin.auth.admin.generateLink({
-      type: "magiclink",
-      email: person.email,
-      options: { redirectTo: `${appUrl}/auth/callback` },
+    // generateLink doesn't send email — use resetPasswordForEmail which does
+    const anonClient = await createClient()
+    const { error: resetError } = await anonClient.auth.resetPasswordForEmail(person.email, {
+      redirectTo: `${appUrl}/auth/callback?intent=invite`,
     })
-    if (magicError) return { error: magicError.message }
+    if (resetError) return { error: resetError.message }
   } else {
     const { error: inviteError } = await admin.auth.admin.inviteUserByEmail(person.email, {
       redirectTo: `${appUrl}/auth/callback?intent=invite`,
