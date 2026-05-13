@@ -1,27 +1,29 @@
 import { createServerClient } from "@supabase/ssr"
-import { cookies } from "next/headers"
-import { NextResponse } from "next/server"
+import { NextResponse, type NextRequest } from "next/server"
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const code   = searchParams.get("code")
   const intent = searchParams.get("intent")
   const type   = searchParams.get("type")
 
+  const redirectTarget = (intent === "invite" || type === "recovery")
+    ? new URL("/portal/set-password", origin)
+    : new URL("/", origin)
+
+  const supabaseResponse = NextResponse.redirect(redirectTarget)
+
   if (code) {
-    const cookieStore = await cookies()
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
         cookies: {
-          getAll: () => cookieStore.getAll(),
+          getAll: () => request.cookies.getAll(),
           setAll: (cookiesToSet) => {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              )
-            } catch {}
+            cookiesToSet.forEach(({ name, value, options }) =>
+              supabaseResponse.cookies.set(name, value, options)
+            )
           },
         },
       }
@@ -29,10 +31,5 @@ export async function GET(request: Request) {
     await supabase.auth.exchangeCodeForSession(code)
   }
 
-  // Invited users and password recovery → send to set-password page
-  if (intent === "invite" || type === "recovery") {
-    return NextResponse.redirect(`${origin}/portal/set-password`)
-  }
-
-  return NextResponse.redirect(`${origin}/`)
+  return supabaseResponse
 }
