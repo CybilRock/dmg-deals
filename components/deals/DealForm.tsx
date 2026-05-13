@@ -71,6 +71,7 @@ export default function DealForm({
   dealId?: string
 }) {
   const [pending, startTransition] = useTransition()
+  const [saveError, setSaveError] = useState<string | null>(null)
   const [form, setForm] = useState<DealFormInitialValues>({
     clientName:       initialValues?.clientName       ?? "",
     clientPhone:      initialValues?.clientPhone      ?? "",
@@ -196,6 +197,7 @@ export default function DealForm({
 
   function handleSave() {
     if (!calc) return
+    setSaveError(null)
     startTransition(async () => {
       if (calc.type === "dvc") {
         const payload = {
@@ -225,11 +227,8 @@ export default function DealForm({
           dmgNet:               calc.dmgNet,
           notes:                form.notes,
         }
-        if (dealId) {
-          await updateDeal(dealId, payload)
-        } else {
-          await saveDeal(payload)
-        }
+        const res = dealId ? await updateDeal(dealId, payload) : await saveDeal(payload)
+        if (res?.error) setSaveError(res.error)
       } else {
         const payload = {
           clientName:           form.clientName,
@@ -260,11 +259,8 @@ export default function DealForm({
           hcorpAmountPaid:      calc.amountPaid,
           notes:                form.notes,
         }
-        if (dealId) {
-          await updateDeal(dealId, payload)
-        } else {
-          await saveDeal(payload)
-        }
+        const res = dealId ? await updateDeal(dealId, payload) : await saveDeal(payload)
+        if (res?.error) setSaveError(res.error)
       }
     })
   }
@@ -497,6 +493,12 @@ export default function DealForm({
           placeholder="FICA status, special conditions, drip schedule..."
         />
       </section>
+
+      {saveError && (
+        <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-sm text-red-400">
+          {saveError}
+        </div>
+      )}
 
       <button
         type="button"

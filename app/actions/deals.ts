@@ -33,7 +33,7 @@ type DealPayload = {
   hcorpAmountPaid?:    number
 }
 
-export async function saveDeal(data: DealPayload) {
+export async function saveDeal(data: DealPayload): Promise<{ error?: string }> {
   const supabase = createAdminClient()
 
   const { data: activebooker } = await supabase
@@ -81,7 +81,7 @@ export async function saveDeal(data: DealPayload) {
     .select()
     .single()
 
-  if (error) throw new Error(error.message)
+  if (error) return { error: error.message }
 
   if (data.product === "DVC" && data.retention > 0) {
     await supabase.from("dhr_debt_ledger").insert({
@@ -95,7 +95,7 @@ export async function saveDeal(data: DealPayload) {
   redirect("/deals")
 }
 
-export async function updateDeal(id: string, data: DealPayload) {
+export async function updateDeal(id: string, data: DealPayload): Promise<{ error?: string }> {
   const supabase = createAdminClient()
 
   const { error } = await supabase
@@ -132,7 +132,7 @@ export async function updateDeal(id: string, data: DealPayload) {
     })
     .eq("id", id)
 
-  if (error) throw new Error(error.message)
+  if (error) return { error: error.message }
 
   redirect("/deals")
 }
