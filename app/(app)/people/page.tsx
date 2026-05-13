@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic"
 
 const ROLE_BADGE: Record<string, string> = {
   consultant: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
-  booker:     "bg-purple-500/10 text-purple-400 border border-purple-500/20",
+  booker:     "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
   both:       "bg-[#c9a84c]/10 text-[#c9a84c] border border-[#c9a84c]/20",
 }
 
@@ -120,7 +120,15 @@ export default async function PeoplePage() {
                 <tbody className="divide-y divide-[#2e2e2e]">
                   {bookers.map((b) => (
                     <tr key={b.id} className="hover:bg-[#222] transition-colors">
-                      <td className="px-4 py-3 font-medium text-[#f5f5f5]">{b.name}</td>
+                      <td className="px-4 py-3">
+                        <Link href={`/people/${b.id}`} className="flex items-center gap-2">
+                          <span className="font-semibold text-[#f5f5f5]">{b.name}</span>
+                          <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${ROLE_BADGE[b.role]}`}>
+                            {b.role}
+                          </span>
+                          {!b.active && <span className="text-[9px] text-[#aaa]">inactive</span>}
+                        </Link>
+                      </td>
                       <td className="px-4 py-3 text-right text-[#a8a8a8]">{formatRand(b.dvcEarned)}</td>
                       <td className="px-4 py-3 text-right text-[#a8a8a8]">{formatRand(b.hcorpEarned)}</td>
                       <td className="px-4 py-3 text-right font-semibold text-[#c9a84c]">{formatRand(b.totalEarned)}</td>
