@@ -18,14 +18,19 @@ export default async function PeoplePage() {
     supabase.from("people").select("id, name, role, email, active, status").order("name"),
     supabase
       .from("deals")
-      .select("consultant_id, product, consultant_payout, status")
+      .select("consultant_id, booker_id, product, consultant_payout, booker_payout, status")
       .neq("status", "cancelled"),
   ])
 
   const withTotals = (people ?? []).map((p) => {
-    const mine = (deals ?? []).filter((d) => d.consultant_id === p.id)
-    const dvcEarned   = mine.filter((d) => d.product === "DVC").reduce((s, d) => s + (d.consultant_payout ?? 0), 0)
-    const hcorpEarned = mine.filter((d) => d.product === "HolidayCorp").reduce((s, d) => s + (d.consultant_payout ?? 0), 0)
+    const isBooker = p.role === "booker"
+    const mine = (deals ?? []).filter((d) =>
+      isBooker ? d.booker_id === p.id : d.consultant_id === p.id
+    )
+    const getPayout = (d: typeof mine[0]) =>
+      isBooker ? (d.booker_payout ?? 0) : (d.consultant_payout ?? 0)
+    const dvcEarned   = mine.filter((d) => d.product === "DVC").reduce((s, d) => s + getPayout(d), 0)
+    const hcorpEarned = mine.filter((d) => d.product === "HolidayCorp").reduce((s, d) => s + getPayout(d), 0)
     return { ...p, dvcEarned, hcorpEarned, totalEarned: dvcEarned + hcorpEarned, dealCount: mine.length }
   })
 

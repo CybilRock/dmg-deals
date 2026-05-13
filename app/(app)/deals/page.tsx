@@ -12,10 +12,10 @@ const STATUS_BADGE: Record<string, string> = {
   clawback:  "bg-orange-500/10 text-orange-400 border border-orange-500/20",
 }
 
-const DEPOSIT_LABEL: Record<string, string> = {
-  "10pct":          "10%",
-  "25to49pct":      "25–49%",
-  "50pct":          "50%",
+const PACKAGE_LABEL: Record<string, string> = {
+  "10pct":          "10% Dep",
+  "25to49pct":      "25–49% Dep",
+  "50pct":          "50% Dep",
   "no_deposit":     "No Deposit",
   "self_generated": "Self-Gen",
   "upgrade":        "Upgrade",
@@ -24,13 +24,30 @@ const DEPOSIT_LABEL: Record<string, string> = {
   "hcorp_10yr":     "10-Year",
 }
 
+const SOURCE_SHORT: Record<string, string> = {
+  "Doctor Travel":    "DR",
+  "Advocate Travel":  "ADV",
+  "Holiday Brokers":  "HB",
+  "Referral":         "REF",
+  "Walk-in":          "WI",
+  "Online":           "ONL",
+}
+
 export default async function DealsPage() {
   const supabase = createAdminClient()
 
-  const { data: deals } = await supabase
-    .from("deals")
-    .select("id, client_name, source_brand, product, points, deposit_type, deal_value, dmg_net, status, deal_date, self_generated")
-    .order("created_at", { ascending: false })
+  const [{ data: deals }, { data: consultants }] = await Promise.all([
+    supabase
+      .from("deals")
+      .select("id, client_name, source_brand, product, points, deposit_type, deal_value, dmg_net, status, deal_date, self_generated, consultant_id")
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("people")
+      .select("id, name")
+      .in("role", ["consultant", "both"]),
+  ])
+
+  const consultantMap = Object.fromEntries((consultants ?? []).map((c) => [c.id, c.name]))
 
   return (
     <>
@@ -59,9 +76,10 @@ export default async function DealsPage() {
               <thead>
                 <tr className="border-b border-[#2e2e2e] bg-[#111]">
                   <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Client</th>
-                  <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Source</th>
+                  <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Agent</th>
+                  <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Src</th>
                   <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Product</th>
-                  <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Structure</th>
+                  <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Package</th>
                   <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Deal Value</th>
                   <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">DMG Net</th>
                   <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Date</th>
@@ -78,12 +96,20 @@ export default async function DealsPage() {
                         <span className="ml-2 text-[9px] bg-[#c9a84c]/10 text-[#c9a84c] border border-[#c9a84c]/20 font-bold px-1.5 py-0.5 rounded">SG</span>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-[#a8a8a8]">{d.source_brand}</td>
+                    <td className="px-4 py-3 text-[#a8a8a8]">
+                      {d.consultant_id ? (consultantMap[d.consultant_id] ?? "—") : "—"}
+                    </td>
+                    <td className="px-4 py-3 text-[#a8a8a8] text-xs font-semibold tracking-wide">
+                      {SOURCE_SHORT[d.source_brand] ?? d.source_brand}
+                    </td>
                     <td className="px-4 py-3 text-[#a8a8a8]">
                       {d.product === "DVC" ? "DVC" : "HCorp"}
-                      {d.product === "DVC" && d.points ? <span className="ml-1 text-[#888]">({d.points.toLocaleString()} pts)</span> : null}
                     </td>
-                    <td className="px-4 py-3 text-[#a8a8a8]">{DEPOSIT_LABEL[d.deposit_type] ?? d.deposit_type}</td>
+                    <td className="px-4 py-3 text-[#a8a8a8]">
+                      {d.product === "DVC" && d.points
+                        ? `${d.points.toLocaleString()} pts`
+                        : (PACKAGE_LABEL[d.deposit_type] ?? d.deposit_type)}
+                    </td>
                     <td className="px-4 py-3 text-right font-medium text-[#f5f5f5]">{formatRand(d.deal_value)}</td>
                     <td className="px-4 py-3 text-right font-semibold text-emerald-400">{formatRand(d.dmg_net)}</td>
                     <td className="px-4 py-3 text-[#888]">{formatDate(d.deal_date)}</td>
