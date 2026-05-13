@@ -3,7 +3,7 @@ import { formatRand, formatDate } from "@/lib/utils"
 import TopBar from "@/components/layout/TopBar"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { sendPortalInvite } from "@/app/actions/auth"
+import PortalInviteButton from "./PortalInviteButton"
 
 export const dynamic = "force-dynamic"
 
@@ -21,13 +21,10 @@ const DEPOSIT_LABEL: Record<string, string> = {
 
 export default async function ConsultantPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ id: string }>
-  searchParams: Promise<{ invited?: string }>
 }) {
   const { id } = await params
-  const { invited } = await searchParams
   const supabase = createAdminClient()
 
   const [{ data: person }, { data: deals }] = await Promise.all([
@@ -48,8 +45,6 @@ export default async function ConsultantPage({
   const hcorpEarned     = hcorpDeals.reduce((s, d) => s + (d.consultant_payout ?? 0), 0)
   const totalEarned     = dvcEarned + hcorpEarned
   const totalDripPending = activDeals.reduce((s, d) => s + (d.drip_remaining_payout ?? 0), 0)
-
-  const sendInviteAction = sendPortalInvite.bind(null, person.id)
 
   return (
     <>
@@ -111,21 +106,7 @@ export default async function ConsultantPage({
                   : "Add an email address to enable portal access."}
               </p>
             </div>
-            {invited === "true" ? (
-              <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg">
-                Invite sent ✓
-              </span>
-            ) : (
-              <form action={sendInviteAction}>
-                <button
-                  type="submit"
-                  disabled={!person.email}
-                  className="text-xs font-semibold bg-[#c9a84c] hover:bg-[#b8943e] disabled:opacity-40 disabled:cursor-not-allowed text-black px-4 py-2 rounded-lg transition-colors"
-                >
-                  Send Portal Invite
-                </button>
-              </form>
-            )}
+            <PortalInviteButton personId={person.id} disabled={!person.email} />
           </div>
           {person.email && (
             <p className="text-xs text-[#888] mt-2">{person.email}</p>
