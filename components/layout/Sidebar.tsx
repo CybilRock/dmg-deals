@@ -12,6 +12,7 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { signOut } from "@/app/actions/auth"
+import { useSidebarCtx } from "./SidebarContext"
 
 const nav = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -23,9 +24,10 @@ const nav = [
 
 export default function Sidebar() {
   const path = usePathname()
+  const ctx  = useSidebarCtx()
 
   return (
-    <aside className="w-56 min-h-screen bg-[#111] flex flex-col shrink-0 border-r border-[#2e2e2e]">
+    <aside className="w-56 h-full bg-[#111] flex flex-col shrink-0 border-r border-[#2e2e2e]">
       {/* DMG wordmark */}
       <div className="px-5 py-5 border-b border-[#2e2e2e]">
         <p className="text-[#c9a84c] font-light text-sm tracking-[0.15em] leading-none">dream</p>
@@ -40,6 +42,7 @@ export default function Sidebar() {
             <Link
               key={href}
               href={href}
+              onClick={() => ctx?.close()}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors",
                 active

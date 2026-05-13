@@ -1,8 +1,8 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
-import Sidebar from "@/components/layout/Sidebar"
+import LayoutShell from "@/components/layout/LayoutShell"
 
-// Admin-only section: portal users are redirected to their own view
+// Admin-only section: any person record = staff, redirect to portal
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -11,19 +11,12 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   const { data: person } = await supabase
     .from("people")
-    .select("id, status, role")
+    .select("id")
     .eq("email", user.email)
     .maybeSingle()
 
-  // Only redirect consultants/bookers to the portal — not admins (no people record)
-  if (person && person.status === "approved") redirect("/portal")
+  // Any person record = staff (consultant/booker) → portal only; no people record = admin
+  if (person) redirect("/portal")
 
-  return (
-    <div className="flex h-full">
-      <Sidebar />
-      <main className="flex-1 flex flex-col overflow-hidden bg-[#0d0d0d]">
-        {children}
-      </main>
-    </div>
-  )
+  return <LayoutShell>{children}</LayoutShell>
 }
