@@ -1,6 +1,6 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { redirect } from "next/navigation"
 
 export async function saveDeal(data: {
@@ -29,7 +29,7 @@ export async function saveDeal(data: {
   dmgNet: number
   notes: string
 }) {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   // Auto-link the active booker (pre-sales person) to this deal
   const { data: activebooker } = await supabase

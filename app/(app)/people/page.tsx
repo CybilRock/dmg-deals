@@ -1,5 +1,5 @@
 import TopBar from "@/components/layout/TopBar"
-import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { formatRand } from "@/lib/utils"
 import Link from "next/link"
 
@@ -12,7 +12,7 @@ const ROLE_BADGE: Record<string, string> = {
 }
 
 export default async function PeoplePage() {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const [{ data: people }, { data: deals }] = await Promise.all([
     supabase.from("people").select("id, name, role, email, active, status").order("name"),

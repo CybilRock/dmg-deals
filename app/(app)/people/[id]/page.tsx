@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { formatRand, formatDate } from "@/lib/utils"
 import TopBar from "@/components/layout/TopBar"
 import Link from "next/link"
@@ -26,7 +26,7 @@ export default async function ConsultantPage({
   params: { id: string }
   searchParams: { invited?: string }
 }) {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const [{ data: person }, { data: deals }] = await Promise.all([
     supabase.from("people").select("*").eq("id", params.id).single(),

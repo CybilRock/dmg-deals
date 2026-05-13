@@ -1,5 +1,5 @@
 import TopBar from "@/components/layout/TopBar"
-import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import Link from "next/link"
 
 export const dynamic = "force-dynamic"
@@ -15,7 +15,7 @@ const STATUSES = [
 ]
 
 export default async function LeadsPage() {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const [{ data: leads }, { data: people }] = await Promise.all([
     supabase.from("leads").select("id, name, phone, email, source_brand, status, assigned_to, created_at").order("created_at", { ascending: false }),

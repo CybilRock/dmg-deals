@@ -1,5 +1,5 @@
 import TopBar from "@/components/layout/TopBar"
-import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { formatRand, formatDate } from "@/lib/utils"
 import { approvePerson, rejectPerson } from "@/app/actions/partners"
 import Link from "next/link"
@@ -7,7 +7,7 @@ import Link from "next/link"
 export const dynamic = "force-dynamic"
 
 export default async function DashboardPage() {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const now = new Date()
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10)

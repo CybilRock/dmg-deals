@@ -1,5 +1,5 @@
 import TopBar from "@/components/layout/TopBar"
-import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { formatRand, formatDate } from "@/lib/utils"
 import Link from "next/link"
 
@@ -25,7 +25,7 @@ const DEPOSIT_LABEL: Record<string, string> = {
 }
 
 export default async function DealsPage() {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const { data: deals } = await supabase
     .from("deals")

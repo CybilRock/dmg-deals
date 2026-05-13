@@ -1,11 +1,11 @@
 import TopBar from "@/components/layout/TopBar"
 import DealForm from "@/components/deals/DealForm"
-import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 
 export const dynamic = "force-dynamic"
 
 export default async function NewDealPage() {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const { data: consultants } = await supabase
     .from("people")

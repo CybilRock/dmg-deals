@@ -1,6 +1,5 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server"
 import { createAdminClient } from "@/lib/supabase/admin"
 import { revalidatePath } from "next/cache"
 
@@ -10,9 +9,9 @@ export async function applyAsPartner(data: {
   phone: string
   role: string
 }) {
-  const supabase = await createClient()
+  const admin = createAdminClient()
 
-  const { error } = await supabase.from("people").insert({
+  const { error } = await admin.from("people").insert({
     name:   data.name.trim(),
     email:  data.email.trim().toLowerCase(),
     phone:  data.phone.trim() || null,
@@ -25,10 +24,9 @@ export async function applyAsPartner(data: {
 
 export async function approvePerson(formData: FormData) {
   const id = formData.get("id") as string
-  const supabase = await createClient()
   const admin = createAdminClient()
 
-  const { data: person } = await supabase
+  const { data: person } = await admin
     .from("people")
     .select("email")
     .eq("id", id)
@@ -36,7 +34,7 @@ export async function approvePerson(formData: FormData) {
 
   if (!person?.email) throw new Error("Person has no email — add one before approving")
 
-  await supabase.from("people").update({ status: "approved" }).eq("id", id)
+  await admin.from("people").update({ status: "approved" }).eq("id", id)
 
   const { error } = await admin.auth.admin.inviteUserByEmail(person.email, {
     redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
@@ -49,7 +47,7 @@ export async function approvePerson(formData: FormData) {
 
 export async function rejectPerson(formData: FormData) {
   const id = formData.get("id") as string
-  const supabase = await createClient()
-  await supabase.from("people").update({ status: "rejected" }).eq("id", id)
+  const admin = createAdminClient()
+  await admin.from("people").update({ status: "rejected" }).eq("id", id)
   revalidatePath("/dashboard")
 }
