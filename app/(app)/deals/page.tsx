@@ -49,7 +49,7 @@ export default async function DealsPage() {
         <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl overflow-hidden">
           {!deals?.length ? (
             <div className="p-6">
-              <p className="text-sm text-[#555]">
+              <p className="text-sm text-[#aaa]">
                 No deals captured yet.{" "}
                 <Link href="/deals/new" className="text-[#c9a84c] hover:underline">Add the first deal →</Link>
               </p>
@@ -58,14 +58,14 @@ export default async function DealsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[#2e2e2e] bg-[#111]">
-                  <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Client</th>
-                  <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Source</th>
-                  <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Product</th>
-                  <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Structure</th>
-                  <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Deal Value</th>
-                  <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">DMG Net</th>
-                  <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Date</th>
-                  <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Status</th>
+                  <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Client</th>
+                  <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Source</th>
+                  <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Product</th>
+                  <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Structure</th>
+                  <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Deal Value</th>
+                  <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">DMG Net</th>
+                  <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Date</th>
+                  <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Status</th>
                   <th className="px-4 py-3" />
                 </tr>
               </thead>

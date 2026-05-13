@@ -41,7 +41,7 @@ export default async function ReportsPage() {
   const total7thDue        = totalConsultantDue + totalBookerDue
 
   const inputClass = "w-full bg-[#111] border border-[#2e2e2e] rounded-lg px-3 py-2 text-sm text-[#f5f5f5] placeholder-[#555] focus:outline-none focus:border-[#c9a84c] transition-colors"
-  const labelClass = "block text-[10px] font-bold text-[#555] uppercase tracking-widest mb-1"
+  const labelClass = "block text-[10px] font-bold text-[#aaa] uppercase tracking-widest mb-1"
 
   return (
     <>
@@ -62,10 +62,10 @@ export default async function ReportsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[#2e2e2e]">
-                  <th className="text-left text-[10px] font-bold text-[#555] pb-2 uppercase tracking-widest">Date</th>
-                  <th className="text-right text-[10px] font-bold text-[#555] pb-2 uppercase tracking-widest">Amount</th>
-                  <th className="text-left text-[10px] font-bold text-[#555] pb-2 uppercase tracking-widest pl-4">Notes</th>
-                  <th className="text-left text-[10px] font-bold text-[#555] pb-2 uppercase tracking-widest pl-4">Status</th>
+                  <th className="text-left text-[10px] font-bold text-[#aaa] pb-2 uppercase tracking-widest">Date</th>
+                  <th className="text-right text-[10px] font-bold text-[#aaa] pb-2 uppercase tracking-widest">Amount</th>
+                  <th className="text-left text-[10px] font-bold text-[#aaa] pb-2 uppercase tracking-widest pl-4">Notes</th>
+                  <th className="text-left text-[10px] font-bold text-[#aaa] pb-2 uppercase tracking-widest pl-4">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#2e2e2e]">
@@ -121,7 +121,7 @@ export default async function ReportsPage() {
               <p className="text-xs text-[#888] mt-0.5">Monthly consultant & booker payouts — run on the 7th of each month</p>
             </div>
             <div className="text-right shrink-0 ml-6">
-              <p className="text-[10px] text-[#555] uppercase tracking-widest">Total Due</p>
+              <p className="text-[10px] text-[#aaa] uppercase tracking-widest">Total Due</p>
               <p className="text-lg font-bold text-[#c9a84c]">{formatRand(total7thDue)}</p>
               <p className="text-[10px] text-[#888] mt-0.5">
                 Cons {formatRand(totalConsultantDue)} · Booker {formatRand(totalBookerDue)}
@@ -137,9 +137,9 @@ export default async function ReportsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[#2e2e2e]">
-                  <th className="text-left text-[10px] font-bold text-[#555] pb-2 uppercase tracking-widest">Date</th>
-                  <th className="text-right text-[10px] font-bold text-[#555] pb-2 uppercase tracking-widest">Amount</th>
-                  <th className="text-left text-[10px] font-bold text-[#555] pb-2 uppercase tracking-widest pl-4">Notes</th>
+                  <th className="text-left text-[10px] font-bold text-[#aaa] pb-2 uppercase tracking-widest">Date</th>
+                  <th className="text-right text-[10px] font-bold text-[#aaa] pb-2 uppercase tracking-widest">Amount</th>
+                  <th className="text-left text-[10px] font-bold text-[#aaa] pb-2 uppercase tracking-widest pl-4">Notes</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#2e2e2e]">

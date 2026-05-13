@@ -50,7 +50,7 @@ export default async function PeoplePage() {
 
         {/* Consultants */}
         <section>
-          <h2 className="text-[10px] font-bold text-[#555] uppercase tracking-widest mb-3">Consultants</h2>
+          <h2 className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest mb-3">Consultants</h2>
           {consultants.length === 0 ? (
             <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
               <p className="text-sm text-[#888]">No consultants yet. <Link href="/people/new" className="text-[#c9a84c] hover:underline">Add one →</Link></p>
@@ -70,7 +70,7 @@ export default async function PeoplePage() {
                         <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${ROLE_BADGE[p.role]}`}>
                           {p.role}
                         </span>
-                        {!p.active && <span className="text-[9px] text-[#555]">inactive</span>}
+                        {!p.active && <span className="text-[9px] text-[#aaa]">inactive</span>}
                       </div>
                       <p className="text-xs text-[#888] mt-0.5">{p.dealCount} deal{p.dealCount !== 1 ? "s" : ""} closed</p>
                     </div>
@@ -94,15 +94,15 @@ export default async function PeoplePage() {
         {/* Bookers */}
         {bookers.length > 0 && (
           <section>
-            <h2 className="text-[10px] font-bold text-[#555] uppercase tracking-widest mb-3">Bookers</h2>
+            <h2 className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest mb-3">Bookers</h2>
             <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl overflow-hidden">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-[#2e2e2e] bg-[#111]">
-                    <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Name</th>
-                    <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">DVC</th>
-                    <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">HCorp</th>
-                    <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Total</th>
+                    <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Name</th>
+                    <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">DVC</th>
+                    <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">HCorp</th>
+                    <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Total</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#2e2e2e]">
@@ -123,7 +123,7 @@ export default async function PeoplePage() {
         {/* Pending (shouldn't usually show here, but handle gracefully) */}
         {pending.length > 0 && (
           <section>
-            <h2 className="text-[10px] font-bold text-[#555] uppercase tracking-widest mb-3">Pending Approval</h2>
+            <h2 className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest mb-3">Pending Approval</h2>
             <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl overflow-hidden">
               <table className="w-full text-sm">
                 <tbody className="divide-y divide-[#2e2e2e]">

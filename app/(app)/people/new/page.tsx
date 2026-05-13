@@ -6,7 +6,7 @@ import { useTransition, useState } from "react"
 import Link from "next/link"
 
 const inputClass = "mt-1.5 w-full bg-[#111] border border-[#2e2e2e] rounded-lg px-3 py-2.5 text-sm text-[#f5f5f5] placeholder-[#555] focus:outline-none focus:border-[#c9a84c] transition-colors"
-const labelClass = "text-[10px] font-bold text-[#555] uppercase tracking-widest"
+const labelClass = "text-[10px] font-bold text-[#aaa] uppercase tracking-widest"
 
 export default function NewPersonPage() {
   const [pending, startTransition] = useTransition()

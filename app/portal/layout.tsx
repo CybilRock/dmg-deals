@@ -23,7 +23,7 @@ export default async function PortalLayout({ children }: { children: React.React
             <p className="text-white text-[10px] font-bold tracking-[0.25em] uppercase leading-none mt-0.5">Merchant Group</p>
           </div>
           <span className="text-[#2e2e2e]">·</span>
-          <span className="text-xs text-[#555] tracking-widest uppercase">My Portal</span>
+          <span className="text-xs text-[#aaa] tracking-widest uppercase">My Portal</span>
         </div>
         <div className="flex items-center gap-4">
           {person?.name && (

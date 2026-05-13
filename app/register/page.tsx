@@ -5,7 +5,7 @@ import { useTransition, useState } from "react"
 import { useRouter } from "next/navigation"
 
 const inputClass = "mt-1.5 w-full bg-[#111] border border-[#2e2e2e] rounded-lg px-3 py-2.5 text-sm text-[#f5f5f5] placeholder-[#555] focus:outline-none focus:border-[#c9a84c] transition-colors"
-const labelClass = "text-[10px] font-bold text-[#555] uppercase tracking-widest"
+const labelClass = "text-[10px] font-bold text-[#aaa] uppercase tracking-widest"
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", role: "consultant" })
@@ -33,7 +33,7 @@ export default function RegisterPage() {
         <div className="text-center mb-10">
           <p className="text-[#c9a84c] font-light text-xl tracking-[0.2em]">dream</p>
           <p className="text-white text-sm font-bold tracking-[0.35em] uppercase">Merchant Group</p>
-          <p className="text-[#555] text-[10px] tracking-[0.4em] uppercase mt-3">Partner Application</p>
+          <p className="text-[#aaa] text-[10px] tracking-[0.4em] uppercase mt-3">Partner Application</p>
         </div>
 
         <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-2xl p-8 space-y-4">
@@ -73,7 +73,7 @@ export default function RegisterPage() {
           </button>
         </div>
 
-        <p className="text-center text-[10px] text-[#555] tracking-widest uppercase mt-6">
+        <p className="text-center text-[10px] text-[#aaa] tracking-widest uppercase mt-6">
           We review all applications within 1–2 business days
         </p>
       </div>

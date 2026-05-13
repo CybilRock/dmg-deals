@@ -152,17 +152,17 @@ export default async function LedgersPage({
           <>
             <div className="grid grid-cols-3 gap-4">
               <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
-                <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">DMG Debt to DHR</p>
+                <p className="text-[10px] text-[#aaa] font-semibold uppercase tracking-widest">DMG Debt to DHR</p>
                 <p className="text-2xl font-bold mt-1.5 text-red-400">{formatRand(totalDebt)}</p>
                 <p className="text-xs text-[#888] mt-1">Outstanding balance</p>
               </div>
               <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
-                <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">Total Retention Applied</p>
+                <p className="text-[10px] text-[#aaa] font-semibold uppercase tracking-widest">Total Retention Applied</p>
                 <p className="text-2xl font-bold mt-1.5 text-emerald-400">{formatRand(totalRetentionApplied)}</p>
                 <p className="text-xs text-[#888] mt-1">DHR commissions withheld toward debt</p>
               </div>
               <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
-                <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">Total Cash Paid to DHR</p>
+                <p className="text-[10px] text-[#aaa] font-semibold uppercase tracking-widest">Total Cash Paid to DHR</p>
                 <p className="text-2xl font-bold mt-1.5 text-emerald-400">{formatRand(totalPaid)}</p>
                 <p className="text-xs text-[#888] mt-1">Direct payments made</p>
               </div>
@@ -193,10 +193,10 @@ export default async function LedgersPage({
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-[#2e2e2e] bg-[#111]">
-                      <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Date</th>
-                      <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Type</th>
-                      <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Notes</th>
-                      <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Amount</th>
+                      <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Date</th>
+                      <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Type</th>
+                      <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Notes</th>
+                      <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Amount</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#2e2e2e]">
@@ -219,7 +219,7 @@ export default async function LedgersPage({
                   </tbody>
                   <tfoot>
                     <tr className="border-t border-[#2e2e2e] bg-[#111]">
-                      <td colSpan={3} className="px-4 py-3 text-[10px] font-bold text-[#555] uppercase tracking-widest">
+                      <td colSpan={3} className="px-4 py-3 text-[10px] font-bold text-[#aaa] uppercase tracking-widest">
                         Outstanding Balance to DHR
                       </td>
                       <td className="px-4 py-3 text-right font-bold text-red-400">{formatRand(totalDebt)}</td>
@@ -244,26 +244,26 @@ export default async function LedgersPage({
             {/* Summary cards */}
             <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
               <div className="bg-[#1a1a1a] border border-[#c9a84c]/20 rounded-xl p-5">
-                <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">Total DMG Net</p>
+                <p className="text-[10px] text-[#aaa] font-semibold uppercase tracking-widest">Total DMG Net</p>
                 <p className="text-2xl font-bold mt-1.5 text-[#c9a84c]">{formatRand(totalDmgNet)}</p>
                 <p className="text-xs text-[#888] mt-1">
                   {activeIncomeDeals.length} deal{activeIncomeDeals.length !== 1 ? "s" : ""} active
                 </p>
               </div>
               <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
-                <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">Total Deal Value</p>
+                <p className="text-[10px] text-[#aaa] font-semibold uppercase tracking-widest">Total Deal Value</p>
                 <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{formatRand(totalDealValue)}</p>
                 <p className="text-xs text-[#888] mt-1">Gross value closed</p>
               </div>
               <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
-                <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">DVC Net</p>
+                <p className="text-[10px] text-[#aaa] font-semibold uppercase tracking-widest">DVC Net</p>
                 <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{formatRand(dvcDmgNet)}</p>
                 <p className="text-xs text-[#888] mt-1">
                   {dvcDeals.length} deal{dvcDeals.length !== 1 ? "s" : ""} · {formatRand(dvcDealValue)} gross
                 </p>
               </div>
               <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
-                <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">HolidayCorp Net</p>
+                <p className="text-[10px] text-[#aaa] font-semibold uppercase tracking-widest">HolidayCorp Net</p>
                 <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{formatRand(hcorpDmgNet)}</p>
                 <p className="text-xs text-[#888] mt-1">
                   {hcorpDeals.length} deal{hcorpDeals.length !== 1 ? "s" : ""} · {formatRand(hcorpDealValue)} gross
@@ -297,15 +297,15 @@ export default async function LedgersPage({
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-[#2e2e2e] bg-[#111]">
-                        <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Date</th>
-                        <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Client</th>
-                        <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Consultant</th>
-                        <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Source</th>
-                        <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Product</th>
-                        <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Structure</th>
-                        <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Deal Value</th>
-                        <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">DMG Net</th>
-                        <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Status</th>
+                        <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Date</th>
+                        <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Client</th>
+                        <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Consultant</th>
+                        <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Source</th>
+                        <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Product</th>
+                        <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Structure</th>
+                        <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Deal Value</th>
+                        <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">DMG Net</th>
+                        <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Status</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#2e2e2e]">
@@ -348,7 +348,7 @@ export default async function LedgersPage({
                     </tbody>
                     <tfoot>
                       <tr className="border-t border-[#2e2e2e] bg-[#111]">
-                        <td colSpan={6} className="px-4 py-3 text-[10px] font-bold text-[#555] uppercase tracking-widest">
+                        <td colSpan={6} className="px-4 py-3 text-[10px] font-bold text-[#aaa] uppercase tracking-widest">
                           Total (active deals)
                         </td>
                         <td className="px-4 py-3 text-right font-bold text-[#f5f5f5]">{formatRand(totalDealValue)}</td>

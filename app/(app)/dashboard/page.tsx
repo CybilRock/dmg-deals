@@ -61,7 +61,7 @@ export default async function DashboardPage() {
                     <p className="text-xs text-[#a8a8a8] truncate">
                       {p.email}{p.phone ? ` · ${p.phone}` : ""} · {p.role}
                     </p>
-                    <p className="text-xs text-[#555] mt-0.5">{formatDate(p.created_at)}</p>
+                    <p className="text-xs text-[#aaa] mt-0.5">{formatDate(p.created_at)}</p>
                   </div>
                   <div className="flex gap-2 shrink-0">
                     <form action={approvePerson}>
@@ -87,17 +87,17 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {/* DHR Debt — clickable to full ledger */}
           <Link href="/reports/dhr" className="block bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5 hover:border-[#555] transition-colors">
-            <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">DHR Debt</p>
+            <p className="text-[10px] text-[#aaa] font-semibold uppercase tracking-widest">DHR Debt</p>
             <p className="text-2xl font-bold mt-1.5 text-red-400">{formatRand(dhrDebt)}</p>
             <p className="text-xs text-[#888] mt-1">Retention owed by DHR · View history →</p>
           </Link>
           <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
-            <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">DVC Deals</p>
+            <p className="text-[10px] text-[#aaa] font-semibold uppercase tracking-widest">DVC Deals</p>
             <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{dealsCount}</p>
             <p className="text-xs text-[#888] mt-1">{monthStart.slice(0, 7)}</p>
           </div>
           <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
-            <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">Last Friday Run</p>
+            <p className="text-[10px] text-[#aaa] font-semibold uppercase tracking-widest">Last Friday Run</p>
             {lastFridayRun ? (
               <>
                 <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{formatRand(lastFridayRun.total_amount)}</p>
@@ -111,7 +111,7 @@ export default async function DashboardPage() {
             )}
           </div>
           <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-5">
-            <p className="text-[10px] text-[#555] font-semibold uppercase tracking-widest">Last 7th Run</p>
+            <p className="text-[10px] text-[#aaa] font-semibold uppercase tracking-widest">Last 7th Run</p>
             {last7thRun ? (
               <>
                 <p className="text-2xl font-bold mt-1.5 text-[#f5f5f5]">{formatRand(last7thRun.total_amount)}</p>
@@ -133,7 +133,7 @@ export default async function DashboardPage() {
             <Link href="/deals" className="text-xs text-[#c9a84c] hover:underline">View all →</Link>
           </div>
           {!recentDeals?.length ? (
-            <p className="text-sm text-[#555]">
+            <p className="text-sm text-[#aaa]">
               No deals yet.{" "}
               <Link href="/deals/new" className="text-[#c9a84c] hover:underline">Add the first deal →</Link>
             </p>

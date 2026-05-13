@@ -48,10 +48,10 @@ export default async function LeadsPage() {
               <div key={key} className="min-w-[200px] bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-4 shrink-0">
                 <div className="flex items-center justify-between mb-3">
                   <p className="text-xs font-bold text-[#f5f5f5] tracking-wide">{label}</p>
-                  <span className="text-[10px] font-bold text-[#555] bg-[#222] px-1.5 py-0.5 rounded-full">{col.length}</span>
+                  <span className="text-[10px] font-bold text-[#aaa] bg-[#222] px-1.5 py-0.5 rounded-full">{col.length}</span>
                 </div>
                 {col.length === 0 ? (
-                  <p className="text-xs text-[#555]">No leads</p>
+                  <p className="text-xs text-[#aaa]">No leads</p>
                 ) : (
                   <div className="space-y-2">
                     {col.map((lead) => (
@@ -59,7 +59,7 @@ export default async function LeadsPage() {
                         <p className="font-semibold text-[#f5f5f5] truncate">{lead.name}</p>
                         {lead.phone && <p className="text-[#a8a8a8] mt-0.5">{lead.phone}</p>}
                         {lead.source_brand && (
-                          <p className="text-[#555] mt-1 truncate">{lead.source_brand}</p>
+                          <p className="text-[#aaa] mt-1 truncate">{lead.source_brand}</p>
                         )}
                         {lead.assigned_to && peopleMap[lead.assigned_to] && (
                           <p className="text-[#c9a84c] mt-1 truncate">→ {peopleMap[lead.assigned_to]}</p>

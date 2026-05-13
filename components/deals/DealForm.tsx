@@ -187,13 +187,13 @@ export default function DealForm({
 
   const row = (label: string, value: string, highlight = false, muted = false) => (
     <div key={label} className={`flex justify-between py-2 text-sm border-b border-[#2e2e2e] last:border-0 ${highlight ? "font-semibold" : ""}`}>
-      <span className={muted ? "text-[#444]" : "text-[#555]"}>{label}</span>
-      <span className={highlight ? "text-[#c9a84c]" : muted ? "text-[#555] italic" : "text-[#f5f5f5]"}>{value}</span>
+      <span className={muted ? "text-[#444]" : "text-[#aaa]"}>{label}</span>
+      <span className={highlight ? "text-[#c9a84c]" : muted ? "text-[#aaa] italic" : "text-[#f5f5f5]"}>{value}</span>
     </div>
   )
 
   const inputClass = "mt-1.5 w-full bg-[#111] border border-[#2e2e2e] rounded-lg px-3 py-2.5 text-sm text-[#f5f5f5] placeholder-[#555] focus:outline-none focus:border-[#c9a84c] transition-colors"
-  const labelClass = "text-[10px] font-bold text-[#555] uppercase tracking-widest"
+  const labelClass = "text-[10px] font-bold text-[#aaa] uppercase tracking-widest"
 
   function handleSave() {
     if (!calc) return
@@ -382,7 +382,7 @@ export default function DealForm({
                       <div className="col-span-2">
                         <label className={labelClass}>
                           Amount Received (ZAR)
-                          {suggested30 && <span className="ml-2 text-[#555] normal-case">— 30% = {formatRand(suggested30)}</span>}
+                          {suggested30 && <span className="ml-2 text-[#aaa] normal-case">— 30% = {formatRand(suggested30)}</span>}
                         </label>
                         <input
                           type="number"
@@ -412,7 +412,7 @@ export default function DealForm({
           )}
           <div className="grid grid-cols-2 gap-x-8">
             <div>
-              <p className="text-[10px] font-bold text-[#555] uppercase tracking-widest mb-2">DMG Income from DHR</p>
+              <p className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest mb-2">DMG Income from DHR</p>
               {row("Deal Value", formatRand(calc.dealValue))}
               {row(`Commission (${(calc.dmgRate * 100).toFixed(0)}%)`, formatRand(calc.commission))}
               {row(`Retention (${(calc.retentionRate * 100).toFixed(0)}%)`, `− ${formatRand(calc.retention)}`)}
@@ -421,7 +421,7 @@ export default function DealForm({
               {row("Net excl. VAT", formatRand(calc.netExclVat), true)}
             </div>
             <div>
-              <p className="text-[10px] font-bold text-[#555] uppercase tracking-widest mb-2">Contractor Payouts</p>
+              <p className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest mb-2">Contractor Payouts</p>
               {row("Contractor Base", formatRand(calc.contractorBase))}
               {calc.isOwner
                 ? row("Owner (DMG — no payout)", "R 0,00")
@@ -471,7 +471,7 @@ export default function DealForm({
               calc.paymentType === "full_finance",
             )}
             {calc.paymentType === "deposit" && (
-              <div className="py-2 text-xs text-[#555] border-b border-[#2e2e2e]">
+              <div className="py-2 text-xs text-[#aaa] border-b border-[#2e2e2e]">
                 Balance pending: {formatRand(calc.dealValue - calc.amountPaid)} ({((1 - calc.pctPaid) * 100).toFixed(0)}%)
               </div>
             )}

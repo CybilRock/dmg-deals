@@ -72,7 +72,7 @@ export default async function PortalPage() {
 
       {/* Total earned banner */}
       <div className="bg-[#1a1a1a] border border-[#c9a84c]/20 rounded-2xl p-6">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-[#555]">Total Earned to Date</p>
+        <p className="text-[10px] font-bold uppercase tracking-widest text-[#aaa]">Total Earned to Date</p>
         <p className="text-5xl font-bold mt-2 tracking-tight text-[#c9a84c]">{formatRand(totalEarned)}</p>
         <p className="text-sm text-[#888] mt-1">
           {activeDeals.length} deal{activeDeals.length !== 1 ? "s" : ""} closed
@@ -95,7 +95,7 @@ export default async function PortalPage() {
 
       {/* Deal history */}
       <section>
-        <h2 className="text-[10px] font-bold text-[#555] uppercase tracking-widest mb-3">Deal History</h2>
+        <h2 className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest mb-3">Deal History</h2>
         <div className="bg-[#1a1a1a] rounded-xl border border-[#2e2e2e] overflow-hidden">
           {!deals?.length ? (
             <div className="p-6 text-center">
@@ -107,13 +107,13 @@ export default async function PortalPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-[#2e2e2e] bg-[#111]">
-                    <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Date</th>
-                    <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Client</th>
-                    <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Product</th>
-                    <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Structure</th>
-                    <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Deal Value</th>
-                    <th className="text-right text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Your Commission</th>
-                    <th className="text-left text-[10px] font-bold text-[#555] px-4 py-3 uppercase tracking-widest">Status</th>
+                    <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Date</th>
+                    <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Client</th>
+                    <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Product</th>
+                    <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Structure</th>
+                    <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Deal Value</th>
+                    <th className="text-right text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Your Commission</th>
+                    <th className="text-left text-[10px] font-bold text-[#aaa] px-4 py-3 uppercase tracking-widest">Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#2e2e2e]">
@@ -145,7 +145,7 @@ export default async function PortalPage() {
                 </tbody>
                 <tfoot>
                   <tr className="border-t border-[#2e2e2e] bg-[#111]">
-                    <td colSpan={5} className="px-4 py-3 text-[10px] font-bold text-[#555] uppercase tracking-widest">Total Earned</td>
+                    <td colSpan={5} className="px-4 py-3 text-[10px] font-bold text-[#aaa] uppercase tracking-widest">Total Earned</td>
                     <td className="px-4 py-3 text-right font-bold text-[#c9a84c]">{formatRand(totalEarned)}</td>
                     <td />
                   </tr>

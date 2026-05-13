@@ -36,12 +36,12 @@ export default function LoginPage() {
         <div className="text-center mb-10">
           <p className="text-[#c9a84c] font-light text-xl tracking-[0.2em]">dream</p>
           <p className="text-white text-sm font-bold tracking-[0.35em] uppercase">Merchant Group</p>
-          <p className="text-[#555] text-[10px] tracking-[0.4em] uppercase mt-3">Deal Desk</p>
+          <p className="text-[#aaa] text-[10px] tracking-[0.4em] uppercase mt-3">Deal Desk</p>
         </div>
 
         <form onSubmit={handleSubmit} className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-2xl p-6 space-y-4">
           <div>
-            <label className="text-[10px] font-bold text-[#555] uppercase tracking-widest">Email</label>
+            <label className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest">Email</label>
             <input
               type="email"
               required
@@ -52,7 +52,7 @@ export default function LoginPage() {
             />
           </div>
           <div>
-            <label className="text-[10px] font-bold text-[#555] uppercase tracking-widest">Password</label>
+            <label className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest">Password</label>
             <input
               type="password"
               required
@@ -78,7 +78,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="text-center text-[10px] text-[#555] tracking-widest uppercase mt-8">
+        <p className="text-center text-[10px] text-[#aaa] tracking-widest uppercase mt-8">
           Internal Portal
         </p>
       </div>

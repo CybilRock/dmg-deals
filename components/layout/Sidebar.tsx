@@ -30,7 +30,7 @@ export default function Sidebar() {
       <div className="px-5 py-5 border-b border-[#2e2e2e]">
         <p className="text-[#c9a84c] font-light text-sm tracking-[0.15em] leading-none">dream</p>
         <p className="text-white text-[11px] font-bold tracking-[0.25em] uppercase mt-0.5">Merchant Group</p>
-        <p className="text-[#555] text-[9px] tracking-[0.3em] uppercase mt-2">Deal Desk</p>
+        <p className="text-[#aaa] text-[9px] tracking-[0.3em] uppercase mt-2">Deal Desk</p>
       </div>
 
       <nav className="flex-1 px-2.5 py-4 space-y-0.5">
@@ -55,7 +55,7 @@ export default function Sidebar() {
       </nav>
 
       <div className="px-2.5 py-4 border-t border-[#2e2e2e] space-y-1">
-        <p className="text-[#555] text-[9px] tracking-widest uppercase px-3 mb-2">DMG Internal</p>
+        <p className="text-[#aaa] text-[9px] tracking-widest uppercase px-3 mb-2">DMG Internal</p>
         <form action={signOut}>
           <button
             type="submit"
