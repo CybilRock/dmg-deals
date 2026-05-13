@@ -6,6 +6,7 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code   = searchParams.get("code")
   const intent = searchParams.get("intent")
+  const type   = searchParams.get("type")
 
   if (code) {
     const cookieStore = await cookies()
@@ -28,8 +29,8 @@ export async function GET(request: Request) {
     await supabase.auth.exchangeCodeForSession(code)
   }
 
-  // Invited users have no password yet — send them to set one
-  if (intent === "invite") {
+  // Invited users and password recovery → send to set-password page
+  if (intent === "invite" || type === "recovery") {
     return NextResponse.redirect(`${origin}/portal/set-password`)
   }
 
