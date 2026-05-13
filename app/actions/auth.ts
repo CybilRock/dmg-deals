@@ -29,7 +29,7 @@ export async function sendPortalInvite(personId: string): Promise<{ error: strin
   const { data: existingUsers } = await admin.auth.admin.listUsers()
   const existingUser = existingUsers?.users.find((u) => u.email === person.email)
 
-  if (existingUser && !existingUser.last_sign_in_at) {
+  if (existingUser) {
     await admin.auth.admin.deleteUser(existingUser.id)
   }
 
