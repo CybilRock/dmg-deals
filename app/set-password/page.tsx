@@ -2,7 +2,7 @@
 
 import { createBrowserClient } from "@supabase/ssr"
 import { useState, useEffect, useTransition } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 const inputClass = "w-full bg-[#111] border border-[#2e2e2e] rounded-lg px-4 py-3 text-sm text-[#f5f5f5] placeholder-[#555] focus:outline-none focus:border-[#c9a84c] transition-colors"
 
@@ -12,7 +12,8 @@ export default function SetPasswordPage() {
   const [error, setError]           = useState<string | null>(null)
   const [ready, setReady]           = useState(false)
   const [pending, startTransition]  = useTransition()
-  const router = useRouter()
+  const router      = useRouter()
+  const searchParams = useSearchParams()
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -20,12 +21,14 @@ export default function SetPasswordPage() {
   )
 
   useEffect(() => {
+    if (searchParams.get("error") === "expired") {
+      setError("This invite link has expired. Ask your admin to re-send the invite.")
+      return
+    }
+
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setReady(true)
-      } else {
-        setError("This link is invalid or has expired. Ask to be re-invited.")
-      }
+      if (session) setReady(true)
+      else setError("This invite link has expired. Ask your admin to re-send the invite.")
     })
   }, [])
 
@@ -39,14 +42,6 @@ export default function SetPasswordPage() {
       if (error) return setError(error.message)
       router.replace("/portal")
     })
-  }
-
-  if (!ready && !error) {
-    return (
-      <div className="min-h-screen bg-[#0d0d0d] flex items-center justify-center p-6">
-        <p className="text-sm text-[#aaa]">Verifying your invite…</p>
-      </div>
-    )
   }
 
   return (
@@ -64,8 +59,10 @@ export default function SetPasswordPage() {
             <p className="text-xs text-[#aaa] mt-1">Choose a password to secure your portal access.</p>
           </div>
 
-          {error && !ready ? (
+          {error ? (
             <p className="text-xs text-red-400 bg-red-950/30 border border-red-800 rounded-lg px-3 py-2">{error}</p>
+          ) : !ready ? (
+            <p className="text-xs text-[#aaa]">Verifying your invite…</p>
           ) : (
             <>
               <div>
@@ -91,10 +88,6 @@ export default function SetPasswordPage() {
                   onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                 />
               </div>
-
-              {error && (
-                <p className="text-xs text-red-400 bg-red-950/30 border border-red-800 rounded-lg px-3 py-2">{error}</p>
-              )}
 
               <button
                 type="button"

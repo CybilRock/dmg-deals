@@ -24,24 +24,20 @@ export async function sendPortalInvite(personId: string): Promise<{ error: strin
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
 
-  // If user already exists in auth, generate a magic link instead of an invite
+  // If user already exists in auth but has never logged in, delete and re-invite
+  // so they always receive the branded invite email (not a "Reset Password" email)
   const { data: existingUsers } = await admin.auth.admin.listUsers()
-  const alreadyExists = existingUsers?.users.some((u) => u.email === person.email)
+  const existingUser = existingUsers?.users.find((u) => u.email === person.email)
 
-  if (alreadyExists) {
-    // generateLink doesn't send email — use resetPasswordForEmail which does
-    const anonClient = await createClient()
-    const { error: resetError } = await anonClient.auth.resetPasswordForEmail(person.email, {
-      redirectTo: `${appUrl}/auth/callback?next=/set-password`,
-    })
-    if (resetError) return { error: resetError.message }
-  } else {
-    const { error: inviteError } = await admin.auth.admin.inviteUserByEmail(person.email, {
-      redirectTo: `${appUrl}/auth/callback?next=/set-password`,
-      data: { name: person.name },
-    })
-    if (inviteError) return { error: inviteError.message }
+  if (existingUser && !existingUser.last_sign_in_at) {
+    await admin.auth.admin.deleteUser(existingUser.id)
   }
+
+  const { error: inviteError } = await admin.auth.admin.inviteUserByEmail(person.email, {
+    redirectTo: `${appUrl}/auth/callback?next=/set-password`,
+    data: { name: person.name },
+  })
+  if (inviteError) return { error: inviteError.message }
 
   redirect(`/people/${personId}?invited=true`)
 }
