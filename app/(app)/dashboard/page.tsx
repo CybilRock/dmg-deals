@@ -29,8 +29,8 @@ export default async function DashboardPage() {
   ])
 
   const dhrDebt = (ledger ?? []).reduce((sum, e) => {
-    if (e.entry_type === "debt_repaid") return sum - e.amount
-    return sum + e.amount
+    if (e.entry_type === "opening_balance") return sum + e.amount
+    return sum - e.amount
   }, 0)
 
   const dealsCount = dealsThisMonth?.length ?? 0
