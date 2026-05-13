@@ -2,7 +2,7 @@
 
 import { createBrowserClient } from "@supabase/ssr"
 import { useState, useEffect, useTransition } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 const inputClass = "w-full bg-[#111] border border-[#2e2e2e] rounded-lg px-4 py-3 text-sm text-[#f5f5f5] placeholder-[#555] focus:outline-none focus:border-[#c9a84c] transition-colors"
 
@@ -12,8 +12,7 @@ export default function SetPasswordPage() {
   const [error, setError]           = useState<string | null>(null)
   const [ready, setReady]           = useState(false)
   const [pending, startTransition]  = useTransition()
-  const router      = useRouter()
-  const searchParams = useSearchParams()
+  const router = useRouter()
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -21,26 +20,13 @@ export default function SetPasswordPage() {
   )
 
   useEffect(() => {
-    const code = searchParams.get("code")
-    if (code) {
-      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
-        if (error) setError("Invite link is invalid or has expired. Ask to be re-invited.")
-        else setReady(true)
-      })
-      return
-    }
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session && (event === "SIGNED_IN" || event === "PASSWORD_RECOVERY")) {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
         setReady(true)
+      } else {
+        setError("This link is invalid or has expired. Ask to be re-invited.")
       }
     })
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setReady(true)
-    })
-
-    return () => subscription.unsubscribe()
   }, [])
 
   function handleSubmit() {
@@ -78,42 +64,48 @@ export default function SetPasswordPage() {
             <p className="text-xs text-[#aaa] mt-1">Choose a password to secure your portal access.</p>
           </div>
 
-          <div>
-            <label className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest">New Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={`${inputClass} mt-1.5`}
-              placeholder="Minimum 8 characters"
-              autoFocus
-            />
-          </div>
-
-          <div>
-            <label className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest">Confirm Password</label>
-            <input
-              type="password"
-              value={confirm}
-              onChange={(e) => setConfirm(e.target.value)}
-              className={`${inputClass} mt-1.5`}
-              placeholder="Repeat password"
-              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-            />
-          </div>
-
-          {error && (
+          {error && !ready ? (
             <p className="text-xs text-red-400 bg-red-950/30 border border-red-800 rounded-lg px-3 py-2">{error}</p>
-          )}
+          ) : (
+            <>
+              <div>
+                <label className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest">New Password</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={`${inputClass} mt-1.5`}
+                  placeholder="Minimum 8 characters"
+                  autoFocus
+                />
+              </div>
 
-          <button
-            type="button"
-            disabled={!password || !confirm || pending || !ready}
-            onClick={handleSubmit}
-            className="w-full bg-[#c9a84c] hover:bg-[#b8943e] disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-3 rounded-xl text-sm transition-colors"
-          >
-            {pending ? "Saving…" : "Set Password & Enter Portal"}
-          </button>
+              <div>
+                <label className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest">Confirm Password</label>
+                <input
+                  type="password"
+                  value={confirm}
+                  onChange={(e) => setConfirm(e.target.value)}
+                  className={`${inputClass} mt-1.5`}
+                  placeholder="Repeat password"
+                  onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                />
+              </div>
+
+              {error && (
+                <p className="text-xs text-red-400 bg-red-950/30 border border-red-800 rounded-lg px-3 py-2">{error}</p>
+              )}
+
+              <button
+                type="button"
+                disabled={!password || !confirm || pending}
+                onClick={handleSubmit}
+                className="w-full bg-[#c9a84c] hover:bg-[#b8943e] disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-3 rounded-xl text-sm transition-colors"
+              >
+                {pending ? "Saving…" : "Set Password & Enter Portal"}
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

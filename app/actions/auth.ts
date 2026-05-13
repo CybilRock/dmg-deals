@@ -32,12 +32,12 @@ export async function sendPortalInvite(personId: string): Promise<{ error: strin
     // generateLink doesn't send email — use resetPasswordForEmail which does
     const anonClient = await createClient()
     const { error: resetError } = await anonClient.auth.resetPasswordForEmail(person.email, {
-      redirectTo: `${appUrl}/set-password`,
+      redirectTo: `${appUrl}/auth/callback?next=/set-password`,
     })
     if (resetError) return { error: resetError.message }
   } else {
     const { error: inviteError } = await admin.auth.admin.inviteUserByEmail(person.email, {
-      redirectTo: `${appUrl}/set-password`,
+      redirectTo: `${appUrl}/auth/callback?next=/set-password`,
       data: { name: person.name },
     })
     if (inviteError) return { error: inviteError.message }

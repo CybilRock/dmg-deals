@@ -3,15 +3,10 @@ import { NextResponse, type NextRequest } from "next/server"
 
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
-  const code   = searchParams.get("code")
-  const intent = searchParams.get("intent")
-  const type   = searchParams.get("type")
+  const code = searchParams.get("code")
+  const next = searchParams.get("next") ?? "/"
 
-  const redirectTarget = (intent === "invite" || type === "recovery")
-    ? new URL("/set-password", origin)
-    : new URL("/", origin)
-
-  const supabaseResponse = NextResponse.redirect(redirectTarget)
+  const supabaseResponse = NextResponse.redirect(new URL(next, origin))
 
   if (code) {
     const supabase = createServerClient(
