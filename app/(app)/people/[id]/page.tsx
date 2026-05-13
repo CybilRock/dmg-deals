@@ -23,17 +23,19 @@ export default async function ConsultantPage({
   params,
   searchParams,
 }: {
-  params: { id: string }
-  searchParams: { invited?: string }
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ invited?: string }>
 }) {
+  const { id } = await params
+  const { invited } = await searchParams
   const supabase = createAdminClient()
 
   const [{ data: person }, { data: deals }] = await Promise.all([
-    supabase.from("people").select("*").eq("id", params.id).single(),
+    supabase.from("people").select("*").eq("id", id).single(),
     supabase
       .from("deals")
       .select("id, client_name, product, deposit_type, deal_value, consultant_payout, drip_remaining_payout, source_brand, deal_date, status, self_generated")
-      .eq("consultant_id", params.id)
+      .eq("consultant_id", id)
       .order("deal_date", { ascending: false }),
   ])
 
@@ -101,7 +103,7 @@ export default async function ConsultantPage({
                   : "Add an email address to enable portal access."}
               </p>
             </div>
-            {searchParams.invited === "true" ? (
+            {invited === "true" ? (
               <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg">
                 Invite sent ✓
               </span>

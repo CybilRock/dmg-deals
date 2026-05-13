@@ -6,14 +6,15 @@ import { notFound } from "next/navigation"
 
 export const dynamic = "force-dynamic"
 
-export default async function EditDealPage({ params }: { params: { id: string } }) {
+export default async function EditDealPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const supabase = createAdminClient()
 
   const [{ data: deal }, { data: consultants }] = await Promise.all([
     supabase
       .from("deals")
       .select("*")
-      .eq("id", params.id)
+      .eq("id", id)
       .single(),
     supabase
       .from("people")
@@ -56,7 +57,7 @@ export default async function EditDealPage({ params }: { params: { id: string } 
           <DealForm
             consultants={consultants ?? []}
             initialValues={initialValues}
-            dealId={params.id}
+            dealId={id}
           />
         </div>
       </div>

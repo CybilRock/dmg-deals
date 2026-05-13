@@ -45,11 +45,12 @@ const PERIOD_TABS = [
 export default async function LedgersPage({
   searchParams,
 }: {
-  searchParams: { period?: string; tab?: string }
+  searchParams: Promise<{ period?: string; tab?: string }>
 }) {
+  const { tab: tabParam, period: periodParam } = await searchParams
   const supabase = createAdminClient()
-  const tab    = searchParams.tab    ?? "dhr"
-  const period = searchParams.period ?? "all"
+  const tab    = tabParam    ?? "dhr"
+  const period = periodParam ?? "all"
 
   const now = new Date()
   let sinceDate: string | null = null
