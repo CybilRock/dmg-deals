@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const type   = searchParams.get("type")
 
   const redirectTarget = (intent === "invite" || type === "recovery")
-    ? new URL("/portal/set-password", origin)
+    ? new URL("/set-password", origin)
     : new URL("/", origin)
 
   const supabaseResponse = NextResponse.redirect(redirectTarget)

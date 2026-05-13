@@ -21,7 +21,6 @@ export default function SetPasswordPage() {
   )
 
   useEffect(() => {
-    // Exchange PKCE code if present in URL
     const code = searchParams.get("code")
     if (code) {
       supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
@@ -31,14 +30,12 @@ export default function SetPasswordPage() {
       return
     }
 
-    // For implicit flow (hash tokens) — Supabase SDK fires onAuthStateChange automatically
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session && (event === "SIGNED_IN" || event === "PASSWORD_RECOVERY")) {
         setReady(true)
       }
     })
 
-    // Check if already authenticated (e.g. PKCE session set by server callback)
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) setReady(true)
     })
@@ -60,15 +57,21 @@ export default function SetPasswordPage() {
 
   if (!ready && !error) {
     return (
-      <div className="flex-1 flex items-center justify-center p-6">
+      <div className="min-h-screen bg-[#0d0d0d] flex items-center justify-center p-6">
         <p className="text-sm text-[#aaa]">Verifying your invite…</p>
       </div>
     )
   }
 
   return (
-    <div className="flex-1 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-[#0d0d0d] flex items-center justify-center p-6">
       <div className="w-full max-w-sm">
+        <div className="text-center mb-8">
+          <p className="text-[#c9a84c] font-light text-lg tracking-[0.15em] leading-none">dream</p>
+          <p className="text-white text-xs font-bold tracking-[0.25em] uppercase leading-none mt-1">Merchant Group</p>
+          <p className="text-xs text-[#555] tracking-widest uppercase mt-2">My Portal</p>
+        </div>
+
         <div className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-2xl p-6 space-y-4">
           <div>
             <p className="text-sm font-semibold text-[#f5f5f5]">Set your password</p>
