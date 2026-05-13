@@ -4,7 +4,8 @@ import { NextResponse } from "next/server"
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
-  const code = searchParams.get("code")
+  const code   = searchParams.get("code")
+  const intent = searchParams.get("intent")
 
   if (code) {
     const cookieStore = await cookies()
@@ -27,6 +28,10 @@ export async function GET(request: Request) {
     await supabase.auth.exchangeCodeForSession(code)
   }
 
-  // After email invite acceptance, land on portal (role dispatch at root)
+  // Invited users have no password yet — send them to set one
+  if (intent === "invite") {
+    return NextResponse.redirect(`${origin}/portal/set-password`)
+  }
+
   return NextResponse.redirect(`${origin}/`)
 }
