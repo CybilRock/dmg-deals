@@ -40,6 +40,7 @@ export default async function EditDealPage({ params }: { params: Promise<{ id: s
       .from("deals")
       .select("deal_value")
       .eq("booker_id", activeBooker.id)
+      .eq("product", "DVC")
       .neq("status", "cancelled")
       .neq("id", id)
     bookerCumulativeDealValue = bookerDeals?.reduce((s, d) => s + (d.deal_value ?? 0), 0) ?? 0

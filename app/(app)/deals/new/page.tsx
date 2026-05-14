@@ -30,6 +30,7 @@ export default async function NewDealPage() {
       .from("deals")
       .select("deal_value")
       .eq("booker_id", activeBooker.id)
+      .eq("product", "DVC")
       .neq("status", "cancelled")
     bookerCumulativeDealValue = bookerDeals?.reduce((s, d) => s + (d.deal_value ?? 0), 0) ?? 0
   }
