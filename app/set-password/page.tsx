@@ -110,13 +110,6 @@ function SetPasswordForm() {
             Back to sign in
           </Link>
         </div>
-      ) : error ? (
-        <div className="space-y-3">
-          <p className="text-xs text-red-400 bg-red-950/30 border border-red-800 rounded-lg px-3 py-2">{error}</p>
-          <Link href="/forgot-password" className="block text-center text-xs text-[#c9a84c] hover:text-[#b8943e] transition-colors">
-            Request a new link
-          </Link>
-        </div>
       ) : !ready ? (
         <p className="text-xs text-[#aaa]">Verifying your invite…</p>
       ) : (
@@ -144,6 +137,10 @@ function SetPasswordForm() {
               onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
             />
           </div>
+
+          {error && (
+            <p className="text-xs text-red-400 bg-red-950/30 border border-red-800 rounded-lg px-3 py-2">{error}</p>
+          )}
 
           <button
             type="button"
