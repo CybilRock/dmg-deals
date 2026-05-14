@@ -37,10 +37,10 @@ function calcRetentionRate(commission: number) {
   return commission > 150000 ? 0.15 : 0.10
 }
 
-function calcDebbieRate(cumulativeValue: number, depositType: string): number {
-  if (cumulativeValue > 1_000_000) return 0.03
-  if (cumulativeValue > 500_000)   return 0.02
-  return depositType === "no_deposit" ? 0.01 : 0.015
+function calcDebbieRate(cumulativeValue: number): number {
+  if (cumulativeValue > 1_000_000) return 0.02
+  if (cumulativeValue > 500_000)   return 0.015
+  return 0.01
 }
 
 type Consultant = { id: string; name: string; is_owner: boolean }
@@ -132,7 +132,7 @@ export default function DealForm({
     const contractorBase      = points * CONTRACTOR_BASE
     const consultantPayout    = contractorBase * effectiveConsRate      // paid now
     const consultantDripPayout = contractorBase * consultantDripRate    // paid as drip arrives
-    const bookerRate          = calcDebbieRate(bookerCumulativeDealValue + dealValue, form.depositType)
+    const bookerRate          = calcDebbieRate(bookerCumulativeDealValue + dealValue)
     const bookerPayout        = contractorBase * bookerRate
     const dmgNet              = netExclVat - consultantPayout - consultantDripPayout - bookerPayout
 
