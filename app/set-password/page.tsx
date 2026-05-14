@@ -45,7 +45,7 @@ function SetPasswordForm() {
 
     // Token hash flow (custom email template, scanner-safe)
     const tokenHash = searchParams.get("token_hash")
-    const tokenType = (searchParams.get("type") ?? "invite") as "invite" | "recovery"
+    const tokenType = (searchParams.get("type") ?? "signup") as "signup" | "invite" | "recovery"
     if (tokenHash) {
       supabase.auth.verifyOtp({ token_hash: tokenHash, type: tokenType }).then(({ data, error }) => {
         if (error || !data.session) {
