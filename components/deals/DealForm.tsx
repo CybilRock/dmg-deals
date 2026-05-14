@@ -37,9 +37,9 @@ function calcRetentionRate(commission: number) {
   return commission > 150000 ? 0.15 : 0.10
 }
 
-function calcDebbieRate(dealValue: number, depositType: string): number {
-  if (dealValue > 1_000_000) return 0.03
-  if (dealValue > 500_000)   return 0.02
+function calcDebbieRate(cumulativeValue: number, depositType: string): number {
+  if (cumulativeValue > 1_000_000) return 0.03
+  if (cumulativeValue > 500_000)   return 0.02
   return depositType === "no_deposit" ? 0.01 : 0.015
 }
 
@@ -65,10 +65,12 @@ export default function DealForm({
   consultants,
   initialValues,
   dealId,
+  bookerCumulativeDealValue = 0,
 }: {
   consultants: Consultant[]
   initialValues?: Partial<DealFormInitialValues>
   dealId?: string
+  bookerCumulativeDealValue?: number
 }) {
   const [pending, startTransition] = useTransition()
   const [saveError, setSaveError] = useState<string | null>(null)
@@ -130,7 +132,7 @@ export default function DealForm({
     const contractorBase      = points * CONTRACTOR_BASE
     const consultantPayout    = contractorBase * effectiveConsRate      // paid now
     const consultantDripPayout = contractorBase * consultantDripRate    // paid as drip arrives
-    const bookerRate          = calcDebbieRate(dealValue, form.depositType)
+    const bookerRate          = calcDebbieRate(bookerCumulativeDealValue + dealValue, form.depositType)
     const bookerPayout        = contractorBase * bookerRate
     const dmgNet              = netExclVat - consultantPayout - consultantDripPayout - bookerPayout
 
@@ -147,7 +149,7 @@ export default function DealForm({
       isDrip,
       isOwner: isOwnerConsultant,
     }
-  }, [form.product, form.points, form.depositType, form.selfGenerated, isOwnerConsultant])
+  }, [form.product, form.points, form.depositType, form.selfGenerated, isOwnerConsultant, bookerCumulativeDealValue])
 
   // HolidayCorp calculation
   const calcHCorp = useMemo(() => {

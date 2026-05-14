@@ -10,7 +10,7 @@ export default async function EditDealPage({ params }: { params: Promise<{ id: s
   const { id } = await params
   const supabase = createAdminClient()
 
-  const [{ data: deal }, { data: consultants }] = await Promise.all([
+  const [{ data: deal }, { data: consultants }, { data: activeBooker }] = await Promise.all([
     supabase
       .from("deals")
       .select("*")
@@ -22,9 +22,28 @@ export default async function EditDealPage({ params }: { params: Promise<{ id: s
       .in("role", ["consultant", "both"])
       .eq("active", true)
       .order("name"),
+    supabase
+      .from("people")
+      .select("id")
+      .in("role", ["booker", "both"])
+      .eq("active", true)
+      .order("created_at")
+      .limit(1)
+      .maybeSingle(),
   ])
 
   if (!deal) notFound()
+
+  let bookerCumulativeDealValue = 0
+  if (activeBooker) {
+    const { data: bookerDeals } = await supabase
+      .from("deals")
+      .select("deal_value")
+      .eq("booker_id", activeBooker.id)
+      .neq("status", "cancelled")
+      .neq("id", id)
+    bookerCumulativeDealValue = bookerDeals?.reduce((s, d) => s + (d.deal_value ?? 0), 0) ?? 0
+  }
 
   const initialValues: DealFormInitialValues = {
     clientName:       deal.client_name,
@@ -58,6 +77,7 @@ export default async function EditDealPage({ params }: { params: Promise<{ id: s
             consultants={consultants ?? []}
             initialValues={initialValues}
             dealId={id}
+            bookerCumulativeDealValue={bookerCumulativeDealValue}
           />
         </div>
       </div>
