@@ -31,6 +31,7 @@ export default async function NewDealPage() {
       .select("deal_value")
       .eq("booker_id", activeBooker.id)
       .eq("product", "DVC")
+      .neq("deposit_type", "no_deposit")
       .neq("status", "cancelled")
     bookerCumulativeDealValue = bookerDeals?.reduce((s, d) => s + (d.deal_value ?? 0), 0) ?? 0
   }

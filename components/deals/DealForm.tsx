@@ -132,7 +132,7 @@ export default function DealForm({
     const contractorBase      = points * CONTRACTOR_BASE
     const consultantPayout    = contractorBase * effectiveConsRate      // paid now
     const consultantDripPayout = contractorBase * consultantDripRate    // paid as drip arrives
-    const bookerRate          = calcDebbieRate(bookerCumulativeDealValue + dealValue)
+    const bookerRate          = isDrip ? 0.01 : calcDebbieRate(bookerCumulativeDealValue + dealValue)
     const bookerPayout        = contractorBase * bookerRate
     const dmgNet              = netExclVat - consultantPayout - consultantDripPayout - bookerPayout
 
