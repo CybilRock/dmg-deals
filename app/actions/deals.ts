@@ -3,6 +3,46 @@
 import { createAdminClient } from "@/lib/supabase/admin"
 import { redirect } from "next/navigation"
 
+const CONTRACTOR_BASE = 15.5
+
+function debbieRate(totalTurnover: number): number {
+  if (totalTurnover > 1_000_000) return 0.02
+  if (totalTurnover > 500_000)   return 0.015
+  return 0.01
+}
+
+async function repriceBookerDeals(
+  supabase: ReturnType<typeof createAdminClient>,
+  bookerId: string,
+) {
+  const { data: deals } = await supabase
+    .from("deals")
+    .select("id, points, deposit_type, deal_value, net_excl_vat, consultant_payout, drip_remaining_payout")
+    .eq("booker_id", bookerId)
+    .eq("product", "DVC")
+    .neq("status", "cancelled")
+
+  if (!deals?.length) return
+
+  const totalTurnover = deals
+    .filter((d) => d.deposit_type !== "no_deposit")
+    .reduce((s, d) => s + (d.deal_value ?? 0), 0)
+
+  const flatRate = debbieRate(totalTurnover)
+
+  await Promise.all(deals.map((deal) => {
+    const isDrip  = deal.deposit_type === "no_deposit"
+    const rate    = isDrip ? 0.01 : flatRate
+    const payout  = (deal.points ?? 0) * CONTRACTOR_BASE * rate
+    const dmgNet  = (deal.net_excl_vat ?? 0) - (deal.consultant_payout ?? 0) - (deal.drip_remaining_payout ?? 0) - payout
+    return supabase.from("deals").update({
+      booker_rate:   rate,
+      booker_payout: Math.round(payout * 100) / 100,
+      dmg_net:       Math.round(dmgNet * 100) / 100,
+    }).eq("id", deal.id)
+  }))
+}
+
 type DealPayload = {
   clientName:          string
   clientPhone:         string
@@ -92,11 +132,22 @@ export async function saveDeal(data: DealPayload): Promise<{ error?: string }> {
     })
   }
 
+  if (activebooker?.id) await repriceBookerDeals(supabase, activebooker.id)
+
   redirect("/deals")
 }
 
 export async function updateDeal(id: string, data: DealPayload): Promise<{ error?: string }> {
   const supabase = createAdminClient()
+
+  const { data: activeBooker } = await supabase
+    .from("people")
+    .select("id")
+    .in("role", ["booker", "both"])
+    .eq("active", true)
+    .order("created_at")
+    .limit(1)
+    .maybeSingle()
 
   const { error } = await supabase
     .from("deals")
@@ -133,6 +184,8 @@ export async function updateDeal(id: string, data: DealPayload): Promise<{ error
     .eq("id", id)
 
   if (error) return { error: error.message }
+
+  if (activeBooker?.id) await repriceBookerDeals(supabase, activeBooker.id)
 
   redirect("/deals")
 }
