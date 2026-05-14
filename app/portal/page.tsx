@@ -17,25 +17,6 @@ const DEPOSIT_LABEL: Record<string, string> = {
   "hcorp_10yr":     "HCorp 10-Year",
 }
 
-const LEAD_STATUS_LABEL: Record<string, string> = {
-  new:          "New",
-  contacted:    "Contacted",
-  qualified:    "Qualified",
-  appointment:  "Appointment",
-  presented:    "Presented",
-  closed_won:   "Won",
-  closed_lost:  "Lost",
-}
-
-const STATUS_DOT: Record<string, string> = {
-  new:         "bg-[#555]",
-  contacted:   "bg-blue-400",
-  qualified:   "bg-violet-400",
-  appointment: "bg-amber-400",
-  presented:   "bg-orange-400",
-  closed_won:  "bg-emerald-400",
-  closed_lost: "bg-red-400",
-}
 
 export default async function PortalPage() {
   const supabase = await createClient()
@@ -56,18 +37,11 @@ export default async function PortalPage() {
   const payoutCol   = isBooker ? "booker_payout" : "consultant_payout"
   const filterCol   = isBooker ? "booker_id"     : "consultant_id"
 
-  const [{ data: deals }, { data: leads }] = await Promise.all([
-    supabase
-      .from("deals")
-      .select(`id, client_name, product, deposit_type, deal_value, ${payoutCol}, source_brand, deal_date, status, self_generated`)
-      .eq(filterCol, person.id)
-      .order("deal_date", { ascending: false }),
-    supabase
-      .from("leads")
-      .select("id, name, phone, email, source_brand, status, created_at")
-      .eq("assigned_to", person.id)
-      .order("created_at", { ascending: false }),
-  ])
+  const { data: deals } = await admin
+    .from("deals")
+    .select(`id, client_name, product, deposit_type, deal_value, ${payoutCol}, source_brand, deal_date, status, self_generated`)
+    .eq(filterCol, person.id)
+    .order("deal_date", { ascending: false })
 
   const getPayout = (d: Record<string, unknown>) => (d[payoutCol] as number | null) ?? 0
 
@@ -79,8 +53,6 @@ export default async function PortalPage() {
   const totalEarned   = dvcEarned + hcorpEarned
 
   const roleLabel     = person.role === "booker" ? "Pre-Sales" : person.role === "both" ? "Consultant & Pre-Sales" : "Consultant"
-  const openLeads     = (leads ?? []).filter((l) => l.status !== "closed_won" && l.status !== "closed_lost")
-  const wonLeads      = (leads ?? []).filter((l) => l.status === "closed_won")
 
   return (
     <div className="p-4 md:p-6 space-y-6 max-w-4xl mx-auto">
@@ -97,7 +69,6 @@ export default async function PortalPage() {
       <div className="flex gap-4 text-xs font-semibold border-b border-[#2e2e2e] pb-3">
         <a href="#earnings" className="text-[#c9a84c] hover:text-[#b8943e]">Earnings</a>
         <a href="#deals"    className="text-[#a8a8a8] hover:text-[#f5f5f5]">Deals</a>
-        <a href="#leads"    className="text-[#a8a8a8] hover:text-[#f5f5f5]">My People</a>
       </div>
 
       {/* ─── EARNINGS ─── */}
@@ -229,41 +200,6 @@ export default async function PortalPage() {
             </>
           )}
         </div>
-      </section>
-
-      {/* ─── MY PEOPLE / LEADS ─── */}
-      <section id="leads">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-[10px] font-bold text-[#aaa] uppercase tracking-widest">My People</h2>
-          {leads && leads.length > 0 && (
-            <span className="text-[10px] text-[#888]">{openLeads.length} open · {wonLeads.length} won</span>
-          )}
-        </div>
-
-        {!leads?.length ? (
-          <div className="bg-[#1a1a1a] rounded-xl border border-[#2e2e2e] p-6 text-center">
-            <p className="text-sm text-[#888]">No leads assigned yet.</p>
-            <p className="text-xs text-[#888] mt-1">Leads assigned to you by the office will appear here.</p>
-          </div>
-        ) : (
-          <div className="space-y-2">
-            {leads.map((l) => (
-              <div key={l.id} className="bg-[#1a1a1a] border border-[#2e2e2e] rounded-xl p-4 flex items-center justify-between">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className={`w-2 h-2 rounded-full shrink-0 ${STATUS_DOT[l.status] ?? "bg-[#555]"}`} />
-                  <div className="min-w-0">
-                    <p className="font-semibold text-[#f5f5f5] text-sm truncate">{l.name}</p>
-                    {l.phone && <p className="text-xs text-[#888] mt-0.5">{l.phone}</p>}
-                    {l.source_brand && <p className="text-xs text-[#555] mt-0.5">{l.source_brand}</p>}
-                  </div>
-                </div>
-                <span className="text-[10px] font-semibold text-[#a8a8a8] shrink-0 ml-3">
-                  {LEAD_STATUS_LABEL[l.status] ?? l.status}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
       </section>
 
     </div>
