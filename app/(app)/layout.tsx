@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { redirect } from "next/navigation"
 import LayoutShell from "@/components/layout/LayoutShell"
 
@@ -9,7 +10,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   if (!user) redirect("/login")
 
-  const { data: person } = await supabase
+  // Use admin client so RLS never blocks the lookup — if this user has a people
+  // record they are staff and must be sent to /portal regardless of RLS policies
+  const admin = createAdminClient()
+  const { data: person } = await admin
     .from("people")
     .select("id")
     .eq("email", user.email)

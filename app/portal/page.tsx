@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { formatRand, formatDate } from "@/lib/utils"
 import { redirect } from "next/navigation"
 
@@ -42,7 +43,8 @@ export default async function PortalPage() {
 
   if (!user) redirect("/login")
 
-  const { data: person } = await supabase
+  const admin = createAdminClient()
+  const { data: person } = await admin
     .from("people")
     .select("*")
     .eq("email", user.email)
