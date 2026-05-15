@@ -4,6 +4,7 @@ import TopBar from "@/components/layout/TopBar"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import PortalInviteButton from "./PortalInviteButton"
+import CommsLog from "./CommsLog"
 
 export const dynamic = "force-dynamic"
 
@@ -27,13 +28,18 @@ export default async function ConsultantPage({
   const { id } = await params
   const supabase = createAdminClient()
 
-  const [{ data: person }, { data: deals }] = await Promise.all([
+  const [{ data: person }, { data: deals }, { data: commsEntries }] = await Promise.all([
     supabase.from("people").select("*").eq("id", id).single(),
     supabase
       .from("deals")
       .select("id, client_name, product, deposit_type, deal_value, consultant_payout, drip_remaining_payout, source_brand, deal_date, status, self_generated")
       .eq("consultant_id", id)
       .order("deal_date", { ascending: false }),
+    supabase
+      .from("comms_log")
+      .select("id, created_at, type, direction, summary, logged_by")
+      .eq("person_id", id)
+      .order("created_at", { ascending: false }),
   ])
 
   if (!person) notFound()
@@ -181,6 +187,9 @@ export default async function ConsultantPage({
             )}
           </div>
         </section>
+
+        {/* Comms Log */}
+        <CommsLog personId={id} initial={commsEntries ?? []} />
 
       </div>
     </>
