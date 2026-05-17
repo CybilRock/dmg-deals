@@ -60,6 +60,8 @@ export default function BookingFlow() {
   const [phone, setPhone]             = useState("")
   const [email, setEmail]             = useState("")
   const [interest, setInterest]       = useState<"Dream Vacation Club" | "HolidayCorp" | "Both">("Dream Vacation Club")
+  const [area, setArea]               = useState<"Gauteng North" | "Gauteng South" | "Western Cape" | "Other">("Gauteng North")
+  const [referredBy, setReferredBy]   = useState("")
   const [error, setError]             = useState<string | null>(null)
   const [isPending, startTransition]  = useTransition()
 
@@ -103,7 +105,7 @@ export default function BookingFlow() {
     const appointmentAt = `${toDateStr(selectedDate)}T${selectedTime}:00+02:00`
 
     startTransition(async () => {
-      const result = await createBooking({ name, phone, email, interest, appointment_at: appointmentAt })
+      const result = await createBooking({ name, phone, email, interest, area, referred_by: referredBy, appointment_at: appointmentAt })
       if ("error" in result) { setError(result.error); return }
       setStep("done")
     })
@@ -300,6 +302,39 @@ export default function BookingFlow() {
                 </button>
               ))}
             </div>
+          </div>
+
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[#555] mb-2">Your area</p>
+            <div className="grid grid-cols-2 gap-2">
+              {(["Gauteng North", "Gauteng South", "Western Cape", "Other"] as const).map((opt) => (
+                <button
+                  key={opt}
+                  onClick={() => setArea(opt)}
+                  className={`py-2 rounded-lg text-xs font-semibold border transition-colors ${
+                    area === opt
+                      ? "border-[#c9a84c] text-[#c9a84c] bg-[#c9a84c]/10"
+                      : "border-[#2e2e2e] text-[#555] hover:border-[#3e3e3e] hover:text-[#888]"
+                  }`}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[#555] mb-2">Referred by <span className="normal-case font-normal">(optional)</span></p>
+            <select
+              value={referredBy}
+              onChange={(e) => setReferredBy(e.target.value)}
+              className="w-full bg-[#111] border border-[#2e2e2e] rounded-lg px-3 py-2.5 text-sm text-[#f5f5f5] focus:outline-none focus:border-[#c9a84c] transition-colors"
+            >
+              <option value="">— not referred —</option>
+              <option value="Cybil">Cybil</option>
+              <option value="Clint">Clint</option>
+              <option value="Sebastian">Sebastian</option>
+            </select>
           </div>
 
           {error && <p className="text-xs text-red-400">{error}</p>}

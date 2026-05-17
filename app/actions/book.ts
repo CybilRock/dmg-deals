@@ -20,11 +20,20 @@ export async function getBookedSlots(date: string): Promise<string[]> {
   return (data ?? []).map((r) => r.appointment_at as string)
 }
 
+const GEO_MAP: Record<string, string> = {
+  "Gauteng North": "Cybil",
+  "Gauteng South": "Clint",
+  "Western Cape":  "Sebastian",
+  "Other":         "Cybil",
+}
+
 export async function createBooking(data: {
   name: string
   phone: string
   email: string
   interest: string
+  area: string
+  referred_by: string
   appointment_at: string
 }): Promise<{ error: string } | { success: true }> {
   if (!data.name.trim())  return { error: "Name is required." }
@@ -33,29 +42,55 @@ export async function createBooking(data: {
 
   const supabase = createAdminClient()
 
-  // Round-robin: assign to active consultant with fewest current appointments
   const { data: consultants } = await supabase
     .from("people")
-    .select("id")
+    .select("id, name")
     .in("role", ["consultant", "both"])
     .eq("active", true)
 
   let assignedTo: string | null = null
 
   if (consultants && consultants.length > 0) {
-    const counts = await Promise.all(
-      consultants.map(async (c) => {
-        const { count } = await supabase
-          .from("leads")
-          .select("*", { count: "exact", head: true })
-          .eq("assigned_to", c.id)
-          .eq("status", "appointment")
-        return { id: c.id, count: count ?? 0 }
-      })
-    )
-    counts.sort((a, b) => a.count - b.count)
-    assignedTo = counts[0].id
+    // 1. Referral override — referred client always goes to the referring consultant
+    if (data.referred_by) {
+      const match = consultants.find((c) =>
+        c.name.toLowerCase().includes(data.referred_by.toLowerCase())
+      )
+      if (match) assignedTo = match.id
+    }
+
+    // 2. Geo-routing — route by client area
+    if (!assignedTo && data.area) {
+      const targetName = GEO_MAP[data.area]
+      if (targetName) {
+        const match = consultants.find((c) =>
+          c.name.toLowerCase().includes(targetName.toLowerCase())
+        )
+        if (match) assignedTo = match.id
+      }
+    }
+
+    // 3. Round-robin fallback — fewest current appointments
+    if (!assignedTo) {
+      const counts = await Promise.all(
+        consultants.map(async (c) => {
+          const { count } = await supabase
+            .from("leads")
+            .select("*", { count: "exact", head: true })
+            .eq("assigned_to", c.id)
+            .eq("status", "appointment")
+          return { id: c.id, count: count ?? 0 }
+        })
+      )
+      counts.sort((a, b) => a.count - b.count)
+      assignedTo = counts[0].id
+    }
   }
+
+  const noteParts = []
+  if (data.interest)    noteParts.push(`Interest: ${data.interest}`)
+  if (data.area)        noteParts.push(`Area: ${data.area}`)
+  if (data.referred_by) noteParts.push(`Referred by: ${data.referred_by}`)
 
   const { error } = await supabase.from("leads").insert({
     name:           data.name.trim(),
@@ -66,7 +101,7 @@ export async function createBooking(data: {
     status:         "appointment",
     appointment_at: data.appointment_at,
     assigned_to:    assignedTo,
-    notes:          data.interest ? `Interest: ${data.interest}` : null,
+    notes:          noteParts.length > 0 ? noteParts.join(" | ") : null,
   })
 
   if (error) {
