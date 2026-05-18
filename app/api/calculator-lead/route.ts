@@ -6,6 +6,13 @@ const ALLOWED_ORIGINS = new Set([
   "https://www.holidaybrokers.co.za",
 ])
 
+// Vercel country-region code → consultant UUID (update when Sebastian is added to people table)
+const REGION_MAP: Record<string, string> = {
+  GP:  "4eaaaecf-cff5-4b04-b381-9eb195f977d7", // Gauteng → Cybil
+  KZN: "8eb3c0eb-2ecb-4d6e-8e21-c98b6568b4a6", // KwaZulu-Natal → Clint
+  // WC (Western Cape → Sebastian) — falls to round-robin until Sebastian is added to people table
+}
+
 function cors(res: NextResponse, origin: string | null) {
   const allowed = origin && ALLOWED_ORIGINS.has(origin) ? origin : "https://holidaybrokers.co.za"
   res.headers.set("Access-Control-Allow-Origin", allowed)
@@ -29,19 +36,54 @@ export async function POST(req: NextRequest) {
   }
 
   const supabase = createAdminClient()
-  const name = first_name?.trim() || email
-
+  const name   = first_name?.trim() || email
   const city   = req.headers.get("x-vercel-ip-city") ?? null
   const region = req.headers.get("x-vercel-ip-country-region") ?? null
 
+  let assignedTo: string | null = null
+
+  const { data: consultants } = await supabase
+    .from("people")
+    .select("id, name")
+    .in("role", ["consultant", "both"])
+    .eq("active", true)
+
+  if (consultants && consultants.length > 0) {
+    // Geo-route by UUID — no fragile name matching
+    if (region) {
+      const targetId = REGION_MAP[region.toUpperCase()]
+      if (targetId && consultants.find((c) => c.id === targetId)) {
+        assignedTo = targetId
+      }
+    }
+
+    // Round-robin fallback — single aggregated query instead of N queries
+    if (!assignedTo) {
+      const consultantIds = consultants.map((c) => c.id)
+      const { data: counts } = await supabase
+        .from("leads")
+        .select("assigned_to, count:id.count()")
+        .in("assigned_to", consultantIds)
+
+      const countMap = Object.fromEntries(
+        (counts ?? []).map((r: { assigned_to: string; count: number }) => [r.assigned_to, r.count])
+      )
+      const sorted = consultants
+        .map((c) => ({ id: c.id, count: countMap[c.id] ?? 0 }))
+        .sort((a, b) => a.count - b.count)
+      assignedTo = sorted[0].id
+    }
+  }
+
   const { error } = await supabase.from("leads").insert({
     name,
-    email: email.trim().toLowerCase(),
-    source_brand: "Holiday Brokers",
+    email:          email.trim().toLowerCase(),
+    source_brand:   "Holiday Brokers",
     source_channel: "calculator",
-    status: "new",
+    status:         "new",
     city,
     region,
+    assigned_to:    assignedTo,
   })
 
   if (error) {

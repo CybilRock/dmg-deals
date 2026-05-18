@@ -20,11 +20,12 @@ export async function getBookedSlots(date: string): Promise<string[]> {
   return (data ?? []).map((r) => r.appointment_at as string)
 }
 
+// Area → consultant UUID (update WC entry when Sebastian is added to people table)
 const GEO_MAP: Record<string, string> = {
-  "Gauteng North": "Cybil",
-  "Gauteng South": "Clint",
-  "Western Cape":  "Sebastian",
-  "Other":         "Cybil",
+  "Gauteng North": "4eaaaecf-cff5-4b04-b381-9eb195f977d7", // Cybil
+  "Gauteng South": "8eb3c0eb-2ecb-4d6e-8e21-c98b6568b4a6", // Clint
+  "Western Cape":  "",                                       // Sebastian — add UUID when active
+  "Other":         "4eaaaecf-cff5-4b04-b381-9eb195f977d7", // Cybil
 }
 
 export async function createBooking(data: {
@@ -59,14 +60,11 @@ export async function createBooking(data: {
       if (match) assignedTo = match.id
     }
 
-    // 2. Geo-routing — route by client area
+    // 2. Geo-routing — route by client area using UUID directly
     if (!assignedTo && data.area) {
-      const targetName = GEO_MAP[data.area]
-      if (targetName) {
-        const match = consultants.find((c) =>
-          c.name.toLowerCase().includes(targetName.toLowerCase())
-        )
-        if (match) assignedTo = match.id
+      const targetId = GEO_MAP[data.area]
+      if (targetId && consultants.find((c) => c.id === targetId)) {
+        assignedTo = targetId
       }
     }
 
