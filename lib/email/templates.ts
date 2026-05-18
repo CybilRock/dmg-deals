@@ -245,39 +245,31 @@ export function agentEmail2(firstName: string): EmailTemplate {
         <thead>
           <tr style="background:#f4f4f4;">
             <th style="padding:10px 12px;text-align:left;border:1px solid #ddd;">Membership</th>
-            <th style="padding:10px 12px;text-align:left;border:1px solid #ddd;">Close Price</th>
-            <th style="padding:10px 12px;text-align:left;border:1px solid #ddd;">Referral (10%)</th>
-            <th style="padding:10px 12px;text-align:left;border:1px solid #ddd;">Consultant (15%)</th>
-            <th style="padding:10px 12px;text-align:left;border:1px solid #ddd;">Senior (20%)</th>
+            <th style="padding:10px 12px;text-align:left;border:1px solid #ddd;">Sale Price</th>
+            <th style="padding:10px 12px;text-align:left;border:1px solid #ddd;">Your Earning</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td style="padding:10px 12px;border:1px solid #ddd;">3-Year</td>
-            <td style="padding:10px 12px;border:1px solid #ddd;">R24,000</td>
-            <td style="padding:10px 12px;border:1px solid #ddd;">R2,400</td>
-            <td style="padding:10px 12px;border:1px solid #ddd;">R3,600</td>
-            <td style="padding:10px 12px;border:1px solid #ddd;">R4,800</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R25,000</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R2,500</td>
           </tr>
           <tr style="background:#fafafa;">
             <td style="padding:10px 12px;border:1px solid #ddd;">5-Year</td>
             <td style="padding:10px 12px;border:1px solid #ddd;">R54,000</td>
-            <td style="padding:10px 12px;border:1px solid #ddd;">R5,400</td>
-            <td style="padding:10px 12px;border:1px solid #ddd;">R8,100</td>
-            <td style="padding:10px 12px;border:1px solid #ddd;">R10,800</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R5,282</td>
           </tr>
           <tr>
             <td style="padding:10px 12px;border:1px solid #ddd;">10-Year</td>
             <td style="padding:10px 12px;border:1px solid #ddd;">R75,000</td>
-            <td style="padding:10px 12px;border:1px solid #ddd;">R7,500</td>
-            <td style="padding:10px 12px;border:1px solid #ddd;">R11,250</td>
-            <td style="padding:10px 12px;border:1px solid #ddd;">R15,000</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R7,300</td>
           </tr>
         </tbody>
       </table>
-      ${p(`${b("Referral agents")} start at 10%. You refer the lead, we close it. One 5-year referral earns you R5,400 for a conversation you had over coffee.`)}
-      ${p(`${b("Consultants")} earn 15%. You present and close the sale yourself, with our training and scripts behind you. Two 3-year closes a month puts R7,200 in your pocket — part-time.`)}
-      ${p(`${b("Senior consultants")} earn 20%. Volume-based. Achieved by hitting consistent monthly targets.`)}
+      ${p(`${b("Referral agents")} earn the same fixed amount — you refer the lead, we close it. One 5-year referral earns you R5,282 for a conversation you had over coffee.`)}
+      ${p(`${b("Sales consultants")} present and close the sale themselves, with our training and scripts behind you. Two 3-year closes a month puts R5,000 in your pocket — part-time.`)}
+      ${p(`${b("Senior consultants")} unlock higher tier earnings through volume. The more you close, the more you earn per close.`)}
       ${p("No inventory. No upfront cost. No monthly fees. You earn when you produce.")}
       ${p("Tomorrow I'll show you a real agent story.")}
       ${p("— Eva, Holiday Brokers")}
