@@ -1,4 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/admin"
+import { EMAIL_DELAYS_DAYS } from "@/lib/email/templates"
 import { NextRequest, NextResponse } from "next/server"
 
 const ALLOWED_ORIGINS = new Set([
@@ -90,7 +91,7 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const { error } = await supabase.from("leads").insert({
+  const { data: lead, error } = await supabase.from("leads").insert({
     name,
     email:          email.trim().toLowerCase(),
     source_brand:   "Holiday Brokers",
@@ -99,11 +100,24 @@ export async function POST(req: NextRequest) {
     city,
     region,
     assigned_to:    assignedTo,
-  })
+  }).select("id").single()
 
-  if (error) {
+  if (error || !lead) {
     console.error("[calculator-lead]", error)
     return cors(NextResponse.json({ error: "Failed to save lead" }, { status: 500 }), origin)
+  }
+
+  // Queue 5-email nurture sequence
+  const now = Date.now()
+  const queueRows = EMAIL_DELAYS_DAYS.map((days, i) => ({
+    lead_id:      lead.id,
+    email_number: i + 1,
+    scheduled_at: new Date(now + days * 24 * 60 * 60 * 1000).toISOString(),
+    status:       "pending",
+  }))
+  const { error: queueError } = await supabase.from("email_queue").insert(queueRows)
+  if (queueError) {
+    console.error("[calculator-lead] failed to queue emails — lead saved but sequence not scheduled", { lead_id: lead.id, error: queueError.message })
   }
 
   return cors(NextResponse.json({ success: true }), origin)
