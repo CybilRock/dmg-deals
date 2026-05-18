@@ -187,6 +187,20 @@ export function email5(firstName: string): EmailTemplate {
   }
 }
 
+export function emailAutoReply(toEmail: string): EmailTemplate {
+  return {
+    subject: "Got your message — Eva here",
+    html: layout(`
+      ${p("Hi,")}
+      ${p("Thanks for writing back — I've received your message and passed it to one of our consultants. They'll follow up with you directly.")}
+      ${p("In the meantime, if you'd rather move faster and pick a time that works for you:")}
+      ${bookingButton("Book a Call Now")}
+      ${p("Talk soon.")}
+      ${p("— Eva<br>Holiday Brokers")}
+    `),
+  }
+}
+
 // Delay in days for each email in the sequence (index 0 = email 1)
 export const EMAIL_DELAYS_DAYS = [0, 2, 5, 9, 14] as const
 
