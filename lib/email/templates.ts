@@ -1,5 +1,9 @@
 import { BOOKING_URL } from "./resend"
 
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
+}
+
 function bookingButton(label = "Book a Call") {
   return `<div style="margin:32px 0;text-align:center;">
     <a href="${BOOKING_URL}" style="background:#c9a84c;color:#000;font-weight:700;font-size:15px;padding:14px 32px;border-radius:8px;text-decoration:none;display:inline-block;">${label}</a>
@@ -53,7 +57,7 @@ export function email1(firstName: string): EmailTemplate {
   return {
     subject: "Your holiday savings report is ready",
     html: layout(`
-      ${p(`Hi ${firstName},`)}
+      ${p(`Hi ${escapeHtml(firstName)},`)}
       ${p("Thanks for running your numbers on the Holiday Brokers calculator.")}
       ${p("Here's the headline: most South Africans who travel 2–3 times a year recover the full cost of a HolidayCorp membership within the first year — sometimes in the first trip.")}
       ${p("Here's why that's possible.")}
@@ -73,7 +77,7 @@ export function email2(firstName: string): EmailTemplate {
   return {
     subject: "The hidden margin on every holiday you've ever booked",
     html: layout(`
-      ${p(`Hi ${firstName},`)}
+      ${p(`Hi ${escapeHtml(firstName)},`)}
       ${p("Quick question: when you booked your last flight, do you know how much the booking platform made on your ticket?")}
       ${p("Most people don't. Here's what actually happens.")}
       ${p("Airlines, hotels, car hire companies, and cruise lines all operate on margin. They sell through third-party platforms — travel agencies, booking sites — and pay those platforms a commission on every transaction. The platform builds that commission into the price you see. You pay it, unknowingly, every single time.")}
@@ -95,7 +99,7 @@ export function email3(firstName: string): EmailTemplate {
   return {
     subject: "He paid off his R24,000 membership in one trip to Amsterdam",
     html: layout(`
-      ${p(`Hi ${firstName},`)}
+      ${p(`Hi ${escapeHtml(firstName)},`)}
       ${p("This is a real client story. We share it because it shows the model working exactly as designed.")}
       <hr style="border:none;border-top:1px solid #ebebeb;margin:24px 0;">
       ${p("A doctor. A trip to Amsterdam. Four tickets.")}
@@ -119,7 +123,7 @@ export function email4(firstName: string): EmailTemplate {
   return {
     subject: '"Is this just a timeshare?"',
     html: layout(`
-      ${p(`Hi ${firstName},`)}
+      ${p(`Hi ${escapeHtml(firstName)},`)}
       ${p("We get this question constantly. And honestly? We understand why.")}
       ${p("The travel industry has a complicated history. Timeshares. Points clubs. Fractional ownership. Travel voucher schemes. Some of those products have served people well. Others haven't. And a lot of people have been burned by fine print they didn't read carefully enough.")}
       ${p("When someone describes a membership product that promises to save money on travel, it's completely reasonable to be sceptical.")}
@@ -140,7 +144,7 @@ export function email5(firstName: string): EmailTemplate {
   return {
     subject: "Let's run your actual numbers",
     html: layout(`
-      ${p(`Hi ${firstName},`)}
+      ${p(`Hi ${escapeHtml(firstName)},`)}
       ${p("You ran your numbers on the calculator a couple of weeks ago.")}
       ${p("If you're still thinking about it — that's normal. This is a real financial commitment. It should take some thought.")}
       ${p("Here's what we'd suggest: one 20-minute call with one of our consultants.")}
@@ -205,3 +209,130 @@ export function emailAutoReply(toEmail: string): EmailTemplate {
 export const EMAIL_DELAYS_DAYS = [0, 2, 5, 9, 14] as const
 
 export const EMAIL_TEMPLATES = [email1, email2, email3, email4, email5] as const
+
+// ---------------------------------------------------------------------------
+// Agent recruitment sequence
+// NOTE: Commission figures use ~20% of close price as conservative floor.
+//       Verify actual rate with HB before deploying.
+// ---------------------------------------------------------------------------
+
+export function agentEmail1(firstName: string): EmailTemplate {
+  return {
+    subject: "How the Holiday Brokers consultant model works",
+    html: layout(`
+      ${p(`Hi ${escapeHtml(firstName)},`)}
+      ${p("You asked about the Holiday Brokers consultant opportunity. Here's the honest picture.")}
+      ${p("Holiday Brokers is a sales brokerage. We sell HolidayCorp travel memberships to South African consumers — products that give members cashback on every flight, hotel, and holiday they book. Our consultants earn commission on every membership they close.")}
+      ${p(`${b("The model is straightforward:")}<br>
+You work leads — either your own network or warm leads we provide.<br>
+You present the membership on a call (we train you on everything).<br>
+You close the sale, the client signs, and you get paid.`)}
+      ${p("The product sells itself to the right person. South Africans who travel 2–3 times a year recover the full membership cost within the first year. Your job is getting that conversation in front of people who travel. We handle everything else.")}
+      ${p("Over the next few days I'll send you the actual commission breakdown, show you what an active consultant's month looks like, and answer the questions everyone asks.")}
+      ${p("If you'd rather just talk now:")}
+      ${bookingButton("Book a Call")}
+      ${p("— Eva<br>Holiday Brokers")}
+    `),
+  }
+}
+
+export function agentEmail2(firstName: string): EmailTemplate {
+  return {
+    subject: "What a single close actually pays",
+    html: layout(`
+      ${p(`Hi ${escapeHtml(firstName)},`)}
+      ${p("The commission structure is tiered to the membership.")}
+      ${p("HolidayCorp offers three agreements:")}
+      <table width="100%" style="border-collapse:collapse;margin:16px 0 24px 0;font-size:14px;">
+        <thead>
+          <tr style="background:#f4f4f4;">
+            <th style="padding:10px 12px;text-align:left;border:1px solid #ddd;">Membership</th>
+            <th style="padding:10px 12px;text-align:left;border:1px solid #ddd;">Close Price</th>
+            <th style="padding:10px 12px;text-align:left;border:1px solid #ddd;">Your Commission</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:10px 12px;border:1px solid #ddd;">3-Year</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R24,000</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">~R4,800</td>
+          </tr>
+          <tr style="background:#fafafa;">
+            <td style="padding:10px 12px;border:1px solid #ddd;">5-Year</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R54,000</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">~R10,800</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 12px;border:1px solid #ddd;">10-Year</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R75,000</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">~R15,000</td>
+          </tr>
+        </tbody>
+      </table>
+      ${p("Two 3-year closes a month: ~R9,600. One 5-year close: ~R10,800. Part-time, working your existing network.")}
+      ${p("Full-time consultants targeting five or more closes a month are earning well above the South African median salary — on a product with real consumer demand, no expiry, and no monthly fees on your end.")}
+      ${p("There's no inventory to carry. No physical product to ship. No cold-calling required. You need a phone, a quiet space, and a basic understanding of how money works.")}
+      ${p("Tomorrow I'll send you a real consultant story.")}
+      ${p("— Eva, Holiday Brokers")}
+    `),
+  }
+}
+
+export function agentEmail3(firstName: string): EmailTemplate {
+  return {
+    subject: "She went full-time after her third sale",
+    html: layout(`
+      ${p(`Hi ${escapeHtml(firstName)},`)}
+      ${p("Real story. Shared with permission.")}
+      <hr style="border:none;border-top:1px solid #ebebeb;margin:24px 0;">
+      ${p("A former HR manager. Late 30s. Joined Holiday Brokers as a part-time consultant while still in full employment.")}
+      ${p("Her first sale took six weeks. A colleague — someone she'd known for years, who travelled frequently, who'd never thought about a travel membership. She walked her through the HolidayCorp model on a Friday afternoon. That one close covered two months of her car payment.")}
+      ${p("Her second and third sales followed over the next month. Both people in her professional network. Both genuinely qualified — frequent travellers who recovered their membership cost within twelve months.")}
+      ${p(`By month four, she was earning more in commission than her base salary. ${b("She resigned.")}`)}
+      <hr style="border:none;border-top:1px solid #ebebeb;margin:24px 0;">
+      ${p("That's not a success story from a top performer. It's the expected outcome for someone who works their existing network, presents the product correctly, and closes consistently.")}
+      ${p("The product isn't a hard sell. If someone travels regularly and you can show them why paying hidden commission to a booking platform is worse than receiving that commission back — the sale happens. Your job is the conversation.")}
+      ${p("If this sounds like something you'd be good at:")}
+      ${bookingButton("Book a Call")}
+      ${p("— Eva, Holiday Brokers")}
+    `),
+  }
+}
+
+export function agentEmail4(firstName: string): EmailTemplate {
+  return {
+    subject: "The three questions everyone asks before joining",
+    html: layout(`
+      ${p(`Hi ${escapeHtml(firstName)},`)}
+      ${p("These come up on almost every first call. Here's the honest answer to each.")}
+      ${p(`${b('"Is this an MLM?"')}<br>No. You earn commission for closing sales — not for recruiting other consultants. There's no downline, no tiered structure below you, no recruitment quota. Holiday Brokers makes money when memberships are sold to consumers. You earn when you're the person who closed it.`)}
+      ${p(`${b('"Do I need sales experience?"')}<br>It helps, but it's not a prerequisite. We provide full product training, sales scripts, objection handling frameworks, and certification. Consultants with no prior sales background regularly outperform those who come in expecting it to be a conventional sales role — because they listen to the training instead of reverting to old habits.`)}
+      ${p(`${b('"Where do I get my leads?"')}<br>Two sources. Your own network first — the most effective starting point. South Africans who travel 2–3 times a year are everywhere: friends, colleagues, family, professional contacts. The second source is warm leads from Holiday Brokers — prospects generated by our website who've already expressed interest. As you build volume, we route more to you.`)}
+      ${p("One more thing: there's no upfront cost to join. No franchise fee. No product purchase required. You complete training and certification, and then you sell.")}
+      ${p("If you're ready to have the full conversation:")}
+      ${bookingButton("Book a Call")}
+      ${p("— Eva, Holiday Brokers")}
+    `),
+  }
+}
+
+export function agentEmail5(firstName: string): EmailTemplate {
+  return {
+    subject: "Still thinking about it?",
+    html: layout(`
+      ${p(`Hi ${escapeHtml(firstName)},`)}
+      ${p("You looked into the Holiday Brokers consultant opportunity a couple of weeks ago.")}
+      ${p("This isn't a pressure close. If the timing isn't right, keep this email and come back to it when it is.")}
+      ${p("But if you've been sitting on the decision — one honest reason to move sooner rather than later:")}
+      ${p(`${b("Capacity is real.")}<br>We're a structured brokerage, not an open marketplace. The number of active consultants in any given region is capped. When a region fills, the next intake goes on a waitlist. We're currently onboarding consultants in select areas. Once those spots are taken, the next window is months away.`)}
+      ${p("If you've done the maths and the income model makes sense — one 20-minute call with our team is all it takes to get started.")}
+      ${bookingButton("Book a Call to Join")}
+      ${p("— Eva<br>Holiday Brokers")}
+      ${p("P.S. If the timing genuinely isn't right — no hard feelings. Keep an eye on the site. When the next intake opens in your area, we'll list it.")}
+    `),
+  }
+}
+
+export const AGENT_EMAIL_DELAYS_DAYS = [0, 2, 5, 9, 14] as const
+
+export const AGENT_EMAIL_TEMPLATES = [agentEmail1, agentEmail2, agentEmail3, agentEmail4, agentEmail5] as const
