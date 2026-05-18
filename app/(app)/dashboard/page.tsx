@@ -2,6 +2,7 @@ import TopBar from "@/components/layout/TopBar"
 import { createAdminClient } from "@/lib/supabase/admin"
 import { formatRand, formatDate } from "@/lib/utils"
 import { approvePerson, rejectPerson } from "@/app/actions/partners"
+import { contactLead } from "@/app/actions/leads"
 import Link from "next/link"
 
 export const dynamic = "force-dynamic"
@@ -19,6 +20,7 @@ export default async function DashboardPage() {
     { data: pendingPartners },
     { data: lastFridayRun },
     { data: last7thRun },
+    { data: calculatorLeads },
   ] = await Promise.all([
     supabase.from("dhr_debt_ledger").select("entry_type, amount"),
     supabase.from("deals").select("id").gte("deal_date", monthStart).eq("product", "DVC"),
@@ -26,6 +28,7 @@ export default async function DashboardPage() {
     supabase.from("people").select("id, name, email, phone, role, created_at").eq("status", "pending").order("created_at"),
     supabase.from("payout_runs").select("total_amount, run_date").eq("run_type", "friday_dhr").order("run_date", { ascending: false }).limit(1).maybeSingle(),
     supabase.from("payout_runs").select("total_amount, run_date").eq("run_type", "seventh_contractor").order("run_date", { ascending: false }).limit(1).maybeSingle(),
+    supabase.from("leads").select("id, name, email, created_at").eq("source_channel", "calculator").eq("status", "new").order("created_at", { ascending: false }),
   ])
 
   const dhrDebt = (ledger ?? []).reduce((sum, e) => {
@@ -77,6 +80,39 @@ export default async function DashboardPage() {
                       </button>
                     </form>
                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* New Calculator Leads */}
+        {(calculatorLeads?.length ?? 0) > 0 && (
+          <div className="bg-[#1a1a1a] border border-[#c9a84c]/30 rounded-xl p-5">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#c9a84c] animate-pulse" />
+              <p className="text-sm font-semibold text-[#f5f5f5]">New Calculator Leads</p>
+              <span className="text-[10px] font-bold bg-[#c9a84c] text-black px-1.5 py-0.5 rounded-full">
+                {calculatorLeads!.length}
+              </span>
+              <Link href="/leads" className="ml-auto text-xs text-[#c9a84c] hover:underline">View all →</Link>
+            </div>
+            <div className="space-y-2">
+              {calculatorLeads!.map((lead) => (
+                <div
+                  key={lead.id}
+                  className="bg-[#222] border border-[#2e2e2e] rounded-lg px-4 py-3 flex items-center justify-between gap-4"
+                >
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-[#f5f5f5] truncate">{lead.name}</p>
+                    <p className="text-xs text-[#a8a8a8] truncate">{lead.email}</p>
+                    <p className="text-xs text-[#aaa] mt-0.5">{formatDate(lead.created_at)}</p>
+                  </div>
+                  <form action={contactLead.bind(null, lead.id)} className="shrink-0">
+                    <button type="submit" className="text-xs bg-[#c9a84c] hover:bg-[#b8943e] text-black font-bold px-3 py-1.5 rounded-lg transition-colors">
+                      Contact
+                    </button>
+                  </form>
                 </div>
               ))}
             </div>

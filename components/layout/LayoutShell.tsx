@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Sidebar from "./Sidebar"
 import { SidebarCtx } from "./SidebarContext"
+import LeadToast from "@/components/notifications/LeadToast"
 
 export default function LayoutShell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
@@ -29,6 +30,7 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
           {children}
         </main>
       </div>
+      <LeadToast />
     </SidebarCtx.Provider>
   )
 }

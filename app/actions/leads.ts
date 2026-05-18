@@ -29,3 +29,12 @@ export async function addLead(data: {
 
   redirect("/leads")
 }
+
+export async function contactLead(id: string) {
+  const supabase = createAdminClient()
+  const { error } = await supabase
+    .from("leads")
+    .update({ status: "contacted" })
+    .eq("id", id)
+  if (error) throw new Error(error.message)
+}

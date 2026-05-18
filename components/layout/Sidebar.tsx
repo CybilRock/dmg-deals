@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
 import {
   LayoutDashboard,
   FileText,
@@ -13,6 +14,7 @@ import {
 import { cn } from "@/lib/utils"
 import { signOut } from "@/app/actions/auth"
 import { useSidebarCtx } from "./SidebarContext"
+import { createClient } from "@/lib/supabase/client"
 
 const nav = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -22,9 +24,37 @@ const nav = [
   { href: "/reports",   label: "Reports",   icon: TrendingUp },
 ]
 
+function useNewCalculatorLeadCount() {
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    const supabase = createClient()
+
+    const refresh = () =>
+      supabase
+        .from("leads")
+        .select("id", { count: "exact", head: true })
+        .eq("source_channel", "calculator")
+        .eq("status", "new")
+        .then(({ count: c }) => setCount(c ?? 0))
+
+    refresh()
+
+    const channel = supabase
+      .channel("sidebar-lead-count")
+      .on("postgres_changes", { event: "*", schema: "public", table: "leads" }, refresh)
+      .subscribe()
+
+    return () => { supabase.removeChannel(channel) }
+  }, [])
+
+  return count
+}
+
 export default function Sidebar() {
   const path = usePathname()
   const ctx  = useSidebarCtx()
+  const newLeadCount = useNewCalculatorLeadCount()
 
   return (
     <aside className="w-56 h-full bg-[#111] flex flex-col shrink-0 border-r border-[#2e2e2e]">
@@ -38,6 +68,7 @@ export default function Sidebar() {
       <nav className="flex-1 px-2.5 py-4 space-y-0.5">
         {nav.map(({ href, label, icon: Icon }) => {
           const active = path === href || path.startsWith(href + "/")
+          const badge = href === "/leads" && newLeadCount > 0 ? newLeadCount : null
           return (
             <Link
               key={href}
@@ -52,6 +83,11 @@ export default function Sidebar() {
             >
               <Icon size={15} strokeWidth={active ? 2 : 1.5} />
               {label}
+              {badge !== null && (
+                <span className="ml-auto text-[9px] font-bold bg-[#c9a84c] text-black px-1.5 py-0.5 rounded-full leading-none">
+                  {badge}
+                </span>
+              )}
             </Link>
           )
         })}
