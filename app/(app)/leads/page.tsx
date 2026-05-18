@@ -18,7 +18,7 @@ export default async function LeadsPage() {
   const supabase = createAdminClient()
 
   const [{ data: leads }, { data: people }] = await Promise.all([
-    supabase.from("leads").select("id, name, phone, email, source_brand, status, assigned_to, created_at").order("created_at", { ascending: false }),
+    supabase.from("leads").select("id, name, phone, email, source_brand, status, assigned_to, created_at, city, region").order("created_at", { ascending: false }),
     supabase.from("people").select("id, name"),
   ])
 
@@ -60,6 +60,11 @@ export default async function LeadsPage() {
                         {lead.phone && <p className="text-[#a8a8a8] mt-0.5">{lead.phone}</p>}
                         {lead.source_brand && (
                           <p className="text-[#aaa] mt-1 truncate">{lead.source_brand}</p>
+                        )}
+                        {(lead.city || lead.region) && (
+                          <p className="text-[#888] mt-0.5 truncate">
+                            📍 {[lead.city, lead.region].filter(Boolean).join(", ")}
+                          </p>
                         )}
                         {lead.assigned_to && peopleMap[lead.assigned_to] && (
                           <p className="text-[#c9a84c] mt-1 truncate">→ {peopleMap[lead.assigned_to]}</p>

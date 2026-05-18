@@ -31,12 +31,17 @@ export async function POST(req: NextRequest) {
   const supabase = createAdminClient()
   const name = first_name?.trim() || email
 
+  const city   = req.headers.get("x-vercel-ip-city") ?? null
+  const region = req.headers.get("x-vercel-ip-country-region") ?? null
+
   const { error } = await supabase.from("leads").insert({
     name,
     email: email.trim().toLowerCase(),
     source_brand: "Holiday Brokers",
     source_channel: "calculator",
     status: "new",
+    city,
+    region,
   })
 
   if (error) {
