@@ -40,6 +40,21 @@ export async function POST(req: NextRequest) {
   const city   = req.headers.get("x-vercel-ip-city") ?? null
   const region = req.headers.get("x-vercel-ip-country-region") ?? null
 
+  // Rate limit: one submission per email per hour
+  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString()
+  const { count: recentCount, error: countError } = await supabase
+    .from("leads")
+    .select("*", { count: "exact", head: true })
+    .eq("email", email.trim().toLowerCase())
+    .gte("created_at", oneHourAgo)
+  if (countError) {
+    console.error("[calculator-lead] rate-limit check failed", countError)
+    return cors(NextResponse.json({ error: "Service unavailable" }, { status: 503 }), origin)
+  }
+  if (recentCount && recentCount > 0) {
+    return cors(NextResponse.json({ success: true }), origin)
+  }
+
   let assignedTo: string | null = null
 
   const { data: consultants } = await supabase
