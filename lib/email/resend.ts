@@ -6,5 +6,5 @@ if (!process.env.RESEND_API_KEY) {
 
 export const resend = new Resend(process.env.RESEND_API_KEY)
 
-export const FROM_EMAIL = process.env.EMAIL_FROM ?? "Holiday Brokers <hello@holidaybrokers.co.za>"
+export const FROM_EMAIL = process.env.EMAIL_FROM ?? "Eva from Holiday Brokers <eva@holidaybrokers.co.za>"
 export const BOOKING_URL = process.env.HB_BOOKING_URL ?? "https://holidaybrokers.co.za"

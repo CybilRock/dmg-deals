@@ -64,7 +64,7 @@ export function email1(firstName: string): EmailTemplate {
       ${p("That's not a promotional estimate. That's what members are receiving.")}
       ${p("In the next few days we'll walk you through exactly how it works, show you a real member story, and answer the most common questions. If you'd rather jump straight to the numbers conversation, our consultants are available now — 20 minutes, no pressure.")}
       ${bookingButton("Book a Call")}
-      ${p("— The Holiday Brokers Team<br>holidaybrokers.co.za")}
+      ${p("— Eva<br>Holiday Brokers")}
     `),
   }
 }
@@ -86,7 +86,7 @@ export function email2(firstName: string): EmailTemplate {
       ${p(`${b("What does that look like in practice?")}<br><br>1 flight ticket: ~R4,000 cashback<br>Family of 5 on one trip: ~R20,000 cashback<br>All-inclusive Mauritius at R300,000 spend: up to R50,000 back`)}
       ${p("The calculator you ran was built on these real figures.")}
       ${p("Tomorrow we'll show you a real client story that shows exactly how this plays out in practice.")}
-      ${p("— The Holiday Brokers Team")}
+      ${p("— Eva, Holiday Brokers")}
     `),
   }
 }
@@ -110,7 +110,7 @@ export function email3(firstName: string): EmailTemplate {
       ${p("The bigger your travel spend, the faster your membership pays for itself. For a family that travels twice a year, the numbers compound quickly. For someone who travels frequently for work, even faster.")}
       ${p("If you'd like to run your own scenario with a consultant — your real travel habits, your numbers — that conversation takes about 20 minutes.")}
       ${bookingButton("Book a Call")}
-      ${p("— The Holiday Brokers Team")}
+      ${p("— Eva, Holiday Brokers")}
     `),
   }
 }
@@ -131,7 +131,7 @@ export function email4(firstName: string): EmailTemplate {
       ${p("That's the whole model. No hidden charges. No resort fees. No gimmick.")}
       ${p("If you've still got questions, a 20-minute call with one of our consultants will answer all of them. They won't push you toward anything you're not ready for.")}
       ${bookingButton("Book a Call")}
-      ${p("— The Holiday Brokers Team")}
+      ${p("— Eva, Holiday Brokers")}
     `),
   }
 }
@@ -181,7 +181,7 @@ export function email5(firstName: string): EmailTemplate {
       ${p("The 10-year is the one that tends to make people pause. You get 10 years of cashback savings, and at the end of the term, your full R75,000 comes back to you — guaranteed. The net cost is zero, before a single rand of cashback is counted. It's structured as a travel investment product, not just a membership.")}
       ${p("But the right option depends on your situation. That's what the call is for.")}
       ${bookingButton("Book a Call with a Consultant")}
-      ${p("— The Holiday Brokers Team")}
+      ${p("— Eva, Holiday Brokers")}
       ${p("P.S. If now isn't the right time — keep this email. When your next holiday is approaching and you're about to book flights, come back and run the numbers again. They tend to land differently when there's a real trip on the horizon.")}
     `),
   }
