@@ -97,16 +97,16 @@ export function email2(firstName: string): EmailTemplate {
 
 export function email3(firstName: string): EmailTemplate {
   return {
-    subject: "He paid off his R24,000 membership in one trip to Amsterdam",
+    subject: "He paid off his R25,000 membership in one trip to Amsterdam",
     html: layout(`
       ${p(`Hi ${escapeHtml(firstName)},`)}
       ${p("This is a real client story. We share it because it shows the model working exactly as designed.")}
       <hr style="border:none;border-top:1px solid #ebebeb;margin:24px 0;">
       ${p("A doctor. A trip to Amsterdam. Four tickets.")}
-      ${p("He signed up for a 3-year HolidayCorp membership at R24,000. He paid 30% upfront (R7,200) and the balance over 23 months, interest-free — roughly R730 a month.")}
+      ${p("He signed up for a 3-year HolidayCorp membership at R25,000. He paid 30% upfront (R7,500) and the balance over 23 months, interest-free — roughly R760 a month.")}
       ${p("A few months in, he booked Amsterdam for four people.")}
       ${p(`Cashback per ticket: R5,500.<br>Total cashback on that one booking: ${b("R22,000.")}`)}
-      ${p(`His R24,000 membership — effectively down to ${b("R2,000 after one trip.")}`)}
+      ${p(`His R25,000 membership — effectively down to ${b("R3,000 after one trip.")}`)}
       ${p("And that was just the first booking.")}
       ${p("He still had the rest of his 3-year term ahead of him. Unlimited cashback on every flight, hotel, car hire, and cruise he booked after that. The membership had already paid for itself. Everything that followed was straight savings.")}
       <hr style="border:none;border-top:1px solid #ebebeb;margin:24px 0;">
@@ -164,8 +164,8 @@ export function email5(firstName: string): EmailTemplate {
         <tbody>
           <tr>
             <td style="padding:10px 12px;border:1px solid #ddd;">3-Year</td>
-            <td style="padding:10px 12px;border:1px solid #ddd;">R24,000</td>
-            <td style="padding:10px 12px;border:1px solid #ddd;">~R730/mo</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R25,000</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">~R760/mo</td>
             <td style="padding:10px 12px;border:1px solid #ddd;">Most popular starting point</td>
           </tr>
           <tr style="background:#fafafa;">
