@@ -1,5 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/admin"
-import { resend, FROM_EMAIL, REPLY_TO } from "@/lib/email/resend"
+import { resend, FROM_EMAIL } from "@/lib/email/resend"
 import { EMAIL_TEMPLATES } from "@/lib/email/templates"
 import { timingSafeEqual } from "crypto"
 import { NextRequest, NextResponse } from "next/server"
@@ -62,9 +62,8 @@ export async function GET(req: NextRequest) {
     const { subject, html } = templateFn(firstName)
 
     const { error: sendError } = await resend.emails.send({
-      from:     FROM_EMAIL,
-      reply_to: REPLY_TO,
-      to:       lead.email,
+      from:    FROM_EMAIL,
+      to:      lead.email,
       subject,
       html,
     })
