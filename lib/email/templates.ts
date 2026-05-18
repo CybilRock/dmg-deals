@@ -218,17 +218,16 @@ export const EMAIL_TEMPLATES = [email1, email2, email3, email4, email5] as const
 
 export function agentEmail1(firstName: string): EmailTemplate {
   return {
-    subject: "How the Holiday Brokers consultant model works",
+    subject: "How the Holiday Brokers agent model works",
     html: layout(`
       ${p(`Hi ${escapeHtml(firstName)},`)}
-      ${p("You asked about the Holiday Brokers consultant opportunity. Here's the honest picture.")}
-      ${p("Holiday Brokers is a sales brokerage. We sell HolidayCorp travel memberships to South African consumers — products that give members cashback on every flight, hotel, and holiday they book. Our consultants earn commission on every membership they close.")}
-      ${p(`${b("The model is straightforward:")}<br>
-You work leads — either your own network or warm leads we provide.<br>
-You present the membership on a call (we train you on everything).<br>
-You close the sale, the client signs, and you get paid.`)}
-      ${p("The product sells itself to the right person. South Africans who travel 2–3 times a year recover the full membership cost within the first year. Your job is getting that conversation in front of people who travel. We handle everything else.")}
-      ${p("Over the next few days I'll send you the actual commission breakdown, show you what an active consultant's month looks like, and answer the questions everyone asks.")}
+      ${p("You asked about the Holiday Brokers agent opportunity. Here's the honest picture.")}
+      ${p("Holiday Brokers is a sales brokerage. We sell HolidayCorp travel memberships to South African consumers — products that give members cashback on every flight, hotel, and holiday they book.")}
+      ${p("There are two ways to earn with us:")}
+      ${p(`${b("1. Sales Consultant")}<br>You work leads — your own network or warm leads we provide — present the membership on a call, close the sale, and earn commission. We train you on everything. Full product knowledge, scripts, objection handling.`)}
+      ${p(`${b("2. Referral Agent")}<br>You don't need to close anything. You refer people who travel — friends, colleagues, clients — and earn a commission when they sign up. No calls, no presentations. Just the introduction.`)}
+      ${p("The product sells itself to the right person. South Africans who travel 2–3 times a year recover the full membership cost within the first year. Your job is getting that conversation started. We handle everything else.")}
+      ${p("In the next few days I'll walk you through the actual commission tiers, show you what an active agent's month looks like, and answer the questions everyone asks first.")}
       ${p("If you'd rather just talk now:")}
       ${bookingButton("Book a Call")}
       ${p("— Eva<br>Holiday Brokers")}
@@ -238,41 +237,49 @@ You close the sale, the client signs, and you get paid.`)}
 
 export function agentEmail2(firstName: string): EmailTemplate {
   return {
-    subject: "What a single close actually pays",
+    subject: "The commission structure, laid out",
     html: layout(`
       ${p(`Hi ${escapeHtml(firstName)},`)}
-      ${p("The commission structure is tiered to the membership.")}
-      ${p("HolidayCorp offers three agreements:")}
+      ${p("Commission is tiered — both by membership and by your role.")}
       <table width="100%" style="border-collapse:collapse;margin:16px 0 24px 0;font-size:14px;">
         <thead>
           <tr style="background:#f4f4f4;">
             <th style="padding:10px 12px;text-align:left;border:1px solid #ddd;">Membership</th>
             <th style="padding:10px 12px;text-align:left;border:1px solid #ddd;">Close Price</th>
-            <th style="padding:10px 12px;text-align:left;border:1px solid #ddd;">Your Commission</th>
+            <th style="padding:10px 12px;text-align:left;border:1px solid #ddd;">Referral (10%)</th>
+            <th style="padding:10px 12px;text-align:left;border:1px solid #ddd;">Consultant (15%)</th>
+            <th style="padding:10px 12px;text-align:left;border:1px solid #ddd;">Senior (20%)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td style="padding:10px 12px;border:1px solid #ddd;">3-Year</td>
             <td style="padding:10px 12px;border:1px solid #ddd;">R24,000</td>
-            <td style="padding:10px 12px;border:1px solid #ddd;">~R4,800</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R2,400</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R3,600</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R4,800</td>
           </tr>
           <tr style="background:#fafafa;">
             <td style="padding:10px 12px;border:1px solid #ddd;">5-Year</td>
             <td style="padding:10px 12px;border:1px solid #ddd;">R54,000</td>
-            <td style="padding:10px 12px;border:1px solid #ddd;">~R10,800</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R5,400</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R8,100</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R10,800</td>
           </tr>
           <tr>
             <td style="padding:10px 12px;border:1px solid #ddd;">10-Year</td>
             <td style="padding:10px 12px;border:1px solid #ddd;">R75,000</td>
-            <td style="padding:10px 12px;border:1px solid #ddd;">~R15,000</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R7,500</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R11,250</td>
+            <td style="padding:10px 12px;border:1px solid #ddd;">R15,000</td>
           </tr>
         </tbody>
       </table>
-      ${p("Two 3-year closes a month: ~R9,600. One 5-year close: ~R10,800. Part-time, working your existing network.")}
-      ${p("Full-time consultants targeting five or more closes a month are earning well above the South African median salary — on a product with real consumer demand, no expiry, and no monthly fees on your end.")}
-      ${p("There's no inventory to carry. No physical product to ship. No cold-calling required. You need a phone, a quiet space, and a basic understanding of how money works.")}
-      ${p("Tomorrow I'll send you a real consultant story.")}
+      ${p(`${b("Referral agents")} start at 10%. You refer the lead, we close it. One 5-year referral earns you R5,400 for a conversation you had over coffee.`)}
+      ${p(`${b("Consultants")} earn 15%. You present and close the sale yourself, with our training and scripts behind you. Two 3-year closes a month puts R7,200 in your pocket — part-time.`)}
+      ${p(`${b("Senior consultants")} earn 20%. Volume-based. Achieved by hitting consistent monthly targets.`)}
+      ${p("No inventory. No upfront cost. No monthly fees. You earn when you produce.")}
+      ${p("Tomorrow I'll show you a real agent story.")}
       ${p("— Eva, Holiday Brokers")}
     `),
   }

@@ -1,8 +1,15 @@
 import { createAdminClient } from "@/lib/supabase/admin"
 import { resend, FROM_EMAIL } from "@/lib/email/resend"
-import { EMAIL_TEMPLATES } from "@/lib/email/templates"
+import { EMAIL_TEMPLATES, AGENT_EMAIL_TEMPLATES } from "@/lib/email/templates"
 import { timingSafeEqual } from "crypto"
 import { NextRequest, NextResponse } from "next/server"
+
+const TEMPLATE_MAP = {
+  consumer: EMAIL_TEMPLATES,
+  agent:    AGENT_EMAIL_TEMPLATES,
+} as const
+
+type SequenceType = keyof typeof TEMPLATE_MAP
 
 if (!process.env.CRON_SECRET) {
   throw new Error("CRON_SECRET is not set")
@@ -27,7 +34,7 @@ export async function GET(req: NextRequest) {
   // Fetch all pending emails due now
   const { data: due, error: fetchError } = await supabase
     .from("email_queue")
-    .select("id, lead_id, email_number")
+    .select("id, lead_id, email_number, sequence_type")
     .eq("status", "pending")
     .lte("scheduled_at", new Date().toISOString())
     .limit(50)
@@ -55,7 +62,9 @@ export async function GET(req: NextRequest) {
     const lead = leadMap[row.lead_id]
     if (!lead?.email || !EMAIL_RE.test(lead.email)) continue
 
-    const templateFn = EMAIL_TEMPLATES[row.email_number - 1]
+    const rawSeq   = row.sequence_type ?? "consumer"
+    const seqType: SequenceType = rawSeq in TEMPLATE_MAP ? (rawSeq as SequenceType) : "consumer"
+    const templateFn = TEMPLATE_MAP[seqType][row.email_number - 1]
     if (!templateFn) continue
 
     const firstName = lead.name?.split(" ")[0] || "there"
